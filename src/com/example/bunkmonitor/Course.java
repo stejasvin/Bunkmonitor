@@ -49,14 +49,6 @@ public class Course {
         this.prof = prof;
     }
 
-    public String getL_id() {
-        return l_id;
-    }
-
-    public void setL_id(String l_id) {
-        this.l_id = l_id;
-    }
-
     public String getName() {
         return name;
     }

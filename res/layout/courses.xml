@@ -21,12 +21,21 @@
                 android:layout_gravity="left|center_vertical"/>
 
         <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Entry"
+            android:id="@+id/b_entry"
+            android:layout_gravity="right"/>
+
+        <Button
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Add courses"
                 android:id="@+id/b_courses"
                 android:layout_gravity="right"/>
+
 
     </LinearLayout>
 
