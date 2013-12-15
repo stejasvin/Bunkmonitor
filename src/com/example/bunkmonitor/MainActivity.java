@@ -10,8 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.Calendar;
 import java.util.List;
+
+import static java.lang.Math.random;
 
 public class MainActivity extends Activity {
 
@@ -25,12 +26,14 @@ public class MainActivity extends Activity {
         TextView tvDef = (TextView)findViewById(R.id.textView2);
 
         CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
-        List<Course> cList = courseDatabaseHandler.getAllCourses();
+        EntryDatabaseHandler entryDatabaseHandler = new EntryDatabaseHandler(this);
+        List<Course> cList = courseDatabaseHandler.getAllActiveCourses();
+        List<Entry> eList = entryDatabaseHandler.getAllActiveEntry();
         if(cList.isEmpty())
             tvDef.setVisibility(View.VISIBLE);
         else{
             ListView list = new ListView(this);
-            CoursesListAdapter adapter = new CoursesListAdapter(this,R.layout.single_list_item_courses,cList);
+            CoursesListAdapter adapter = new CoursesListAdapter(this,R.layout.single_list_item_courses,cList,eList);
             list.setAdapter(adapter);
 
             LinearLayout ll = (LinearLayout)findViewById(R.id.c_list_layout);
@@ -66,34 +69,20 @@ public class MainActivity extends Activity {
         //For Demo, populating entries and courses
         CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
         Course course = new Course();
-        course.setId("ID1200");
-        course.setCredits("2");
-        course.setName("Ecology");
+        course.setId("ID"+random()%10000);
+        course.setCredits("" + random() % 10);
+        course.setName("Course" + course.getId());
         course.setProf("Prof ABC");
         course.setSlot("A");
         courseDatabaseHandler.addCourse(course);
 
-        course.setId("ED1200");
-        course.setCredits("3");
-        course.setName("AD");
-        course.setProf("Prof PQR");
-        course.setSlot("G");
-        courseDatabaseHandler.addCourse(course);
-
         EntryDatabaseHandler entryDatabaseHandler = new EntryDatabaseHandler(this);
         Entry entry = new Entry();
-        entry.setCourse_id("ID1200");
-        entry.setSlot("A");
-        entry.setTime(Calendar.getInstance().getTime().toString());
-        entry.setStatus(Utilities.ATTENDED);
-        entry.setEntered(0);
-        entryDatabaseHandler.addEntry(entry);
-
-        entry.setCourse_id("ED1200");
-        entry.setSlot("G");
-        entry.setTime(Calendar.getInstance().getTime().toString());
-        entry.setStatus(Utilities.BUNKED);
-        entry.setEntered(0);
+        entry.setCourse_id(course.getId());
+        entry.setAttended(55);
+        entry.setBunked(2);
+        entry.setCancelled(22);
+        entry.setActive(1);
         entryDatabaseHandler.addEntry(entry);
 
     }

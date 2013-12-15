@@ -15,6 +15,8 @@ import static com.example.bunkmonitor.CourseDatabaseHandler.KEY_CREDITS;
 
 public class CourseDatabaseHandler extends SQLiteOpenHelper {
 
+
+    private Context context;
 	// All Static variables
 	// Database Version
 	private static final int DATABASE_VERSION = 1;
@@ -36,6 +38,7 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
 
     public CourseDatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
 	}
 
 	// Creating Tables
@@ -114,7 +117,7 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
 	}
 	
 	// Getting All courses
-	public List<Course> getAllCourses() {
+	public List<Course> getAllActiveCourses() {
 		List<Course> courseList = new ArrayList<Course>();
 		// Select All Query
 		String selectQuery = "SELECT * FROM " + TABLE_COURSES;
@@ -139,6 +142,9 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
 			} while (cursor.moveToNext());
 		}
         db.close();
+
+        EntryDatabaseHandler entryDatabaseHandler = new EntryDatabaseHandler(context);
+
 
         // return course list
 		return courseList;

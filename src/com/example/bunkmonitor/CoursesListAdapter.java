@@ -21,17 +21,19 @@ import java.util.List;
 public class CoursesListAdapter extends ArrayAdapter {
 
     List<Course> cList;
+    List<Entry> eList;
     int textViewResourceId;
     /**
      * Context
      */
     private Context context;
 
-    public CoursesListAdapter(Context context, int textViewResourceId, List<Course> cList) {
+    public CoursesListAdapter(Context context, int textViewResourceId, List<Course> cList, List<Entry> eList) {
         super(context, textViewResourceId, cList);
         this.textViewResourceId = textViewResourceId;
         this.context = context;
         this.cList = cList;
+        this.eList = eList;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {

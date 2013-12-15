@@ -25,4 +25,24 @@
 	    android:textSize="17sp"
 	    />
 
+    <TextView
+        android:id="@+id/clist_att"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        />
+
+    <TextView
+        android:id="@+id/clist_bunked"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        />
+
+    <TextView
+        android:id="@+id/clist_cancelled"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        />
 </LinearLayout>

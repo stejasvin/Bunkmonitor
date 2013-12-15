@@ -25,11 +25,11 @@ public class EntryDatabaseHandler extends SQLiteOpenHelper {
 	// courseions Table Columns names
 	public static final String KEY_LOCAL_ID = "l_id";
 	public static final String KEY_COURSE_ID = "course_id";
-	public static final String KEY_STATUS = "status";
-    public static final String KEY_TIME = "time";
+    public static final String KEY_ATTENDED = "attended";
+    public static final String KEY_BUNKED = "bunked";
+    public static final String KEY_CANCELLED = "cancelled";
+    public static final String KEY_ACTIVE = "active";
 
-    public static final String KEY_SLOT = "slot";
-    public static final String KEY_ENTERED = "entered";
     private static final String TAG = "entryDatabaseHandler";
 
     public EntryDatabaseHandler(Context context) {
@@ -41,11 +41,11 @@ public class EntryDatabaseHandler extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		String CREATE_courseS_TABLE = "CREATE TABLE " + TABLE_ENTRY + "("
 				+ KEY_LOCAL_ID + " INTEGER PRIMARY KEY,"
-                + KEY_COURSE_ID + " TEXT ,"
-				+ KEY_STATUS + " INT,"
-                + KEY_TIME + " TEXT,"
-                + KEY_SLOT + " TEXT,"
-                + KEY_ENTERED + " INT DEFAULT 1" +")";
+                + KEY_COURSE_ID + " TEXT,"
+				+ KEY_ATTENDED + " INT,"
+                + KEY_BUNKED + " INT,"
+                + KEY_CANCELLED + " INT,"
+                + KEY_ACTIVE + " INT " +")";
 		db.execSQL(CREATE_courseS_TABLE);
 	}
 
@@ -71,10 +71,10 @@ public class EntryDatabaseHandler extends SQLiteOpenHelper {
 
         values.put(KEY_LOCAL_ID, entry.getL_id());
         values.put(KEY_COURSE_ID, entry.getCourse_id());
-        values.put(KEY_STATUS, entry.getStatus());
-        values.put(KEY_TIME, entry.getTime());
-        values.put(KEY_SLOT, entry.getSlot());
-        values.put(KEY_ENTERED, entry.getEntered());
+        values.put(KEY_ATTENDED, entry.getAttended());
+        values.put(KEY_BUNKED, entry.getBunked());
+        values.put(KEY_CANCELLED, entry.getCancelled());
+        values.put(KEY_ACTIVE, entry.getActive());
 		// Inserting Row
 		if(db.insert(TABLE_ENTRY, null, values)==-1)
             Log.e(TAG, "error in inserting");
@@ -87,10 +87,10 @@ public class EntryDatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_LOCAL_ID, entry.getL_id());
         values.put(KEY_COURSE_ID, entry.getCourse_id());
-        values.put(KEY_STATUS, entry.getStatus());
-        values.put(KEY_TIME, entry.getTime());
-        values.put(KEY_SLOT, entry.getSlot());
-        values.put(KEY_ENTERED, entry.getEntered());
+        values.put(KEY_ATTENDED, entry.getAttended());
+        values.put(KEY_BUNKED, entry.getBunked());
+        values.put(KEY_CANCELLED, entry.getCancelled());
+        values.put(KEY_ACTIVE, entry.getActive());
 
         db.update(TABLE_ENTRY,
                 values,
@@ -115,23 +115,22 @@ public class EntryDatabaseHandler extends SQLiteOpenHelper {
 		Entry entry = new Entry();
         entry.setL_id(cursor.getString(0));
         entry.setCourse_id(cursor.getString(1));
-        entry.setStatus(cursor.getInt(2));
-        entry.setTime(cursor.getString(3));
-
-        entry.setSlot(cursor.getString(4));
-        entry.setEntered(cursor.getInt(5));
+        entry.setAttended(cursor.getInt(2));
+        entry.setBunked(cursor.getInt(3));
+        entry.setCancelled(cursor.getInt(4));
+        entry.setActive(cursor.getInt(5));
 
         db.close();
 		return entry;
 	}
 	
-	public List<Entry> getAllNewEntry() {
+	public List<Entry> getAllActiveEntry() {
 		List<Entry> entryList = new ArrayList<Entry>();
 		// Select All Query
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_ENTRY, new String[]{"*"},
-                KEY_ENTERED + "=0",
+                KEY_ACTIVE + "=1",
                 new String[] {}, null, null, null, null);
 
 		// looping through all rows and adding to list
@@ -140,11 +139,10 @@ public class EntryDatabaseHandler extends SQLiteOpenHelper {
                 Entry entry = new Entry();
                 entry.setL_id(cursor.getString(0));
                 entry.setCourse_id(cursor.getString(1));
-                entry.setStatus(cursor.getInt(2));
-                entry.setTime(cursor.getString(3));
-
-                entry.setSlot(cursor.getString(4));
-                entry.setEntered(cursor.getInt(5));
+                entry.setAttended(cursor.getInt(2));
+                entry.setBunked(cursor.getInt(3));
+                entry.setCancelled(cursor.getInt(4));
+                entry.setActive(cursor.getInt(5));
 
                 // Adding course to list
 			    entryList.add(entry);
@@ -155,5 +153,35 @@ public class EntryDatabaseHandler extends SQLiteOpenHelper {
         // return course list
 		return entryList;
 	}
+
+    public List<Entry> getActiveDiffList() {
+        List<Entry> entryList = new ArrayList<Entry>();
+        // Select All Query
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_ENTRY, new String[]{"*"},
+                KEY_ACTIVE + "=1",
+                new String[] {}, null, null, null, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Entry entry = new Entry();
+                entry.setL_id(cursor.getString(0));
+                entry.setCourse_id(cursor.getString(1));
+                entry.setAttended(0);
+                entry.setBunked(0);
+                entry.setCancelled(0);
+                entry.setActive(cursor.getInt(5));
+
+                // Adding course to list
+                entryList.add(entry);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+
+        // return course list
+        return entryList;
+    }
 
 }

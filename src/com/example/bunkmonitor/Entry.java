@@ -6,51 +6,41 @@ package com.example.bunkmonitor;
 public class Entry {
     private String l_id;
     private String course_id;
-    private int status;
-    private String time;
-    private int entered;
+    private int attended;
+    private int bunked;
+    private int cancelled;
+    private int active;          //No need for this now
 
-
-    public int getEntered() {
-        return entered;
+    public int getActive() {
+        return active;
     }
 
-    public void setEntered(int entered) {
-        this.entered = entered;
+    public void setActive(int active) {
+        this.active = active;
     }
 
-    public String getSlot() {
-        return slot;
+    public int getCancelled() {
+        return cancelled;
     }
 
-    public void setSlot(String slot) {
-        this.slot = slot;
+    public void setCancelled(int cancelled) {
+        this.cancelled = cancelled;
     }
 
-    private String slot;
-
-    public String getL_id() {
-        return l_id;
+    public int getBunked() {
+        return bunked;
     }
 
-    public void setL_id(String l_id) {
-        this.l_id = l_id;
+    public void setBunked(int bunked) {
+        this.bunked = bunked;
     }
 
-    public String getTime() {
-        return time;
+    public int getAttended() {
+        return attended;
     }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
+    public void setAttended(int attended) {
+        this.attended = attended;
     }
 
     public String getCourse_id() {
@@ -61,10 +51,34 @@ public class Entry {
         this.course_id = course_id;
     }
 
-    public Entry(){
-
-
+    public String getL_id() {
+        return l_id;
     }
 
+    public void setL_id(String l_id) {
+        this.l_id = l_id;
+    }
 
+    public void incAttended(){
+        attended++;
+    }
+
+    public void decAttended(){
+        attended--;
+    }
+
+    public void incBunked(){
+        bunked++;
+    }
+
+    public void decBunked(){
+        bunked--;
+    }
+    public void incCancelled(){
+        cancelled++;
+    }
+
+    public void decCancelled(){
+        cancelled--;
+    }
 }

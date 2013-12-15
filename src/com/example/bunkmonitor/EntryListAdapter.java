@@ -4,9 +4,6 @@
 package com.example.bunkmonitor;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.example.bunkmonitor.Utilities;
 
 import java.util.List;
 
@@ -29,7 +24,7 @@ import java.util.List;
 
 public class EntryListAdapter extends ArrayAdapter {
 
-    List<Entry> eList;
+    List<Entry> diffList;
     int textViewResourceId = R.layout.single_list_item_entry;
     static final String topics[] = new String[]{
             "Courses", "Attended", "Bunk", "Cancelled", "Extra"
@@ -40,11 +35,13 @@ public class EntryListAdapter extends ArrayAdapter {
      * Context
      */
     private Context context;
+    private ImageView imva, imvb, imvc;
+    private Entry entry;
 
-    public EntryListAdapter(Context context, List<Entry> eList) {
-        super(context, R.layout.single_list_item_entry, eList);
+    public EntryListAdapter(Context context, List<Entry> diffList) {
+        super(context, R.layout.single_list_item_entry, diffList);
         this.context = context;
-        this.eList = eList;
+        this.diffList = diffList;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -57,36 +54,24 @@ public class EntryListAdapter extends ArrayAdapter {
             row = inflater.inflate(textViewResourceId, parent, false); // inflate view from xml file
         }
 
-        final Entry entry = eList.get(position);
+        entry = diffList.get(position);
 
         TextView tv = (TextView) row.findViewById(R.id.elist_text);
-        TextView tvExtra = (TextView) row.findViewById(R.id.elist_extra_text);
-        final ImageView imva = (ImageView) row.findViewById(R.id.elist_img_a);
-        final ImageView imvb = (ImageView) row.findViewById(R.id.elist_img_b);
-        final ImageView imvc = (ImageView) row.findViewById(R.id.elist_img_c);
+        imva = (ImageView) row.findViewById(R.id.elist_img_a);
+        imvb = (ImageView) row.findViewById(R.id.elist_img_b);
+        imvc = (ImageView) row.findViewById(R.id.elist_img_c);
 
         imva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                entry.setStatus(Utilities.ATTENDED);
-
-                imva.setImageResource(R.drawable.pencil_tick);
-                imvb.setImageResource(R.drawable.pencil_line);
-                imvc.setImageResource(R.drawable.pencil_line);
-
-
+                toggleTicks(Utilities.ATTENDED);
             }
         });
 
         imvb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                entry.setStatus(Utilities.BUNKED);
-
-                imva.setImageResource(R.drawable.pencil_line);
-                imvb.setImageResource(R.drawable.pencil_tick);
-                imvc.setImageResource(R.drawable.pencil_line);
-
+                toggleTicks(Utilities.BUNKED);
 
             }
         });
@@ -94,46 +79,53 @@ public class EntryListAdapter extends ArrayAdapter {
         imvc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                entry.setStatus(Utilities.CANCELLED);
-
-                imva.setImageResource(R.drawable.pencil_line);
-                imvb.setImageResource(R.drawable.pencil_line);
-                imvc.setImageResource(R.drawable.pencil_tick);
-
-
+                toggleTicks(Utilities.CANCELLED);
             }
         });
 
-        Button b = (Button) row.findViewById(R.id.elist_extra);
+        //Button b = (Button) row.findViewById(R.id.elist_extra);
 
         tv.setText(entry.getCourse_id());
-        tvExtra.setVisibility(View.GONE);
+        //tvExtra.setVisibility(View.GONE);
         imva.setImageResource(R.drawable.pencil_line);
         imvb.setImageResource(R.drawable.pencil_line);
         imvc.setImageResource(R.drawable.pencil_line);
 
-        switch(entry.getStatus()){
+        if (entry.getAttended() == 1)
+            imva.setImageResource(R.drawable.pencil_tick);
+        else if (entry.getBunked() == 1)
+            imvb.setImageResource(R.drawable.pencil_tick);
+        else if (entry.getCancelled() == 1)
+            imvc.setImageResource(R.drawable.pencil_tick);
+
+        return row;
+    }
+
+    void toggleTicks(int c) {
+        entry.setAttended(0);
+        entry.setBunked(0);
+        entry.setCancelled(0);
+        imva.setImageResource(R.drawable.pencil_line);
+        imvb.setImageResource(R.drawable.pencil_line);
+        imvc.setImageResource(R.drawable.pencil_line);
+
+        switch (c) {
             case Utilities.ATTENDED:
-                    imva.setImageResource(R.drawable.pencil_tick);
-                    break;
-
+                imva.setImageResource(R.drawable.pencil_tick);
+                entry.setAttended(1);
+                break;
             case Utilities.BUNKED:
-                    imvb.setImageResource(R.drawable.pencil_tick);
-                    break;
-
+                imvb.setImageResource(R.drawable.pencil_tick);
+                entry.setBunked(1);
+                break;
             case Utilities.CANCELLED:
-                    imvc.setImageResource(R.drawable.pencil_tick);
-                    break;
-
-            case Utilities.EXTRA:
-                    tvExtra.setVisibility(View.VISIBLE);
-                    b.setVisibility(View.GONE);
-                    break;
-
+                imvc.setImageResource(R.drawable.pencil_tick);
+                entry.setCancelled(1);
+                break;
         }
 
-    return row;
-}
+
+    }
 
 
 }

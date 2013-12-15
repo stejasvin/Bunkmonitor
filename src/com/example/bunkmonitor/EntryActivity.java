@@ -20,7 +20,7 @@ import java.util.List;
 public class EntryActivity extends Activity {
 
     ListView listView;
-    List<Entry> eList;
+    List<Entry> eList,diffList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,23 +33,12 @@ public class EntryActivity extends Activity {
 
         final EntryDatabaseHandler entryDatabaseHandler = new EntryDatabaseHandler(this);
 
-        eList = entryDatabaseHandler.getAllNewEntry();
+        eList = entryDatabaseHandler.getAllActiveEntry();
+        diffList = entryDatabaseHandler.getActiveDiffList();
 
-        EntryListAdapter adapter = new EntryListAdapter(this,eList);
+        EntryListAdapter adapter = new EntryListAdapter(this,diffList);
 
         listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-
-                Toast.makeText(getApplicationContext(),
-                        ""+position, Toast.LENGTH_SHORT).show();
-
-            }
-        });
 
         Button done = (Button)findViewById(R.id.es_b_done);
         done.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +46,10 @@ public class EntryActivity extends Activity {
             public void onClick(View v) {
 
                 for(int i=0;i<eList.size();i++){
-                    eList.get(i).setEntered(1);
+                    //Adding the difflist entries to orig list and updating the db
+                    eList.get(i).setAttended(eList.get(i).getAttended()+diffList.get(i).getAttended());
+                    eList.get(i).setBunked(eList.get(i).getBunked()+diffList.get(i).getBunked());
+                    eList.get(i).setCancelled(eList.get(i).getCancelled()+diffList.get(i).getCancelled());
                     entryDatabaseHandler.updateEntry(eList.get(i));
                 }
                 finish();
