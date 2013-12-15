@@ -35,8 +35,8 @@ public class EntryListAdapter extends ArrayAdapter {
      * Context
      */
     private Context context;
-    private ImageView imva, imvb, imvc;
-    private Entry entry;
+
+
 
     public EntryListAdapter(Context context, List<Entry> diffList) {
         super(context, R.layout.single_list_item_entry, diffList);
@@ -54,24 +54,38 @@ public class EntryListAdapter extends ArrayAdapter {
             row = inflater.inflate(textViewResourceId, parent, false); // inflate view from xml file
         }
 
-        entry = diffList.get(position);
+        final Entry entry = diffList.get(position);
 
         TextView tv = (TextView) row.findViewById(R.id.elist_text);
-        imva = (ImageView) row.findViewById(R.id.elist_img_a);
-        imvb = (ImageView) row.findViewById(R.id.elist_img_b);
-        imvc = (ImageView) row.findViewById(R.id.elist_img_c);
+        final ImageView imva = (ImageView) row.findViewById(R.id.elist_img_a);
+        final ImageView imvb = (ImageView) row.findViewById(R.id.elist_img_b);
+        final ImageView imvc = (ImageView) row.findViewById(R.id.elist_img_c);
 
         imva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleTicks(Utilities.ATTENDED);
+                imva.setImageResource(R.drawable.pencil_tick);
+                imvb.setImageResource(R.drawable.pencil_line);
+                imvc.setImageResource(R.drawable.pencil_line);
+
+                entry.setAttended(1);
+                entry.setBunked(0);
+                entry.setCancelled(0);
+
             }
         });
 
         imvb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleTicks(Utilities.BUNKED);
+                imva.setImageResource(R.drawable.pencil_line);
+                imvb.setImageResource(R.drawable.pencil_tick);
+                imvc.setImageResource(R.drawable.pencil_line);
+
+                entry.setAttended(0);
+                entry.setBunked(1);
+                entry.setCancelled(0);
+
 
             }
         });
@@ -79,7 +93,14 @@ public class EntryListAdapter extends ArrayAdapter {
         imvc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleTicks(Utilities.CANCELLED);
+                imva.setImageResource(R.drawable.pencil_line);
+                imvb.setImageResource(R.drawable.pencil_line);
+                imvc.setImageResource(R.drawable.pencil_tick);
+
+                entry.setAttended(0);
+                entry.setBunked(0);
+                entry.setCancelled(1);
+
             }
         });
 
@@ -101,31 +122,26 @@ public class EntryListAdapter extends ArrayAdapter {
         return row;
     }
 
-    void toggleTicks(int c) {
+    /*void toggleTicks(int c) {
         entry.setAttended(0);
         entry.setBunked(0);
         entry.setCancelled(0);
-        imva.setImageResource(R.drawable.pencil_line);
-        imvb.setImageResource(R.drawable.pencil_line);
-        imvc.setImageResource(R.drawable.pencil_line);
-
         switch (c) {
             case Utilities.ATTENDED:
-                imva.setImageResource(R.drawable.pencil_tick);
                 entry.setAttended(1);
                 break;
             case Utilities.BUNKED:
-                imvb.setImageResource(R.drawable.pencil_tick);
                 entry.setBunked(1);
                 break;
             case Utilities.CANCELLED:
-                imvc.setImageResource(R.drawable.pencil_tick);
                 entry.setCancelled(1);
                 break;
         }
 
 
-    }
 
+
+    }
+*/
 
 }

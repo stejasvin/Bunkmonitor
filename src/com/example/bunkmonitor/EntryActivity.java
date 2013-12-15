@@ -20,7 +20,8 @@ import java.util.List;
 public class EntryActivity extends Activity {
 
     ListView listView;
-    List<Entry> eList,diffList;
+    List<Course> cList;
+    List<Entry> eList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,27 +32,35 @@ public class EntryActivity extends Activity {
 
         listView = (ListView) findViewById(R.id.listview1);
 
-        final EntryDatabaseHandler entryDatabaseHandler = new EntryDatabaseHandler(this);
+        final CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
+        cList = courseDatabaseHandler.getAllActiveCourses();
+        eList = Entry.getEntryList(cList);
 
-        eList = entryDatabaseHandler.getAllActiveEntry();
-        diffList = entryDatabaseHandler.getActiveDiffList();
-
-        EntryListAdapter adapter = new EntryListAdapter(this,diffList);
+        EntryListAdapter adapter = new EntryListAdapter(this,eList);
 
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //gen
+                int a=1;
+            }
+        });
 
         Button done = (Button)findViewById(R.id.es_b_done);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                for(int i=0;i<eList.size();i++){
+                for(int i=0;i<cList.size();i++){
                     //Adding the difflist entries to orig list and updating the db
-                    eList.get(i).setAttended(eList.get(i).getAttended()+diffList.get(i).getAttended());
-                    eList.get(i).setBunked(eList.get(i).getBunked()+diffList.get(i).getBunked());
-                    eList.get(i).setCancelled(eList.get(i).getCancelled()+diffList.get(i).getCancelled());
-                    entryDatabaseHandler.updateEntry(eList.get(i));
+                    cList.get(i).setAttended(cList.get(i).getAttended()+eList.get(i).getAttended());
+                    cList.get(i).setBunked(cList.get(i).getBunked() + eList.get(i).getBunked());
+                    cList.get(i).setCancelled(cList.get(i).getCancelled() + eList.get(i).getCancelled());
+                    courseDatabaseHandler.updateCourse(cList.get(i));
                 }
+                setResult(RESULT_OK);
                 finish();
 
             }

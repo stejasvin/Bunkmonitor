@@ -21,19 +21,19 @@ import java.util.List;
 public class CoursesListAdapter extends ArrayAdapter {
 
     List<Course> cList;
-    List<Entry> eList;
+
     int textViewResourceId;
     /**
      * Context
      */
     private Context context;
 
-    public CoursesListAdapter(Context context, int textViewResourceId, List<Course> cList, List<Entry> eList) {
+    public CoursesListAdapter(Context context, int textViewResourceId, List<Course> cList) {
         super(context, textViewResourceId, cList);
         this.textViewResourceId = textViewResourceId;
         this.context = context;
         this.cList = cList;
-        this.eList = eList;
+
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -49,11 +49,18 @@ public class CoursesListAdapter extends ArrayAdapter {
         TextView tvName = (TextView) row.findViewById(R.id.clist_name);
         TextView tvId = (TextView) row.findViewById(R.id.clist_id);
         TextView tvSlot = (TextView) row.findViewById(R.id.clist_slot);
+        TextView tvA = (TextView) row.findViewById(R.id.clist_att);
+        TextView tvB = (TextView) row.findViewById(R.id.clist_bunked);
+        TextView tvC = (TextView) row.findViewById(R.id.clist_cancelled);
         //LinearLayout layout = (LinearLayout) row.findViewById(R.id.list_viewmes_layout);
 
         tvName.setText(cList.get(position).getName());
         tvId.setText(cList.get(position).getId());
-        tvSlot.setText(cList.get(position).getId());
+        tvSlot.setText(cList.get(position).getSlot());
+        tvA.setText("Attended: "+cList.get(position).getAttended());
+        tvB.setText("Bunked  : "+cList.get(position).getBunked());
+        tvC.setText("Canclled: "+cList.get(position).getCancelled());
+
         return row;
     }
 

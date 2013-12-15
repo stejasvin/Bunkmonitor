@@ -34,6 +34,10 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
     public static final String KEY_PROF = "prof";
     public static final String KEY_NAME = "name";
     public static final String KEY_SLOT = "slot";
+    public static final String KEY_ATTENDED = "attended";
+    public static final String KEY_BUNKED = "bunked";
+    public static final String KEY_CANCELLED = "cancelled";
+    public static final String KEY_ACTIVE = "active";
     private static final String TAG = "courseDatabaseHandler";
 
     public CourseDatabaseHandler(Context context) {
@@ -50,8 +54,12 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_NAME + " TEXT,"
                 + KEY_CREDITS + " TEXT,"
                 + KEY_SLOT + " TEXT,"
-                + KEY_PROF + " TEXT" +")";
-		db.execSQL(CREATE_courseS_TABLE);
+                + KEY_PROF + " TEXT,"
+                + KEY_ATTENDED + " INT,"
+                + KEY_BUNKED + " INT,"
+                + KEY_CANCELLED + " INT,"
+                + KEY_ACTIVE + " INT " +")";
+        db.execSQL(CREATE_courseS_TABLE);
 	}
 
 	// Upgrading database
@@ -81,6 +89,10 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_CREDITS, course.getCredits());
         values.put(KEY_SLOT, course.getSlot());
         values.put(KEY_PROF, course.getProf());
+        values.put(KEY_ATTENDED, course.getAttended());
+        values.put(KEY_BUNKED, course.getBunked());
+        values.put(KEY_CANCELLED, course.getCancelled());
+        values.put(KEY_ACTIVE, course.getActive());
 
 		// Inserting Row
 		if(db.insert(TABLE_COURSES, null, values)==-1)
@@ -109,6 +121,10 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
         course.setCredits(cursor.getString(3));
         course.setSlot(cursor.getString(4));
         course.setProf(cursor.getString(5));
+        course.setAttended(cursor.getInt(6));
+        course.setBunked(cursor.getInt(7));
+        course.setCancelled(cursor.getInt(8));
+        course.setActive(cursor.getInt(9));
 
 		// return course
 
@@ -120,11 +136,12 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
 	public List<Course> getAllActiveCourses() {
 		List<Course> courseList = new ArrayList<Course>();
 		// Select All Query
-		String selectQuery = "SELECT * FROM " + TABLE_COURSES;
 
+        SQLiteDatabase db = this.getReadableDatabase();
 
-		SQLiteDatabase db = this.getWritableDatabase();
-		Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.query(TABLE_COURSES, new String[]{"*"},
+                KEY_ACTIVE + "=1",
+                new String[] {}, null, null, null, null);
 
 		// looping through all rows and adding to list
 		if (cursor.moveToFirst()) {
@@ -136,6 +153,10 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
                 course.setCredits(cursor.getString(3));
                 course.setSlot(cursor.getString(4));
                 course.setProf(cursor.getString(5));
+                course.setAttended(cursor.getInt(6));
+                course.setBunked(cursor.getInt(7));
+                course.setCancelled(cursor.getInt(8));
+                course.setActive(cursor.getInt(9));
 
                 // Adding course to list
 			    courseList.add(course);
@@ -143,11 +164,30 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
 		}
         db.close();
 
-        EntryDatabaseHandler entryDatabaseHandler = new EntryDatabaseHandler(context);
-
-
         // return course list
 		return courseList;
 	}
+
+    public void updateCourse(Course course) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_LOCAL_ID, course.getLocalId());
+        values.put(KEY_ID, course.getId());
+        values.put(KEY_NAME, course.getName());
+        values.put(KEY_CREDITS, course.getCredits());
+        values.put(KEY_SLOT, course.getSlot());
+        values.put(KEY_PROF, course.getProf());
+        values.put(KEY_ATTENDED, course.getAttended());
+        values.put(KEY_BUNKED, course.getBunked());
+        values.put(KEY_CANCELLED, course.getCancelled());
+        values.put(KEY_ACTIVE, course.getActive());
+
+        db.update(TABLE_COURSES,
+                values,
+                KEY_LOCAL_ID + "=?",
+                new String[]{course.getLocalId()});
+        db.close();
+    }
 
 }

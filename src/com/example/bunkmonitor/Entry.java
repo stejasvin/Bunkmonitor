@@ -1,10 +1,14 @@
 package com.example.bunkmonitor;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 /**
 * Created by Tejas on 6/15/13.
 */
 public class Entry {
-    private String l_id;
+
     private String course_id;
     private int attended;
     private int bunked;
@@ -51,34 +55,13 @@ public class Entry {
         this.course_id = course_id;
     }
 
-    public String getL_id() {
-        return l_id;
-    }
-
-    public void setL_id(String l_id) {
-        this.l_id = l_id;
-    }
-
-    public void incAttended(){
-        attended++;
-    }
-
-    public void decAttended(){
-        attended--;
-    }
-
-    public void incBunked(){
-        bunked++;
-    }
-
-    public void decBunked(){
-        bunked--;
-    }
-    public void incCancelled(){
-        cancelled++;
-    }
-
-    public void decCancelled(){
-        cancelled--;
+    public static List<Entry> getEntryList(List<Course> activeCList){
+        List<Entry> entryList = new ArrayList<Entry>();
+        for(Course c: activeCList){
+            Entry entry = new Entry();
+            entry.setCourse_id(c.getId());
+            entryList.add(entry);
+        }
+        return entryList;
     }
 }

@@ -38,6 +38,7 @@ public class AddNewCourse extends Activity {
                 courseDatabaseHandler.addCourse(c);
 
                 startActivity(new Intent(AddNewCourse.this,MainActivity.class));
+                setResult(RESULT_OK);
                 finish();
             }
         });

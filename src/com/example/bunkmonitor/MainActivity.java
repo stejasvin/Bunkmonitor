@@ -16,7 +16,11 @@ import static java.lang.Math.random;
 
 public class MainActivity extends Activity {
 
-	@Override
+    private static final int ENTRYLIST = 10;
+    private static final int ADDNEWCOURSE = 20;
+    private ListView list;
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.courses);
@@ -26,14 +30,12 @@ public class MainActivity extends Activity {
         TextView tvDef = (TextView)findViewById(R.id.textView2);
 
         CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
-        EntryDatabaseHandler entryDatabaseHandler = new EntryDatabaseHandler(this);
         List<Course> cList = courseDatabaseHandler.getAllActiveCourses();
-        List<Entry> eList = entryDatabaseHandler.getAllActiveEntry();
         if(cList.isEmpty())
             tvDef.setVisibility(View.VISIBLE);
         else{
-            ListView list = new ListView(this);
-            CoursesListAdapter adapter = new CoursesListAdapter(this,R.layout.single_list_item_courses,cList,eList);
+            list = new ListView(this);
+            CoursesListAdapter adapter = new CoursesListAdapter(this,R.layout.single_list_item_courses,cList);
             list.setAdapter(adapter);
 
             LinearLayout ll = (LinearLayout)findViewById(R.id.c_list_layout);
@@ -57,7 +59,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(MainActivity.this,EntryActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,ENTRYLIST);
 
             }
         });
@@ -69,29 +71,32 @@ public class MainActivity extends Activity {
         //For Demo, populating entries and courses
         CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
         Course course = new Course();
-        course.setId("ID"+random()%10000);
-        course.setCredits("" + random() % 10);
-        course.setName("Course" + course.getId());
+        course.setId("ID:"+(int)(random()*10000));
+        course.setCredits("" + (int)(random()*10));
+        course.setName("C:" + course.getId());
         course.setProf("Prof ABC");
         course.setSlot("A");
+        course.setAttended(0);
+        course.setBunked(0);
+        course.setCancelled(0);
+        course.setActive(0);
         courseDatabaseHandler.addCourse(course);
-
-        EntryDatabaseHandler entryDatabaseHandler = new EntryDatabaseHandler(this);
-        Entry entry = new Entry();
-        entry.setCourse_id(course.getId());
-        entry.setAttended(55);
-        entry.setBunked(2);
-        entry.setCancelled(22);
-        entry.setActive(1);
-        entryDatabaseHandler.addEntry(entry);
 
     }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK)
+            if(requestCode == ENTRYLIST){
+                Intent i = getIntent();
+                finish();
+                startActivity(i);
 
+            }else if(requestCode==ADDNEWCOURSE){
+                Intent i = getIntent();
+                finish();
+                startActivity(i);
+            }
+    }
 }

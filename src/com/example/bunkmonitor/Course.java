@@ -7,6 +7,10 @@ import java.util.HashMap;
 */
 public class Course {
     private String id,l_id,credits,name,slot,prof;
+    private int attended;
+    private int bunked;
+    private int cancelled;
+    private int active;
 
     public Course(){
 
@@ -63,5 +67,60 @@ public class Course {
 
     public void setSlot(String slot) {
         this.slot = slot;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
+
+    public int getCancelled() {
+        return cancelled;
+    }
+
+    public void setCancelled(int cancelled) {
+        this.cancelled = cancelled;
+    }
+
+    public int getBunked() {
+        return bunked;
+    }
+
+    public void setBunked(int bunked) {
+        this.bunked = bunked;
+    }
+
+    public int getAttended() {
+        return attended;
+    }
+
+    public void setAttended(int attended) {
+        this.attended = attended;
+    }
+
+    public void incAttended(){
+        attended++;
+    }
+
+    public void decAttended(){
+        attended--;
+    }
+
+    public void incBunked(){
+        bunked++;
+    }
+
+    public void decBunked(){
+        bunked--;
+    }
+    public void incCancelled(){
+        cancelled++;
+    }
+
+    public void decCancelled(){
+        cancelled--;
     }
 }
