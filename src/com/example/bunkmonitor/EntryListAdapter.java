@@ -4,6 +4,8 @@
 package com.example.bunkmonitor;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,14 +57,54 @@ public class EntryListAdapter extends ArrayAdapter {
             row = inflater.inflate(textViewResourceId, parent, false); // inflate view from xml file
         }
 
+        final Entry entry = eList.get(position);
+
         TextView tv = (TextView) row.findViewById(R.id.elist_text);
         TextView tvExtra = (TextView) row.findViewById(R.id.elist_extra_text);
-        ImageView imva = (ImageView) row.findViewById(R.id.elist_img_a);
-        ImageView imvb = (ImageView) row.findViewById(R.id.elist_img_b);
-        ImageView imvc = (ImageView) row.findViewById(R.id.elist_img_c);
-        Button b = (Button) row.findViewById(R.id.elist_extra);
+        final ImageView imva = (ImageView) row.findViewById(R.id.elist_img_a);
+        final ImageView imvb = (ImageView) row.findViewById(R.id.elist_img_b);
+        final ImageView imvc = (ImageView) row.findViewById(R.id.elist_img_c);
 
-        Entry entry = eList.get(position);
+        imva.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                entry.setStatus(Utilities.ATTENDED);
+
+                imva.setImageResource(R.drawable.pencil_tick);
+                imvb.setImageResource(R.drawable.pencil_line);
+                imvc.setImageResource(R.drawable.pencil_line);
+
+
+            }
+        });
+
+        imvb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                entry.setStatus(Utilities.BUNKED);
+
+                imva.setImageResource(R.drawable.pencil_line);
+                imvb.setImageResource(R.drawable.pencil_tick);
+                imvc.setImageResource(R.drawable.pencil_line);
+
+
+            }
+        });
+
+        imvc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                entry.setStatus(Utilities.CANCELLED);
+
+                imva.setImageResource(R.drawable.pencil_line);
+                imvb.setImageResource(R.drawable.pencil_line);
+                imvc.setImageResource(R.drawable.pencil_tick);
+
+
+            }
+        });
+
+        Button b = (Button) row.findViewById(R.id.elist_extra);
 
         tv.setText(entry.getCourse_id());
         tvExtra.setVisibility(View.GONE);
@@ -92,5 +134,6 @@ public class EntryListAdapter extends ArrayAdapter {
 
     return row;
 }
+
 
 }

@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddNewCourse" ></activity>
+        <activity android:name=".EntryActivity" ></activity>
     </application>
 
 </manifest>

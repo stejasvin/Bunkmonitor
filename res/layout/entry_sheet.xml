@@ -52,12 +52,16 @@
     <ListView
         android:id="@+id/listview1"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
         android:layout_height="wrap_content"
-
-
-        >
-
-
-    </ListView>
+        android:layout_width="fill_parent">
+        <Button
+            android:id="@+id/es_b_done"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="Done"/>
+        </LinearLayout>
 
 </LinearLayout>

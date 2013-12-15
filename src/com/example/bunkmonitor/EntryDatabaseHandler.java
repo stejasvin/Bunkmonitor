@@ -41,7 +41,7 @@ public class EntryDatabaseHandler extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		String CREATE_courseS_TABLE = "CREATE TABLE " + TABLE_ENTRY + "("
 				+ KEY_LOCAL_ID + " INTEGER PRIMARY KEY,"
-                + KEY_COURSE_ID + " TEXT UNIQUE,"
+                + KEY_COURSE_ID + " TEXT ,"
 				+ KEY_STATUS + " INT,"
                 + KEY_TIME + " TEXT,"
                 + KEY_SLOT + " TEXT,"
@@ -73,7 +73,6 @@ public class EntryDatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_COURSE_ID, entry.getCourse_id());
         values.put(KEY_STATUS, entry.getStatus());
         values.put(KEY_TIME, entry.getTime());
-
         values.put(KEY_SLOT, entry.getSlot());
         values.put(KEY_ENTERED, entry.getEntered());
 		// Inserting Row
@@ -81,6 +80,24 @@ public class EntryDatabaseHandler extends SQLiteOpenHelper {
             Log.e(TAG, "error in inserting");
 		db.close(); // Closing database connection
 	}
+
+    public void updateEntry(Entry entry) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_LOCAL_ID, entry.getL_id());
+        values.put(KEY_COURSE_ID, entry.getCourse_id());
+        values.put(KEY_STATUS, entry.getStatus());
+        values.put(KEY_TIME, entry.getTime());
+        values.put(KEY_SLOT, entry.getSlot());
+        values.put(KEY_ENTERED, entry.getEntered());
+
+        db.update(TABLE_ENTRY,
+                values,
+                KEY_LOCAL_ID + "=?",
+                new String[]{entry.getL_id()});
+        db.close();
+    }
 
 	public Entry getEntry(String l_id) {
         if(l_id==null)
