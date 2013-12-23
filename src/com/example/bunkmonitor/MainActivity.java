@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
         course.setAttended(0);
         course.setBunked(0);
         course.setCancelled(0);
-        course.setActive(0);
+        course.setActive(1);
         courseDatabaseHandler.addCourse(course);
 
     }

@@ -33,6 +33,7 @@ public class AddNewCourse extends Activity {
                 c.setCredits(etCredits.getText().toString());
                 c.setProf(etProf.getText().toString());
                 c.setSlot(etSlot.getText().toString());
+                c.setActive(1);
 
                 CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(AddNewCourse.this);
                 courseDatabaseHandler.addCourse(c);
