@@ -1,7 +1,13 @@
 package com.example.bunkmonitor;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -19,6 +26,7 @@ import java.util.List;
  */
 public class EntryActivity extends Activity {
 
+    private static final String TAG = "EntryActivity";
     ListView listView;
     List<Course> cList;
     List<Entry> eList;
@@ -60,12 +68,37 @@ public class EntryActivity extends Activity {
                     cList.get(i).setCancelled(cList.get(i).getCancelled() + eList.get(i).getCancelled());
                     courseDatabaseHandler.updateCourse(cList.get(i));
                 }
+
+                SharedPreferences mPrefs = getSharedPreferences(
+                        "bunkmonitor.SHARED_PREF", 0);
+                SharedPreferences.Editor mEditor = mPrefs.edit();
+                mEditor.putString("bunkmonitor.LAST_ENTRY_DATE", Utilities.getDate(Utilities.getCurrentTime())).commit();
+
                 setResult(RESULT_OK);
                 finish();
 
             }
         });
 
+        //Setting alarm for next day
+        setRecurringAlarm(this);
+
+    }
+
+    private void setRecurringAlarm(Context context) {
+        Log.i(TAG, "setting Alarm");
+        Calendar updateTime = Calendar.getInstance();
+//        updateTime.setTimeZone(TimeZone.getTimeZone("GMT"));
+//        updateTime.set(Calendar.HOUR_OF_DAY, 11);
+//        updateTime.set(Calendar.MINUTE, 45);
+        Intent downloader = new Intent(context, AlarmReceiver.class);
+        PendingIntent recurringDownload = PendingIntent.getBroadcast(context,
+                0, downloader, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager alarms = (AlarmManager) this.getSystemService(
+                Context.ALARM_SERVICE);
+        alarms.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                updateTime.getTimeInMillis(),
+                10000, recurringDownload);  //Need to use INTERVAL_DAY instead of 10000
     }
 
 }
