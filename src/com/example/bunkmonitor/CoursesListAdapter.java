@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.util.List;
 
@@ -52,14 +53,27 @@ public class CoursesListAdapter extends ArrayAdapter {
         TextView tvA = (TextView) row.findViewById(R.id.clist_att);
         TextView tvB = (TextView) row.findViewById(R.id.clist_bunked);
         TextView tvC = (TextView) row.findViewById(R.id.clist_cancelled);
+        TextView tvPercent = (TextView) row.findViewById(R.id.clist_percent);
+        ProgressBar pb = (ProgressBar)row.findViewById(R.id.clist_pb);
         //LinearLayout layout = (LinearLayout) row.findViewById(R.id.list_viewmes_layout);
+        Course c = cList.get(position);
+        tvName.setText(c.getName());
+        tvId.setText(c.getId());
+        tvSlot.setText(c.getSlot());
+        tvA.setText("Attended: "+c.getAttended());
+        tvB.setText("Bunked  : "+c.getBunked());
+        tvC.setText("Canclled: "+c.getCancelled());
+        int percent = (int)(c.getAttended()*100.0/(c.getAttended()+c.getBunked()));
 
-        tvName.setText(cList.get(position).getName());
-        tvId.setText(cList.get(position).getId());
-        tvSlot.setText(cList.get(position).getSlot());
-        tvA.setText("Attended: "+cList.get(position).getAttended());
-        tvB.setText("Bunked  : "+cList.get(position).getBunked());
-        tvC.setText("Canclled: "+cList.get(position).getCancelled());
+        pb.setMax(100);
+        if(c.getAttended()+c.getBunked()!=0){
+            pb.setProgress(percent);
+            tvPercent.setText(percent+"%");
+        }
+        else{
+            pb.setProgress(0);
+            tvPercent.setText("0%");
+        }
 
         return row;
     }

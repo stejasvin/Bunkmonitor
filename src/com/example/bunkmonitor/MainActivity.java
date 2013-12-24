@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.courses);
 
-        Demo();
+        //Demo();
 
         TextView tvDef = (TextView)findViewById(R.id.textView2);
 

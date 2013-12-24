@@ -2,57 +2,85 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:id="@+id/clist_layout">
 
     <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_width="0sp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/clist_name"
-            android:layout_width="fill_parent"
+        <LinearLayout
             android:layout_height="wrap_content"
-            android:textSize="25sp" />
+            android:layout_width="0sp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/clist_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="17sp" />
+            <TextView
+                android:id="@+id/clist_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="25sp" />
 
-        <TextView
-            android:id="@+id/clist_slot"
-            android:layout_width="fill_parent"
+            <TextView
+                android:id="@+id/clist_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/clist_slot"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_height="wrap_content"
-            android:textSize="17sp" />
+            android:layout_width="0sp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/clist_att"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/clist_bunked"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/clist_cancelled"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="17sp" />
+
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_height="wrap_content"
-        android:layout_width="0sp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_width="fill_parent"
+        android:orientation="horizontal">
+
+        <ProgressBar
+            android:id="@+id/clist_pb"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            style="?android:attr/progressBarStyleHorizontal" />
 
         <TextView
-            android:id="@+id/clist_att"
-            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textSize="17sp" />
-
-        <TextView
-            android:id="@+id/clist_bunked"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="17sp" />
-
-        <TextView
-            android:id="@+id/clist_cancelled"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="17sp" />
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/clist_percent"
+            android:paddingLeft="5sp"/>
 
     </LinearLayout>
 </LinearLayout>
