@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="9"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="true"
@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".AddNewCourse" ></activity>
         <activity android:name=".EntryActivity" ></activity>
+        <activity android:name=".Timetable" ></activity>
         <service android:name=".DailyNotifService" android:enabled="true" ></service>
 
         <receiver

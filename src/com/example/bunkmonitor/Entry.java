@@ -13,6 +13,7 @@ public class Entry {
     private int attended;
     private int bunked;
     private int cancelled;
+    private String local_id;
     private int active;          //No need for this now
 
     public int getActive() {
@@ -64,4 +65,14 @@ public class Entry {
         }
         return entryList;
     }
+
+	public String getL_id() {
+		// TODO Auto-generated method stub
+		return this.local_id;
+	}
+
+	public void setL_id(String local_id) {
+		// TODO Auto-generated method stub
+		this.local_id=local_id;
+	}
 }

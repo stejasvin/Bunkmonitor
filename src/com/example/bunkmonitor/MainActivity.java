@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -53,6 +54,16 @@ public class MainActivity extends Activity {
             }
         });
 
+        findViewById(R.id.slotOk).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(MainActivity.this,Timetable.class);
+                startActivity(intent);
+			}
+		});
+        
         Button bEntry = (Button)findViewById(R.id.b_entry);
         bEntry.setOnClickListener(new View.OnClickListener() {
             @Override
