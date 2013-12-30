@@ -41,6 +41,7 @@ public class EntryActivity extends Activity {
         listView = (ListView) findViewById(R.id.listview1);
 
         final CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
+        final EntryDetailsDatabaseHandler entryDetailsDatabaseHandler = new EntryDetailsDatabaseHandler(this);
         cList = courseDatabaseHandler.getAllActiveCourses();
         eList = Entry.getEntryList(cList);
 
@@ -61,12 +62,31 @@ public class EntryActivity extends Activity {
             @Override
             public void onClick(View v) {
 
+                EntryDetails entryDetails = new EntryDetails();
+
                 for(int i=0;i<cList.size();i++){
                     //Adding the difflist entries to orig list and updating the db
-                    cList.get(i).setAttended(cList.get(i).getAttended()+eList.get(i).getAttended());
-                    cList.get(i).setBunked(cList.get(i).getBunked() + eList.get(i).getBunked());
-                    cList.get(i).setCancelled(cList.get(i).getCancelled() + eList.get(i).getCancelled());
-                    courseDatabaseHandler.updateCourse(cList.get(i));
+                    Course c = cList.get(i);
+                    Entry e = eList.get(i);
+                    c.setAttended(c.getAttended() + e.getAttended());
+                    c.setBunked(c.getBunked() + e.getBunked());
+                    c.setCancelled(c.getCancelled() + e.getCancelled());
+                    courseDatabaseHandler.updateCourse(c);
+
+                    entryDetails.setCourse_id(c.getId());
+                    entryDetails.setEntered(1);
+
+                    if(e.getAttended()==1)
+                        entryDetails.setStatus(Utilities.ATTENDED);
+                    else if(e.getBunked()==1)
+                        entryDetails.setStatus(Utilities.BUNKED);
+                    else if(e.getCancelled()==1)
+                        entryDetails.setStatus(Utilities.CANCELLED);
+
+                    entryDetails.setTime(Utilities.getCurrentTime());
+                    entryDetailsDatabaseHandler.addEntry(entryDetails);
+                    
+                    
                 }
 
                 SharedPreferences mPrefs = getSharedPreferences(
