@@ -25,6 +25,7 @@
         <activity android:name=".AddNewCourse" ></activity>
         <activity android:name=".EntryActivity" ></activity>
         <activity android:name=".Timetable" ></activity>
+        <activity android:name=".CheckEntryCal" ></activity>
         <activity android:name="com.exina.android.calendar.CalendarActivity" ></activity>
 
 

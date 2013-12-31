@@ -21,7 +21,7 @@ import java.util.List;
  * @since v1.0
  */
 
-public class EntryListAdapter extends ArrayAdapter {
+public class DisplayEntryListAdapter extends ArrayAdapter {
 
     //0 - write; 1 - Read
     int MODE = Utilities.WRITE;
@@ -39,7 +39,7 @@ public class EntryListAdapter extends ArrayAdapter {
 
 
 
-    public EntryListAdapter(Context context, List<Entry> diffList, int mode) {
+    public DisplayEntryListAdapter(Context context, List<Entry> diffList, int mode) {
         super(context, R.layout.single_list_item_entry, diffList);
         this.context = context;
         this.diffList = diffList;

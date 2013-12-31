@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated method stub
 //				Intent intent = new Intent(MainActivity.this,Timetable.class);
 //                startActivity(intent);
-                Intent intent = new Intent(MainActivity.this,CalendarActivity.class);
+                Intent intent = new Intent(MainActivity.this,CheckEntryCal.class);
                 startActivity(intent);
 
 

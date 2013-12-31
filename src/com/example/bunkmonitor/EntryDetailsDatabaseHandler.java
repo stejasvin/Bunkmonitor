@@ -150,6 +150,56 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
 		return entryDetailsList;
 	}
 
+    public List<Entry> getEntryListByDate(String date) {
+
+        if(date==null)
+            return null;
+
+        List<Entry> entryList = new ArrayList<Entry>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_ENTRY, new String[]{"*"},
+                KEY_TIME + "=?",
+                new String[] { date }, null, null, null, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Entry entry = new Entry();
+                entry.setCourse_id(cursor.getString(1));
+
+                int status = cursor.getInt(2);
+                switch (status){
+                    case Utilities.ATTENDED:
+                        entry.setAttended(1);
+                        break;
+                    case Utilities.BUNKED:
+                        entry.setBunked(1);
+                        break;
+                    case Utilities.CANCELLED:
+                        entry.setCancelled(1);
+                        break;
+                }
+
+
+//                EntryDetails entryDetails = new EntryDetails();
+//                entryDetails.setL_id(cursor.getString(0));
+//                entryDetails.setCourse_id(cursor.getString(1));
+//                entryDetails.setStatus(cursor.getInt(2));
+//                entryDetails.setTime(cursor.getString(3));
+//                entryDetails.setEntered(cursor.getInt(4));
+
+                // Adding course to list
+                entryList.add(entry);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+
+        return entryList;
+
+    }
+
     /*public List<EntryDetails> getActiveDiffList() {
         List<EntryDetails> entryDetailsList = new ArrayList<EntryDetails>();
         // Select All Query

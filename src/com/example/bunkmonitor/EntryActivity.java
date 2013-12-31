@@ -9,13 +9,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.List;
@@ -27,6 +22,7 @@ import java.util.List;
 public class EntryActivity extends Activity {
 
     private static final String TAG = "EntryActivity";
+    int MODE = Utilities.WRITE;
     ListView listView;
     List<Course> cList;
     List<Entry> eList;
@@ -38,26 +34,34 @@ public class EntryActivity extends Activity {
 
         setContentView(R.layout.entry_sheet);
 
+        Intent iThis = getIntent();
+        MODE = iThis.getIntExtra("bunkmonitor.MODE",Utilities.WRITE);
+
         listView = (ListView) findViewById(R.id.listview1);
 
         final CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
         final EntryDetailsDatabaseHandler entryDetailsDatabaseHandler = new EntryDetailsDatabaseHandler(this);
-        cList = courseDatabaseHandler.getAllActiveCourses();
-        eList = Entry.getEntryList(cList);
 
-        EntryListAdapter adapter = new EntryListAdapter(this,eList);
-
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //gen
-                int a=1;
-            }
-        });
 
         Button done = (Button)findViewById(R.id.es_b_done);
+
+        if(MODE == Utilities.WRITE){
+            cList = courseDatabaseHandler.getAllActiveCourses();
+            eList = Entry.getEntryList(cList);
+            EntryListAdapter adapter = new EntryListAdapter(this,eList,MODE);
+            listView.setAdapter(adapter);
+        }else if(MODE == Utilities.READ){
+            done.setVisibility(View.GONE);
+
+            String date = iThis.getStringExtra("date");
+            if(date==null)
+                return;
+            eList = entryDetailsDatabaseHandler.getEntryListByDate(date);
+            EntryListAdapter adapter = new EntryListAdapter(this,eList,MODE);
+            listView.setAdapter(adapter);
+        }
+
+
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +87,8 @@ public class EntryActivity extends Activity {
                     else if(e.getCancelled()==1)
                         entryDetails.setStatus(Utilities.CANCELLED);
 
-                    entryDetails.setTime(Utilities.getCurrentTime());
+                    entryDetails.setTime(Utilities.getDate(Utilities.getCurrentTime()));
+                    Log.i(TAG,"Date: "+Utilities.getDate(Utilities.getCurrentTime()));
                     entryDetailsDatabaseHandler.addEntry(entryDetails);
                     
                     
@@ -122,3 +127,11 @@ public class EntryActivity extends Activity {
     }
 
 }
+
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                //gen
+//                int a=1;
+//            }
+//        });
