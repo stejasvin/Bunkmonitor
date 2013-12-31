@@ -1,15 +1,16 @@
 package com.example.bunkmonitor;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.exina.android.calendar.CalendarActivity;
 
 import java.util.List;
 
@@ -59,8 +60,12 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(MainActivity.this,Timetable.class);
+//				Intent intent = new Intent(MainActivity.this,Timetable.class);
+//                startActivity(intent);
+                Intent intent = new Intent(MainActivity.this,CalendarActivity.class);
                 startActivity(intent);
+
+
 			}
 		});
         

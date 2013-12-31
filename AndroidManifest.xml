@@ -25,6 +25,9 @@
         <activity android:name=".AddNewCourse" ></activity>
         <activity android:name=".EntryActivity" ></activity>
         <activity android:name=".Timetable" ></activity>
+        <activity android:name="com.exina.android.calendar.CalendarActivity" ></activity>
+
+
         <service android:name=".DailyNotifService" android:enabled="true" ></service>
 
         <receiver
