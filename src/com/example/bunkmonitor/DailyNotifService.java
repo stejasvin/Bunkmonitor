@@ -9,27 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by Tejas on 8/24/13.
@@ -56,8 +36,11 @@ public class DailyNotifService extends IntentService {
 
         //TODO Need to add checks for long gaps and unsyncs
 
+
+
         if (!today.equals(lastEntryDate)) {
             //sendBroadcast(new Intent(UpdatesListActivity.REFRESH_ACTION));
+            Utilities.toggleActiveCourses(this, Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
             generateNotification(DailyNotifService.this,"Time to fill daily entry!");
 
         }
@@ -98,5 +81,6 @@ public class DailyNotifService extends IntentService {
         notification.defaults |= Notification.DEFAULT_VIBRATE;
         notificationManager.notify(0, notification);
     }
+
 
 }

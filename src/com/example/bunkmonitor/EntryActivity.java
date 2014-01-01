@@ -40,9 +40,14 @@ public class EntryActivity extends Activity {
 
         MODE = iThis.getIntExtra("bunkmonitor.MODE",Utilities.WRITE);
 
+        //To make sure the correct courses are displayed
         date = iThis.getStringExtra("date");
         if(date==null)
             date = Utilities.getDate(Utilities.getCurrentTime());
+        String[] s = date.split("/");
+        Calendar cal = Calendar.getInstance();
+        cal.set(Integer.decode(s[2]),Integer.decode(s[1])-1,Integer.decode(s[0]));
+        Utilities.toggleActiveCourses(this,cal.get(Calendar.DAY_OF_WEEK));
 
         listView = (ListView) findViewById(R.id.listview1);
 

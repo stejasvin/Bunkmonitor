@@ -8,10 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import static com.example.bunkmonitor.CourseDatabaseHandler.KEY_CREDITS;
 
 public class CourseDatabaseHandler extends SQLiteOpenHelper {
 
@@ -133,9 +130,9 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
 	}
 	
 	// Getting All courses
-	public List<Course> getAllActiveCourses() {
-		List<Course> courseList = new ArrayList<Course>();
-		// Select All Query
+    public List<Course> getAllActiveCourses() {
+        List<Course> courseList = new ArrayList<Course>();
+        // Select All Query
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -143,9 +140,9 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
                 KEY_ACTIVE + "=1",
                 new String[] {}, null, null, null, null);
 
-		// looping through all rows and adding to list
-		if (cursor.moveToFirst()) {
-			do {
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
                 Course course = new Course();
                 course.setLocalId(cursor.getString(0));
                 course.setId(cursor.getString(1));
@@ -159,14 +156,50 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
                 course.setActive(cursor.getInt(9));
 
                 // Adding course to list
-			    courseList.add(course);
-			} while (cursor.moveToNext());
-		}
+                courseList.add(course);
+            } while (cursor.moveToNext());
+        }
         db.close();
 
         // return course list
-		return courseList;
-	}
+        return courseList;
+    }
+
+    // Getting All courses
+    public List<Course> getAllCourses() {
+        List<Course> courseList = new ArrayList<Course>();
+        // Select All Query
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_COURSES, new String[]{"*"},
+                null,
+                new String[] {}, null, null, null, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Course course = new Course();
+                course.setLocalId(cursor.getString(0));
+                course.setId(cursor.getString(1));
+                course.setName(cursor.getString(2));
+                course.setCredits(cursor.getString(3));
+                course.setSlot(cursor.getString(4));
+                course.setProf(cursor.getString(5));
+                course.setAttended(cursor.getInt(6));
+                course.setBunked(cursor.getInt(7));
+                course.setCancelled(cursor.getInt(8));
+                course.setActive(cursor.getInt(9));
+
+                // Adding course to list
+                courseList.add(course);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+
+        // return course list
+        return courseList;
+    }
 
     public void updateCourse(Course course) {
         SQLiteDatabase db = this.getWritableDatabase();

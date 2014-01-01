@@ -103,11 +103,10 @@ public class EditEntryActivity extends Activity {
                     Intent intent = new Intent(EditEntryActivity.this,EntryActivity.class);
                     intent.putExtra("bunkmonitor.MODE",Utilities.WRITE);
                     Calendar cal = Calendar.getInstance();
-                    cal.set(Calendar.DAY_OF_MONTH,dp1.getDayOfMonth());
-                    cal.set(Calendar.MONTH,dp1.getMonth());
-                    cal.set(Calendar.YEAR,dp1.getYear());
+                    cal.set(dp1.getYear(),dp1.getMonth(),dp1.getDayOfMonth());
                     intent.putExtra("date",Utilities.getDate(cal.getTime().toString()));
                     startActivity(intent);
+                    setResult(RESULT_OK);
                     finish();
 
                 }else if(MODE == Utilities.BATCH){
@@ -126,6 +125,7 @@ public class EditEntryActivity extends Activity {
                     if(rbAttended.isChecked())
                         entryDetailsDatabaseHandler.batchEdit(EditEntryActivity.this,Utilities.getDate(cal1.getTime().toString())
                                 ,Utilities.getDate(cal2.getTime().toString()),Utilities.ATTENDED);
+                    setResult(RESULT_OK);
                     finish();
 
                 }

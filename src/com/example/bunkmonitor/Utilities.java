@@ -1,11 +1,14 @@
 package com.example.bunkmonitor;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by stejasvin on 12/13/13.
@@ -89,5 +92,53 @@ public class Utilities {
 
         return null;
     }
+
+    public static void toggleActiveCourses(Context context,int dayOfWeek){
+
+        SharedPreferences mPrefs = context.getSharedPreferences(
+                "bunkmonitor.SHARED_PREF", 0);
+        //Calendar cal = Calendar.getInstance();
+        //int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+        String slots = "";
+        switch (dayOfWeek){
+            case Calendar.MONDAY:
+                slots = mPrefs.getString("MONDAY","");
+                break;
+            case Calendar.TUESDAY:
+                slots = mPrefs.getString("TUESDAY","");
+                break;
+            case Calendar.WEDNESDAY:
+                slots = mPrefs.getString("WEDNESDAY","");
+                break;
+            case Calendar.THURSDAY:
+                slots = mPrefs.getString("THURSDAY","");
+                break;
+            case Calendar.FRIDAY:
+                slots = mPrefs.getString("FRIDAY","");
+                break;
+            case Calendar.SATURDAY:
+                slots = mPrefs.getString("SATURDAY","");
+                break;
+            case Calendar.SUNDAY:
+                slots = mPrefs.getString("SUNDAY","");
+                break;
+        }
+        CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(context);
+        List<Course> cList = courseDatabaseHandler.getAllCourses();
+        slots = slots.toLowerCase();
+        for(Course c:cList){
+            for(int i=0;i<slots.length();i++){
+                if(c.getSlot().equals(""+slots.charAt(i))){
+                    c.setActive(1);
+                    break;
+                }else
+                    c.setActive(0);
+
+                //setCourseActive(slots.charAt(i))
+            }
+            courseDatabaseHandler.updateCourse(c);
+        }
+    }
+
 }
 

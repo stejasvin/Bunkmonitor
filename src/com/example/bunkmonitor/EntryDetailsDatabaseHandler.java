@@ -232,6 +232,12 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
                 entryDetails.setEntered(1);
                 entryDetails.setSlot(c.getSlot());
                 addEntry(entryDetails);
+                switch (mode){
+                    case Utilities.ATTENDED: c.incAttended();break;
+                    case Utilities.BUNKED: c.incBunked();break;
+                    case Utilities.CANCELLED: c.incCancelled();break;
+                }
+                courseDatabaseHandler.updateCourse(c);
             }
 
             cal.add(Calendar.DAY_OF_MONTH,1);

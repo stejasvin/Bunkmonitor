@@ -21,8 +21,7 @@ public class Timetable extends Activity{
 	public void textclick(View v){
 		
 		final TextView glob = (TextView)v;
-		
-		
+
 		//Toast.makeText(this, v.toString(), Toast.LENGTH_LONG).show();
 		final Dialog dialog = new Dialog(this);
 		dialog.setContentView(R.layout.slotdialog);

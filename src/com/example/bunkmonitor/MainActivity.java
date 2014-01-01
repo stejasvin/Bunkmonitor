@@ -2,6 +2,7 @@ package com.example.bunkmonitor;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,12 +27,16 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.courses);
 
+        SharedPreferences mPrefs = getSharedPreferences(
+                "bunkmonitor.SHARED_PREF", 0);
+        if(mPrefs.getString("MONDAY",null)==null)
+            initializePrefs();
         //Demo();
 
         TextView tvDef = (TextView)findViewById(R.id.textView2);
 
         CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
-        List<Course> cList = courseDatabaseHandler.getAllActiveCourses();
+        List<Course> cList = courseDatabaseHandler.getAllCourses();
         if(cList.isEmpty())
             tvDef.setVisibility(View.VISIBLE);
         else{
@@ -85,13 +90,26 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(MainActivity.this,EditEntryActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,ENTRYLIST);
 
             }
         });
 
 
 	}
+
+    void initializePrefs(){
+        SharedPreferences mPrefs = getSharedPreferences(
+                "bunkmonitor.SHARED_PREF", 0);
+        SharedPreferences.Editor mEditor = mPrefs.edit();
+        mEditor.putString("MONDAY", "ABCDGP").commit();
+        mEditor.putString("TUESDAY", "BCDEAQ").commit();
+        mEditor.putString("WEDNESDAY", "CDEFBR").commit();
+        mEditor.putString("THURSDAY", "EFGADS").commit();
+        mEditor.putString("FRIDAY", "FGABCE").commit();
+        mEditor.putString("SATURDAY", "").commit();
+        mEditor.putString("SUNDAY", "").commit();
+    }
 
     void Demo(){
         //For Demo, populating entries and courses
