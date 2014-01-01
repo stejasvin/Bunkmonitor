@@ -31,6 +31,10 @@ public class MainActivity extends Activity {
                 "bunkmonitor.SHARED_PREF", 0);
         if(mPrefs.getString("MONDAY",null)==null)
             initializePrefs();
+
+        //Checking for entry once
+        Intent downloader = new Intent(this, DailyNotifService.class);
+        startService(downloader);
         //Demo();
 
         TextView tvDef = (TextView)findViewById(R.id.textView2);

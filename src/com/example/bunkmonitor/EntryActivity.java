@@ -133,7 +133,7 @@ public class EntryActivity extends Activity {
                 Context.ALARM_SERVICE);
         alarms.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                 updateTime.getTimeInMillis(),
-                10000, recurringDownload);  //Need to use INTERVAL_DAY instead of 10000
+                AlarmManager.INTERVAL_HOUR, recurringDownload);  //Need to use INTERVAL_DAY instead of 10000
     }
 
 }
