@@ -3,6 +3,8 @@ package com.example.bunkmonitor;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 /**
@@ -16,15 +18,15 @@ public class EditSlotsActivity extends Activity {
 
         setContentView(R.layout.edit_slots);
 
-        EditText etMon = (EditText)findViewById(R.id.slots_mon);
-        EditText etTue = (EditText)findViewById(R.id.slots_tue);
-        EditText etWed = (EditText)findViewById(R.id.slots_wed);
-        EditText etThurs = (EditText)findViewById(R.id.slots_thurs);
-        EditText etFri = (EditText)findViewById(R.id.slots_fri);
-        EditText etSat = (EditText)findViewById(R.id.slots_sat);
-        EditText etSun = (EditText)findViewById(R.id.slots_sun);
+        final EditText etMon = (EditText)findViewById(R.id.slots_mon);
+        final EditText etTue = (EditText)findViewById(R.id.slots_tue);
+        final EditText etWed = (EditText)findViewById(R.id.slots_wed);
+        final EditText etThurs = (EditText)findViewById(R.id.slots_thurs);
+        final EditText etFri = (EditText)findViewById(R.id.slots_fri);
+        final EditText etSat = (EditText)findViewById(R.id.slots_sat);
+        final EditText etSun = (EditText)findViewById(R.id.slots_sun);
 
-        SharedPreferences mPrefs = getSharedPreferences(
+        final SharedPreferences mPrefs = getSharedPreferences(
                 "bunkmonitor.SHARED_PREF", 0);
         etMon.setText(mPrefs.getString("MONDAY",""));
         etTue.setText(mPrefs.getString("TUESDAY",""));
@@ -34,6 +36,20 @@ public class EditSlotsActivity extends Activity {
         etSat.setText(mPrefs.getString("SATURDAY",""));
         etSun.setText(mPrefs.getString("SUNDAY",""));
 
-        
+        Button done = (Button)findViewById(R.id.slots_done);
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor mEditor = mPrefs.edit();
+                mEditor.putString("MONDAY", etMon.getText().toString()).commit();
+                mEditor.putString("TUESDAY", etTue.getText().toString()).commit();
+                mEditor.putString("WEDNESDAY", etWed.getText().toString()).commit();
+                mEditor.putString("THURSDAY", etThurs.getText().toString()).commit();
+                mEditor.putString("FRIDAY", etFri.getText().toString()).commit();
+                mEditor.putString("SATURDAY", etSat.getText().toString()).commit();
+                mEditor.putString("SUNDAY", etSun.getText().toString()).commit();
+                finish();
+            }
+        });
     }
 }

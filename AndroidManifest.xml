@@ -27,6 +27,8 @@
         <activity android:name=".Timetable" ></activity>
         <activity android:name=".CheckEntryCal" ></activity>
         <activity android:name=".EditEntryActivity" ></activity>
+        <activity android:name=".EditSlotsActivity" ></activity>
+
         <activity android:name="com.exina.android.calendar.CalendarActivity" ></activity>
 
 

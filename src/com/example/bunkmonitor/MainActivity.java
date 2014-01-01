@@ -46,7 +46,6 @@ public class MainActivity extends Activity {
 
             LinearLayout ll = (LinearLayout)findViewById(R.id.c_list_layout);
             ll.addView(list);
-
         }
 
         Button bAddCourses = (Button)findViewById(R.id.b_courses);
@@ -66,9 +65,8 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated method stub
 //				Intent intent = new Intent(MainActivity.this,Timetable.class);
 //                startActivity(intent);
-                Intent intent = new Intent(MainActivity.this,CheckEntryCal.class);
-                startActivityForResult(intent, REQUEST_CHECK_ENTRY);
-
+                Intent intent = new Intent(MainActivity.this,EditSlotsActivity.class);
+                startActivity(intent);
 
 			}
 		});

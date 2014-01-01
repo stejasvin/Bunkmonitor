@@ -37,11 +37,17 @@ public class DailyNotifService extends IntentService {
         //TODO Need to add checks for long gaps and unsyncs
 
 
-
         if (!today.equals(lastEntryDate)) {
-            //sendBroadcast(new Intent(UpdatesListActivity.REFRESH_ACTION));
-            Utilities.toggleActiveCourses(this, Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
-            generateNotification(DailyNotifService.this,"Time to fill daily entry!");
+            //Check for holidays
+            //TODO Need to input National Holidays
+            String[] s = today.split("/");
+            Calendar cal = Calendar.getInstance();
+            cal.set(Integer.decode(s[2]), Integer.decode(s[1]) - 1, Integer.decode(s[0]));
+            if (cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) {
+                //sendBroadcast(new Intent(UpdatesListActivity.REFRESH_ACTION));
+                Utilities.toggleActiveCourses(this, Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+                generateNotification(DailyNotifService.this, "Time to fill daily entry!");
+            }
 
         }
         ;

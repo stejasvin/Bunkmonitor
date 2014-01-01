@@ -1,14 +1,13 @@
 package com.example.bunkmonitor;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import java.util.List;
 
 /**
@@ -58,11 +57,11 @@ public class CoursesListAdapter extends ArrayAdapter {
         //LinearLayout layout = (LinearLayout) row.findViewById(R.id.list_viewmes_layout);
         Course c = cList.get(position);
         tvName.setText(c.getName());
-        tvId.setText(c.getId());
-        tvSlot.setText(c.getSlot());
+        tvId.setText("ID: "+c.getId());
+        tvSlot.setText("Slot: "+c.getSlot());
         tvA.setText("Attended: "+c.getAttended());
         tvB.setText("Bunked  : "+c.getBunked());
-        tvC.setText("Canclled: "+c.getCancelled());
+        tvC.setText("Cancelled: "+c.getCancelled());
         int percent = (int)(c.getAttended()*100.0/(c.getAttended()+c.getBunked()));
 
         pb.setMax(100);
