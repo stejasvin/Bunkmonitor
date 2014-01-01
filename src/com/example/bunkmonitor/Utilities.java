@@ -14,6 +14,8 @@ public class Utilities {
 
     public static final int WRITE = 0;
     public static final int READ = 1;
+    public static final int SINGLE = 2;
+    public static final int BATCH = 3;
     public final int NOC_ENTRY_SHEET = 5;
 
     //Entry status

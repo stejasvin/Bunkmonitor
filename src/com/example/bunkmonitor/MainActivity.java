@@ -10,8 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.exina.android.calendar.CalendarActivity;
-
 import java.util.List;
 
 import static java.lang.Math.random;
@@ -20,6 +18,7 @@ public class MainActivity extends Activity {
 
     private static final int ENTRYLIST = 10;
     private static final int ADDNEWCOURSE = 20;
+    private static final int REQUEST_CHECK_ENTRY = 30;
     private ListView list;
 
     @Override
@@ -63,7 +62,7 @@ public class MainActivity extends Activity {
 //				Intent intent = new Intent(MainActivity.this,Timetable.class);
 //                startActivity(intent);
                 Intent intent = new Intent(MainActivity.this,CheckEntryCal.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CHECK_ENTRY);
 
 
 			}
@@ -76,6 +75,17 @@ public class MainActivity extends Activity {
 
                 Intent intent = new Intent(MainActivity.this,EntryActivity.class);
                 startActivityForResult(intent,ENTRYLIST);
+
+            }
+        });
+
+        Button bBatch = (Button)findViewById(R.id.b_batch);
+        bBatch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this,EditEntryActivity.class);
+                startActivity(intent);
 
             }
         });
@@ -113,6 +123,12 @@ public class MainActivity extends Activity {
                 Intent i = getIntent();
                 finish();
                 startActivity(i);
+            }else if(requestCode==REQUEST_CHECK_ENTRY){
+                Intent ret = new Intent(this,EntryActivity.class);
+                ret.putExtra("date", Utilities.getDate(data.getStringExtra("date")));
+                ret.putExtra("bunkmonitor.MODE", Utilities.READ);
+                //this.setResult(RESULT_OK, ret);
+                startActivity(ret);
             }
     }
 }

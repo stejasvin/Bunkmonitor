@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.List;
@@ -26,6 +27,7 @@ public class EntryActivity extends Activity {
     ListView listView;
     List<Course> cList;
     List<Entry> eList;
+    String date;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,13 +37,17 @@ public class EntryActivity extends Activity {
         setContentView(R.layout.entry_sheet);
 
         Intent iThis = getIntent();
+
         MODE = iThis.getIntExtra("bunkmonitor.MODE",Utilities.WRITE);
+
+        date = iThis.getStringExtra("date");
+        if(date==null)
+            date = Utilities.getDate(Utilities.getCurrentTime());
 
         listView = (ListView) findViewById(R.id.listview1);
 
         final CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
         final EntryDetailsDatabaseHandler entryDetailsDatabaseHandler = new EntryDetailsDatabaseHandler(this);
-
 
         Button done = (Button)findViewById(R.id.es_b_done);
 
@@ -51,16 +57,16 @@ public class EntryActivity extends Activity {
             EntryListAdapter adapter = new EntryListAdapter(this,eList,MODE);
             listView.setAdapter(adapter);
         }else if(MODE == Utilities.READ){
-            done.setVisibility(View.GONE);
-
-            String date = iThis.getStringExtra("date");
-            if(date==null)
+            if(date==null){
+                Toast.makeText(this,"Error date null",Toast.LENGTH_LONG).show();
+                finish();
                 return;
+            }
+            done.setVisibility(View.GONE);
             eList = entryDetailsDatabaseHandler.getEntryListByDate(date);
             EntryListAdapter adapter = new EntryListAdapter(this,eList,MODE);
             listView.setAdapter(adapter);
         }
-
 
         done.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,11 +93,10 @@ public class EntryActivity extends Activity {
                     else if(e.getCancelled()==1)
                         entryDetails.setStatus(Utilities.CANCELLED);
 
-                    entryDetails.setTime(Utilities.getDate(Utilities.getCurrentTime()));
+                    entryDetails.setTime(date);
                     Log.i(TAG,"Date: "+Utilities.getDate(Utilities.getCurrentTime()));
                     entryDetailsDatabaseHandler.addEntry(entryDetails);
-                    
-                    
+
                 }
 
                 SharedPreferences mPrefs = getSharedPreferences(

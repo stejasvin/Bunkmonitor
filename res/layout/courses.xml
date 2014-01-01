@@ -48,6 +48,13 @@
                 android:layout_height="wrap_content"
                 android:text="TimeTable" />
 
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:id="@+id/b_batch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Batch Edit" />
+
         </LinearLayout>
 
 

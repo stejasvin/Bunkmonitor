@@ -73,7 +73,7 @@ public class CheckEntryCal extends Activity implements CalendarView.OnCellTouchL
         if (cell instanceof CalendarView.GrayCell) {
 
         } else {
-            Intent ret = new Intent(CheckEntryCal.this,EntryActivity.class);
+            Intent ret = new Intent();
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.DAY_OF_MONTH,day);
             cal.set(Calendar.MONTH,month);
@@ -81,9 +81,9 @@ public class CheckEntryCal extends Activity implements CalendarView.OnCellTouchL
             ret.putExtra("date", Utilities.getDate(cal.getTime().toString()));
 //            ret.putExtra("month", month);
 //            ret.putExtra("day", day);
-            ret.putExtra("bunkmonitor.MODE", Utilities.READ);
-            //this.setResult(RESULT_OK, ret);
-            startActivity(ret);
+//            ret.putExtra("bunkmonitor.MODE", Utilities.READ);
+            this.setResult(RESULT_OK, ret);
+            //startActivity(ret);
             finish();
 
         }

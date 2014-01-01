@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
@@ -200,6 +201,46 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+    public void batchEdit(Context context, String fromDate, String toDate, int mode){
+        String[] sf = fromDate.split("/");
+        int fDay = Integer.decode(sf[0]),fMonth = Integer.decode(sf[1])-1,fYear = Integer.decode(sf[2]);
+        String[] st = toDate.split("/");
+        int tDay = Integer.decode(st[0]),tMonth = Integer.decode(st[1]),tYear = Integer.decode(st[2]);
+//        int day=fDay,month=fMonth,year=fYear;
+
+
+        CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(context);
+        List<Course> cList = courseDatabaseHandler.getAllActiveCourses();
+
+        boolean flag = true;
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, fDay);
+        cal.set(Calendar.MONTH,fMonth);
+        cal.set(Calendar.YEAR,fYear);
+
+//        CalendarView calView = new CalendarView(context);
+        EntryDetails entryDetails = new EntryDetails();
+
+        while(flag){
+            for(Course c: cList){
+                if(c.getActive()==0)
+                    continue;
+
+                entryDetails.setCourse_id(c.getId());
+                entryDetails.setStatus(mode);
+                entryDetails.setTime(Utilities.getDate(cal.getTime().toString()));
+                entryDetails.setEntered(1);
+                entryDetails.setSlot(c.getSlot());
+                addEntry(entryDetails);
+            }
+
+            cal.add(Calendar.DAY_OF_MONTH,1);
+
+            if(Utilities.getDate(cal.getTime().toString()).equals(toDate))
+                flag = false;
+        }
+
+    }
     /*public List<EntryDetails> getActiveDiffList() {
         List<EntryDetails> entryDetailsList = new ArrayList<EntryDetails>();
         // Select All Query

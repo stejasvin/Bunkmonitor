@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RadioGroup
+            android:id="@+id/edit_rg1"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent">
+
+            <RadioButton
+                android:id="@+id/edit_rb1"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:text="Single" />
+
+            <RadioButton
+                android:id="@+id/edit_rb2"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:text="Batch" />
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/edit_ll_single"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:text="Single Entry" />
+
+            <LinearLayout
+
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:orientation="horizontal">
+
+                <DatePicker
+                    android:id="@+id/edit_date1"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"></DatePicker>
+
+                <Button
+                    android:id="@+id/edit_b1"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="cal" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/edit_ll_batch"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:text="Batch Entry" />
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:orientation="horizontal">
+
+                <DatePicker
+                    android:id="@+id/edit_date2"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"></DatePicker>
+
+                <Button
+                    android:id="@+id/edit_b2"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="cal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:orientation="horizontal">
+
+                <DatePicker
+                    android:id="@+id/edit_date3"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"></DatePicker>
+
+                <Button
+                    android:id="@+id/edit_b3"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="cal" />
+
+            </LinearLayout>
+
+            <RadioGroup
+                android:id="@+id/edit_rg2"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent">
+
+                <RadioButton
+                    android:id="@+id/edit_rb3"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:text="Bunked All" />
+
+                <RadioButton
+                    android:id="@+id/edit_rb4"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:text="Attended All" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/edit_done"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="done" />
+
+
+    </LinearLayout>
+</ScrollView>
