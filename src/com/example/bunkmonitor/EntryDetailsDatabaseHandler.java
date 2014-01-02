@@ -203,25 +203,30 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
 
     public void batchEdit(Context context, String fromDate, String toDate, int mode){
         String[] sf = fromDate.split("/");
+        Utilities.processDateArray(sf);
         int fDay = Integer.decode(sf[0]),fMonth = Integer.decode(sf[1])-1,fYear = Integer.decode(sf[2]);
+
         String[] st = toDate.split("/");
+        Utilities.processDateArray(st);
         int tDay = Integer.decode(st[0]),tMonth = Integer.decode(st[1]),tYear = Integer.decode(st[2]);
 //        int day=fDay,month=fMonth,year=fYear;
 
 
         CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(context);
-        List<Course> cList = courseDatabaseHandler.getAllActiveCourses();
+        List<Course> cList;// = courseDatabaseHandler.getAllActiveCourses();
 
         boolean flag = true;
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_MONTH, fDay);
-        cal.set(Calendar.MONTH,fMonth);
-        cal.set(Calendar.YEAR,fYear);
+        cal.set(fYear,fMonth, fDay);
 
 //        CalendarView calView = new CalendarView(context);
         EntryDetails entryDetails = new EntryDetails();
 
         while(flag){
+
+            Utilities.toggleActiveCourses(context,cal.get(Calendar.DAY_OF_WEEK));
+            cList = courseDatabaseHandler.getAllActiveCourses();
+
             for(Course c: cList){
                 if(c.getActive()==0)
                     continue;
@@ -242,9 +247,14 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
 
             cal.add(Calendar.DAY_OF_MONTH,1);
 
+            //termination condition
             if(Utilities.getDate(cal.getTime().toString()).equals(toDate))
                 flag = false;
         }
+
+        cal = Calendar.getInstance();
+        //reset to todays
+        Utilities.toggleActiveCourses(context,cal.get(Calendar.DAY_OF_WEEK));
 
     }
     /*public List<EntryDetails> getActiveDiffList() {

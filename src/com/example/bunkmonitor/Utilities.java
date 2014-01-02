@@ -128,7 +128,7 @@ public class Utilities {
         slots = slots.toLowerCase();
         for(Course c:cList){
             for(int i=0;i<slots.length();i++){
-                if(c.getSlot().equals(""+slots.charAt(i))){
+                if(c.getSlot().toLowerCase().equals(""+slots.charAt(i))){
                     c.setActive(1);
                     break;
                 }else
@@ -136,9 +136,20 @@ public class Utilities {
 
                 //setCourseActive(slots.charAt(i))
             }
+            if(slots.length() == 0)
+                c.setActive(0);
             courseDatabaseHandler.updateCourse(c);
         }
     }
 
+    public static void processDateArray(String[] s){
+        if(s[0].charAt(0)=='0')
+            s[0]=s[0].substring(1);
+        if(s[1].charAt(0)=='0')
+            s[1]=s[1].substring(1);
+        if(s[2].charAt(0)=='0')
+            s[2]=s[2].substring(1);
+
+    }
 }
 

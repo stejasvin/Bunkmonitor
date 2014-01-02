@@ -45,6 +45,7 @@ public class EntryActivity extends Activity {
         if(date==null)
             date = Utilities.getDate(Utilities.getCurrentTime());
         String[] s = date.split("/");
+        Utilities.processDateArray(s);
         Calendar cal = Calendar.getInstance();
         cal.set(Integer.decode(s[2]),Integer.decode(s[1])-1,Integer.decode(s[0]));
         Utilities.toggleActiveCourses(this,cal.get(Calendar.DAY_OF_WEEK));
@@ -135,6 +136,7 @@ public class EntryActivity extends Activity {
                 updateTime.getTimeInMillis(),
                 AlarmManager.INTERVAL_HOUR, recurringDownload);  //Need to use INTERVAL_DAY instead of 10000
     }
+
 
 }
 

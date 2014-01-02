@@ -21,15 +21,17 @@ public class MainActivity extends Activity {
     private static final int ADDNEWCOURSE = 20;
     private static final int REQUEST_CHECK_ENTRY = 30;
     private ListView list;
+    CoursesListAdapter adapter;
+    List<Course> cList;
 
     @Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.courses);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.courses);
 
         SharedPreferences mPrefs = getSharedPreferences(
                 "bunkmonitor.SHARED_PREF", 0);
-        if(mPrefs.getString("MONDAY",null)==null)
+        if (mPrefs.getString("MONDAY", null) == null)
             initializePrefs();
 
         //Checking for entry once
@@ -37,70 +39,72 @@ public class MainActivity extends Activity {
         startService(downloader);
         //Demo();
 
-        TextView tvDef = (TextView)findViewById(R.id.textView2);
+        TextView tvDef = (TextView) findViewById(R.id.textView2);
 
         CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
-        List<Course> cList = courseDatabaseHandler.getAllCourses();
-        if(cList.isEmpty())
+        cList = courseDatabaseHandler.getAllCourses();
+        if (cList.isEmpty())
             tvDef.setVisibility(View.VISIBLE);
-        else{
+        else {
             list = new ListView(this);
-            CoursesListAdapter adapter = new CoursesListAdapter(this,R.layout.single_list_item_courses,cList);
+            adapter = new CoursesListAdapter(this, R.layout.single_list_item_courses, cList);
             list.setAdapter(adapter);
 
-            LinearLayout ll = (LinearLayout)findViewById(R.id.c_list_layout);
+            LinearLayout ll = (LinearLayout) findViewById(R.id.c_list_layout);
             ll.addView(list);
         }
 
-        Button bAddCourses = (Button)findViewById(R.id.b_courses);
+        Button bAddCourses = (Button) findViewById(R.id.b_courses);
         bAddCourses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,AddNewCourse.class);
-                startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, AddNewCourse.class);
+                startActivityForResult(intent, ADDNEWCOURSE);
 
             }
         });
 
         findViewById(R.id.slotOk).setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
+
+            @Override
+            public void onClick(View arg0) {
+                // TODO Auto-generated method stub
 //				Intent intent = new Intent(MainActivity.this,Timetable.class);
 //                startActivity(intent);
-                Intent intent = new Intent(MainActivity.this,EditSlotsActivity.class);
+                Intent intent = new Intent(MainActivity.this, EditSlotsActivity.class);
                 startActivity(intent);
 
-			}
-		});
-        
-        Button bEntry = (Button)findViewById(R.id.b_entry);
+            }
+        });
+
+        Button bEntry = (Button) findViewById(R.id.b_entry);
         bEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(MainActivity.this,EntryActivity.class);
-                startActivityForResult(intent,ENTRYLIST);
+                Intent intent = new Intent(MainActivity.this, EntryActivity.class);
+                startActivity(intent);
+                //startActivityForResult(intent,ENTRYLIST);
 
             }
         });
 
-        Button bBatch = (Button)findViewById(R.id.b_batch);
+        Button bBatch = (Button) findViewById(R.id.b_batch);
         bBatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(MainActivity.this,EditEntryActivity.class);
-                startActivityForResult(intent,ENTRYLIST);
+                Intent intent = new Intent(MainActivity.this, EditEntryActivity.class);
+                startActivity(intent);
+                //startActivityForResult(intent,ENTRYLIST);
 
             }
         });
 
 
-	}
+    }
 
-    void initializePrefs(){
+    void initializePrefs() {
         SharedPreferences mPrefs = getSharedPreferences(
                 "bunkmonitor.SHARED_PREF", 0);
         SharedPreferences.Editor mEditor = mPrefs.edit();
@@ -113,12 +117,12 @@ public class MainActivity extends Activity {
         mEditor.putString("SUNDAY", "").commit();
     }
 
-    void Demo(){
+    void Demo() {
         //For Demo, populating entries and courses
         CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
         Course course = new Course();
-        course.setId("ID:"+(int)(random()*10000));
-        course.setCredits("" + (int)(random()*10));
+        course.setId("ID:" + (int) (random() * 10000));
+        course.setCredits("" + (int) (random() * 10));
         course.setName("C:" + course.getId());
         course.setProf("Prof ABC");
         course.setSlot("A");
@@ -133,22 +137,43 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK)
-            if(requestCode == ENTRYLIST){
+        if (resultCode == RESULT_OK)
+            if (requestCode == ENTRYLIST) {
                 Intent i = getIntent();
                 finish();
                 startActivity(i);
 
-            }else if(requestCode==ADDNEWCOURSE){
+            } else if (requestCode == ADDNEWCOURSE) {
                 Intent i = getIntent();
                 finish();
                 startActivity(i);
-            }else if(requestCode==REQUEST_CHECK_ENTRY){
-                Intent ret = new Intent(this,EntryActivity.class);
+            } else if (requestCode == REQUEST_CHECK_ENTRY) {
+                Intent ret = new Intent(this, EntryActivity.class);
                 ret.putExtra("date", Utilities.getDate(data.getStringExtra("date")));
                 ret.putExtra("bunkmonitor.MODE", Utilities.READ);
                 //this.setResult(RESULT_OK, ret);
                 startActivity(ret);
             }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        Intent i = getIntent();
+//        finish();
+//        startActivity(i);
+        if (adapter != null) {
+            TextView tvDef = (TextView) findViewById(R.id.textView2);
+            CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
+            adapter.cList = courseDatabaseHandler.getAllCourses();
+//        if(cList.isEmpty())
+//            tvDef.setVisibility(View.VISIBLE);
+//        else{
+//
+            adapter.notifyDataSetChanged();
+        }
+        ///list.invalidateViews();
+
+//        }
     }
 }

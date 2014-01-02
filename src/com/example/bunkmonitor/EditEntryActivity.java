@@ -142,6 +142,7 @@ public class EditEntryActivity extends Activity {
                 String date = data.getStringExtra("date");
 
                 String[] s = date.split("/");
+                Utilities.processDateArray(s);
                 if(s!=null)
                     dp1.updateDate(Integer.decode(s[2]),Integer.decode(s[1])-1,Integer.decode(s[0]));
 
@@ -149,6 +150,7 @@ public class EditEntryActivity extends Activity {
                 String date = data.getStringExtra("date");
                 //DatePicker dp = (DatePicker)findViewById(R.id.edit_date2);
                 String[] s = date.split("/");
+                Utilities.processDateArray(s);
                 if(s!=null)
                     dp2.updateDate(Integer.decode(s[2]),Integer.decode(s[1])-1,Integer.decode(s[0]));
 
@@ -156,6 +158,14 @@ public class EditEntryActivity extends Activity {
                 String date = data.getStringExtra("date");
                 //DatePicker dp = (DatePicker)findViewById(R.id.edit_date3);
                 String[] s = date.split("/");
+                Utilities.processDateArray(s);
+//                if(s[0].charAt(0)=='0')
+//                    s[0]=s[0].substring(1);
+//                if(s[1].charAt(0)=='0')
+//                    s[1]=s[1].substring(1);
+//                if(s[2].charAt(0)=='0')
+//                    s[2]=s[2].substring(1);
+
                 if(s!=null)
                     dp3.updateDate(Integer.decode(s[2]),Integer.decode(s[1])-1,Integer.decode(s[0]));
 

@@ -42,10 +42,11 @@ public class DailyNotifService extends IntentService {
             //TODO Need to input National Holidays
             String[] s = today.split("/");
             Calendar cal = Calendar.getInstance();
+            Utilities.processDateArray(s);
             cal.set(Integer.decode(s[2]), Integer.decode(s[1]) - 1, Integer.decode(s[0]));
             Log.i(TAG,cal.get(Calendar.HOUR_OF_DAY)+"");
             //cal.get(Calendar.HOUR_OF_DAY)>17 &&
-            if (cal.get(Calendar.HOUR_OF_DAY)>16 && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) {
+            if (cal.get(Calendar.HOUR_OF_DAY)>5 && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) {
                 //sendBroadcast(new Intent(UpdatesListActivity.REFRESH_ACTION));
                 Utilities.toggleActiveCourses(this, Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
                 generateNotification(DailyNotifService.this, "Time to fill daily entry!");
