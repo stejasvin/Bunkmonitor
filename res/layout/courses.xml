@@ -3,22 +3,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+                android:background="#FFD341">
 
     <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_gravity="top"
-            android:layout_weight="0.3"
+            android:layout_weight="0.5"
             android:orientation="vertical">
 
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Courses"
                 android:id="@+id/textView"
-                android:layout_gravity="left|center_vertical"/>
+                android:layout_gravity="left|center_vertical"
+                android:background="@drawable/fonts_course"/>
 
         <LinearLayout
             android:layout_height="wrap_content"
@@ -27,33 +28,38 @@
 
             <Button
                 style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="Entry"
                 android:id="@+id/b_entry"
                 android:layout_gravity="left"/>
 
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Add courses"
-                android:id="@+id/b_courses"
-                android:layout_gravity="right"/>
+
 
             <Button
                 style="?android:attr/buttonStyleSmall"
                 android:id="@+id/slotOk"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="TimeTable" />
 
             <Button
                 style="?android:attr/buttonStyleSmall"
                 android:id="@+id/b_batch"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="Extras" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/b_courses"
+                android:layout_gravity="right"
+                android:background="@drawable/plus"/>
 
         </LinearLayout>
 
