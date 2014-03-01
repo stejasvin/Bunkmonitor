@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 /**
  * Created by Tejas on 11/2/13.
@@ -26,6 +27,18 @@ public class AddNewCourse extends Activity {
         bCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                try{
+                    if(Integer.decode(etCredits.getText().toString())<=0){
+                        Toast.makeText(AddNewCourse.this,"Enter valid credits",Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                }catch (NumberFormatException e){
+                    e.printStackTrace();
+                    Toast.makeText(AddNewCourse.this,"Enter valid credits",Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 Course c = new Course();
                 c.setId(etId.getText().toString());
                 c.setName(etName.getText().toString());

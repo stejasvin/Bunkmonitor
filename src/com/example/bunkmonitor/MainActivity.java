@@ -55,6 +55,7 @@ public class MainActivity extends Activity {
             imDef.setVisibility(View.VISIBLE);
         else {
             list = new ListView(this);
+            list.setDivider(null);
             adapter = new CoursesListAdapter(this, R.layout.single_list_item_courses, cList);
             list.setAdapter(adapter);
 

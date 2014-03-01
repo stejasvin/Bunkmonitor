@@ -1,54 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-                android:background="#FFD341">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15sp"
+    android:background="@color/mybackcolor">
 
     <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="top"
-            android:layout_weight="0.5"
-            android:orientation="horizontal">
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="top"
+        android:layout_weight="0.4"
+        android:orientation="horizontal">
 
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:id="@+id/textView"
-                android:layout_weight="1"
-                android:text="Courses"
-                android:textSize="40sp"
-                android:padding="10sp"
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textView"
+            android:layout_weight="1"
+            android:text="Courses"
+            android:textSize="40sp"
+            android:padding="10sp" />
 
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="100sp"
-                android:layout_height="100sp"
-                android:id="@+id/b_courses"
-                android:layout_gravity="right"
-                android:background="@drawable/plus225"/>
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_height="70sp"
+            android:layout_width="70sp"
+            android:id="@+id/b_courses"
+            android:layout_gravity="right"
+            android:background="@drawable/plus2300px"
+            android:layout_margin="10sp" />
 
     </LinearLayout>
 
     <LinearLayout
-            android:id="@+id/c_list_layout"
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+        android:id="@+id/c_list_layout"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <Button
-                android:background="@drawable/empty_scr"
-                android:layout_width="160sp"
-                android:layout_height="240sp"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/textView2"
-                android:layout_gravity="center"
-                android:visibility="gone"/>
+            android:background="@drawable/empty_scr"
+            android:layout_width="160sp"
+            android:layout_height="240sp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/textView2"
+            android:layout_gravity="center"
+            android:visibility="gone" />
     </LinearLayout>
 
 </LinearLayout>
