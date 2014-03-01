@@ -8,11 +8,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -42,12 +40,19 @@ public class MainActivity extends Activity {
         startService(downloader);
         //Demo();
 
-        TextView tvDef = (TextView) findViewById(R.id.textView2);
+        Button imDef = (Button) findViewById(R.id.textView2);
+        imDef.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddNewCourse.class);
+                startActivityForResult(intent, ADDNEWCOURSE);
+            }
+        });
 
         CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
         cList = courseDatabaseHandler.getAllCourses();
         if (cList.isEmpty())
-            tvDef.setVisibility(View.VISIBLE);
+            imDef.setVisibility(View.VISIBLE);
         else {
             list = new ListView(this);
             adapter = new CoursesListAdapter(this, R.layout.single_list_item_courses, cList);
@@ -66,44 +71,6 @@ public class MainActivity extends Activity {
 
             }
         });
-
-        findViewById(R.id.slotOk).setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                // TODO Auto-generated method stub
-//				Intent intent = new Intent(MainActivity.this,Timetable.class);
-//                startActivity(intent);
-                Intent intent = new Intent(MainActivity.this, EditSlotsActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
-        Button bEntry = (Button) findViewById(R.id.b_entry);
-        bEntry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(MainActivity.this, EntryActivity.class);
-                startActivity(intent);
-                //startActivityForResult(intent,ENTRYLIST);
-
-            }
-        });
-
-        Button bBatch = (Button) findViewById(R.id.b_batch);
-        bBatch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(MainActivity.this, EditEntryActivity.class);
-                startActivity(intent);
-                //startActivityForResult(intent,ENTRYLIST);
-
-            }
-        });
-
 
     }
 
@@ -198,7 +165,14 @@ public class MainActivity extends Activity {
 //        finish();
 //        startActivity(i);
         if (adapter != null) {
-            TextView tvDef = (TextView) findViewById(R.id.textView2);
+            Button imDef = (Button) findViewById(R.id.textView2);
+            imDef.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, AddNewCourse.class);
+                    startActivityForResult(intent, ADDNEWCOURSE);
+                }
+            });
             CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
             adapter.cList = courseDatabaseHandler.getAllCourses();
 //        if(cList.isEmpty())
