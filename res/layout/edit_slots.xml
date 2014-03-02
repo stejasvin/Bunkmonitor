@@ -1,152 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mybackcolor">
+    android:background="@drawable/chalk_board">
 
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:text="Edit Slots"/>
+        android:text="Edit Slots"
+        android:textColor="@android:color/white" />
 
     <LinearLayout
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_width="fill_parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_height="wrap_content"
-            android:layout_width="0sp"
-            android:layout_weight="1"
-            android:text="MONDAY"/>
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            >
 
-        <EditText
-            android:id="@+id/slots_mon"
-            android:layout_height="wrap_content"
-            android:layout_width="0sp"
-            android:layout_weight="3"
-            android:hint="Enter slots eg ABCDGP"/>
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:text="Slots"
+                android:textColor="@android:color/white"
+                android:gravity="center_horizontal" />
+
+
+            <TextView
+
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:text="M"
+                android:textColor="@android:color/white"
+                android:gravity="center_horizontal" />
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:text="T"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:text="W"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:text="T"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:text="F"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:text="S"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:text="S"
+                android:textColor="@android:color/white" />
 
         </LinearLayout>
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/slots_tl">
 
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="0sp"
-            android:layout_weight="1"
-            android:text="TUESDAY"/>
-
-        <EditText
-            android:id="@+id/slots_tue"
-            android:layout_height="wrap_content"
-            android:layout_width="0sp"
-            android:layout_weight="3"
-            android:hint="Enter slots eg ABCDGP"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="0sp"
-            android:layout_weight="1"
-            android:text="WEDNESDAY"/>
-
-        <EditText
-            android:id="@+id/slots_wed"
-            android:layout_height="wrap_content"
-            android:layout_width="0sp"
-            android:layout_weight="3"
-            android:hint="Enter slots eg ABCDGP"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="0sp"
-            android:layout_weight="1"
-            android:text="THURSDAY"/>
-
-        <EditText
-            android:id="@+id/slots_thurs"
-            android:layout_height="wrap_content"
-            android:layout_width="0sp"
-            android:layout_weight="3"
-            android:hint="Enter slots eg ABCDGP"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="0sp"
-            android:layout_weight="1"
-            android:text="FRIDAY"/>
-
-        <EditText
-            android:id="@+id/slots_fri"
-            android:layout_height="wrap_content"
-            android:layout_width="0sp"
-            android:layout_weight="3"
-            android:hint="Enter slots eg ABCDGP"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="0sp"
-            android:layout_weight="1"
-            android:text="SATURDAY"/>
-
-        <EditText
-            android:id="@+id/slots_sat"
-            android:layout_height="wrap_content"
-            android:layout_width="0sp"
-            android:layout_weight="3"
-            android:hint="Enter slots eg ABCDGP"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="0sp"
-            android:layout_weight="1"
-            android:text="SUNDAY"/>
-
-        <EditText
-            android:id="@+id/slots_sun"
-            android:layout_height="wrap_content"
-            android:layout_width="0sp"
-            android:layout_weight="3"
-            android:hint="Enter slots eg ABCDGP"/>
+        </TableLayout>
+        </ScrollView>
 
     </LinearLayout>
 
@@ -154,8 +108,7 @@
         android:id="@+id/slots_done"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:text="Done"/>
-
+        android:text="Done" />
 
 
 </LinearLayout>
