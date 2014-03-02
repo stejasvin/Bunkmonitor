@@ -4,13 +4,14 @@
     android:layout_height="50sp"
     android:orientation="horizontal"
     android:id="@+id/elist_layout"
+    android:gravity="center"
     > 
 	
-	<TextView
+	<com.example.bunkmonitor.MyTextView
     	android:id="@+id/elist_text"
     	android:layout_width="0sp"
     	android:layout_height="wrap_content"
-    	android:textSize="17sp"
+    	android:textSize="25sp"
         android:layout_weight="3"/>
 
 	<ImageView
@@ -19,6 +20,7 @@
 	    android:layout_height="wrap_content"
         android:layout_weight="1"
         android:clickable="true"
+
     	/>
 
     <ImageView

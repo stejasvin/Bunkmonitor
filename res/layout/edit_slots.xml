@@ -1,114 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/chalk_board"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/chalk_board">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:text="Edit Slots"
-        android:textColor="@android:color/white" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-    <LinearLayout
-        android:layout_height="fill_parent"
-        android:layout_width="fill_parent"
-        android:orientation="vertical">
+        android:padding="20sp">
+
+        <com.example.bunkmonitor.MyTextView
+            android:id="@+id/slots_title"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textColor="@android:color/white"
+            android:text="Edit Slots"
+            android:textSize="35sp"
+            android:paddingBottom="10sp" />
 
         <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:orientation="horizontal"
-            >
+            android:paddingBottom="10sp">
 
             <TextView
-                android:layout_gravity="center_horizontal"
+                android:textSize="20sp"
+                android:id="@+id/slots_tv_mon"
                 android:layout_height="wrap_content"
                 android:layout_width="0sp"
-                android:layout_weight="1"
-                android:text="Slots"
+                android:layout_weight="1.5"
                 android:textColor="@android:color/white"
+                android:text="MON - "
                 android:gravity="center_horizontal" />
 
-
-            <TextView
-
+            <EditText
+                android:textSize="20sp"
+                android:id="@+id/slots_mon"
                 android:layout_height="wrap_content"
                 android:layout_width="0sp"
-                android:layout_weight="1"
-                android:text="M"
+                android:layout_weight="3"
+                android:background="@drawable/underline_chalk"
                 android:textColor="@android:color/white"
-                android:gravity="center_horizontal" />
-
-            <TextView
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content"
-                android:layout_width="0sp"
-                android:layout_weight="1"
-                android:text="T"
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content"
-                android:layout_width="0sp"
-                android:layout_weight="1"
-                android:text="W"
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content"
-                android:layout_width="0sp"
-                android:layout_weight="1"
-                android:text="T"
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content"
-                android:layout_width="0sp"
-                android:layout_weight="1"
-                android:text="F"
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content"
-                android:layout_width="0sp"
-                android:layout_weight="1"
-                android:text="S"
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content"
-                android:layout_width="0sp"
-                android:layout_weight="1"
-                android:text="S"
-                android:textColor="@android:color/white" />
+                android:hint="Enter slots eg ABCDGP" />
 
         </LinearLayout>
-        <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-        <TableLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/slots_tl">
 
-        </TableLayout>
-        </ScrollView>
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:paddingBottom="10sp">
+
+
+            <TextView
+                android:textSize="20sp"
+                android:id="@+id/slots_tv_tue"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="1.5"
+                android:textColor="@android:color/white"
+                android:text="TUE - " />
+
+            <EditText
+                android:textSize="20sp"
+                android:id="@+id/slots_tue"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="3"
+                android:background="@drawable/underline_chalk"
+                android:textColor="@android:color/white"
+                android:hint="Enter slots eg ABCDGP" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:paddingBottom="10sp">
+
+            <TextView
+                android:textSize="20sp"
+                android:id="@+id/slots_tv_wed"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="1.5"
+                android:text="WED - "
+                android:textColor="@android:color/white" />
+
+            <EditText
+                android:textSize="20sp"
+                android:id="@+id/slots_wed"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="3"
+                android:background="@drawable/underline_chalk"
+                android:textColor="@android:color/white"
+                android:hint="Enter slots eg ABCDGP" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:paddingBottom="10sp">
+
+            <TextView
+                android:textSize="20sp"
+                android:id="@+id/slots_tv_thu"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="1.5"
+                android:text="THU - "
+                android:textColor="@android:color/white" />
+
+            <EditText
+                android:textSize="20sp"
+                android:id="@+id/slots_thurs"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="3"
+                android:background="@drawable/underline_chalk"
+                android:textColor="@android:color/white"
+                android:hint="Enter slots eg ABCDGP" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:paddingBottom="10sp">
+
+            <TextView
+                android:textSize="20sp"
+                android:id="@+id/slots_tv_fri"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="1.5"
+                android:text="FRI - "
+                android:textColor="@android:color/white" />
+
+            <EditText
+                android:textSize="20sp"
+                android:id="@+id/slots_fri"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="3"
+                android:background="@drawable/underline_chalk"
+                android:textColor="@android:color/white"
+                android:hint="Enter slots eg ABCDGP" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:paddingBottom="10sp">
+
+            <TextView
+                android:textSize="20sp"
+                android:id="@+id/slots_tv_sat"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="1.5"
+                android:text="SAT - "
+                android:textColor="@android:color/white" />
+
+            <EditText
+                android:textSize="20sp"
+                android:id="@+id/slots_sat"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="3"
+                android:background="@drawable/underline_chalk"
+                android:textColor="@android:color/white"
+                android:hint="Enter slots eg ABCDGP" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:paddingBottom="10sp">
+
+            <TextView
+                android:textSize="20sp"
+                android:id="@+id/slots_tv_sun"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="1.5"
+                android:text="SUN - "
+                android:textColor="@android:color/white" />
+
+            <EditText
+
+                android:textSize="20sp"
+                android:id="@+id/slots_sun"
+                android:layout_height="wrap_content"
+                android:layout_width="0sp"
+                android:layout_weight="3"
+                android:background="@drawable/underline_chalk"
+                android:textColor="@android:color/white"
+                android:hint="Enter slots eg ABCDGP" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="10sp">
+
+            <Button
+                android:id="@+id/slots_done"
+                android:layout_height="50sp"
+                android:layout_width="100sp"
+                android:background="@drawable/done_selector" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/slots_done"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:text="Done" />
-
-
-</LinearLayout>
+</ScrollView>

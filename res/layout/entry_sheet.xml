@@ -3,43 +3,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mybackcolor">
-
+    android:background="@drawable/chalk_board"
+    android:padding="20sp">
 
     <!-- This layout should be same a that in single_list_item_entry for alignment -->
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:orientation="horizontal"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:gravity="center">
 
-        <TextView
+        <com.example.bunkmonitor.MyTextView
             android:layout_height="wrap_content"
             android:layout_width="0sp"
             android:text="Course"
-            android:textSize="25sp"
-            android:layout_weight="3"/>
+            android:textSize="35sp"
+            android:layout_weight="3"
+            android:gravity="center"/>
 
-        <TextView
+        <com.example.bunkmonitor.MyTextView
             android:layout_height="wrap_content"
             android:layout_width="0sp"
             android:text="A"
-            android:textSize="25sp"
-            android:layout_weight="1"/>
+            android:textSize="35sp"
+            android:layout_weight="1"
+            android:gravity="center"/>
 
-        <TextView
+        <com.example.bunkmonitor.MyTextView
             android:layout_height="wrap_content"
             android:layout_width="0sp"
             android:text="B"
-            android:textSize="25sp"
-            android:layout_weight="1"/>
+            android:textSize="35sp"
+            android:layout_weight="1"
+            android:gravity="center"/>
 
-        <TextView
+        <com.example.bunkmonitor.MyTextView
             android:layout_height="wrap_content"
             android:layout_width="0sp"
             android:text="C"
-            android:textSize="25sp"
-            android:layout_weight="1"/>
+            android:textSize="35sp"
+            android:layout_weight="1"
+            android:gravity="center"/>
 
         </LinearLayout>
 
@@ -52,12 +57,14 @@
     <LinearLayout
         android:layout_height="0sp"
         android:layout_width="fill_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:gravity="center">
         <Button
             android:id="@+id/es_b_done"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:text="Done"/>
+            android:layout_height="50sp"
+            android:layout_width="100sp"
+
+            android:background="@drawable/done_selector"/>
         </LinearLayout>
 
 </LinearLayout>

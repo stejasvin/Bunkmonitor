@@ -67,9 +67,9 @@ public class EntryListAdapter extends ArrayAdapter {
         imva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imva.setImageResource(R.drawable.pencil_tick);
-                imvb.setImageResource(R.drawable.pencil_line);
-                imvc.setImageResource(R.drawable.pencil_line);
+                imva.setImageResource(R.drawable.f_chalkbox);
+                imvb.setImageResource(R.drawable.e_chalkbox);
+                imvc.setImageResource(R.drawable.e_chalkbox);
 
                 entry.setAttended(1);
                 entry.setBunked(0);
@@ -81,9 +81,9 @@ public class EntryListAdapter extends ArrayAdapter {
         imvb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imva.setImageResource(R.drawable.pencil_line);
-                imvb.setImageResource(R.drawable.pencil_tick);
-                imvc.setImageResource(R.drawable.pencil_line);
+                imva.setImageResource(R.drawable.e_chalkbox);
+                imvb.setImageResource(R.drawable.f_chalkbox);
+                imvc.setImageResource(R.drawable.e_chalkbox);
 
                 entry.setAttended(0);
                 entry.setBunked(1);
@@ -96,9 +96,9 @@ public class EntryListAdapter extends ArrayAdapter {
         imvc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imva.setImageResource(R.drawable.pencil_line);
-                imvb.setImageResource(R.drawable.pencil_line);
-                imvc.setImageResource(R.drawable.pencil_tick);
+                imva.setImageResource(R.drawable.e_chalkbox);
+                imvb.setImageResource(R.drawable.e_chalkbox);
+                imvc.setImageResource(R.drawable.f_chalkbox);
 
                 entry.setAttended(0);
                 entry.setBunked(0);
@@ -112,16 +112,16 @@ public class EntryListAdapter extends ArrayAdapter {
 
         tv.setText(entry.getCourse_id());
         //tvExtra.setVisibility(View.GONE);
-        imva.setImageResource(R.drawable.pencil_line);
-        imvb.setImageResource(R.drawable.pencil_line);
-        imvc.setImageResource(R.drawable.pencil_line);
+        imva.setImageResource(R.drawable.e_chalkbox);
+        imvb.setImageResource(R.drawable.e_chalkbox);
+        imvc.setImageResource(R.drawable.e_chalkbox);
 
         if (entry.getAttended() == 1)
-            imva.setImageResource(R.drawable.pencil_tick);
+            imva.setImageResource(R.drawable.f_chalkbox);
         else if (entry.getBunked() == 1)
-            imvb.setImageResource(R.drawable.pencil_tick);
+            imvb.setImageResource(R.drawable.f_chalkbox);
         else if (entry.getCancelled() == 1)
-            imvc.setImageResource(R.drawable.pencil_tick);
+            imvc.setImageResource(R.drawable.f_chalkbox);
 
         return row;
     }
