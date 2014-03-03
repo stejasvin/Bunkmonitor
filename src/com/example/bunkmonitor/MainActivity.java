@@ -52,6 +52,16 @@ public class MainActivity extends Activity {
             }
         });
 
+        Button bEntry = (Button) findViewById(R.id.courses_entry_b);
+        bEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,EntryActivity.class);
+                startActivityForResult(intent, ENTRYLIST);
+            }
+        });
+
+
         CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
         cList = courseDatabaseHandler.getAllCourses();
         if (cList.isEmpty())
@@ -100,7 +110,7 @@ public class MainActivity extends Activity {
 
                     }
                     intent.putExtra("COURSE_ID", cList.get(index).getId());
-                    startActivity(intent);
+                    startActivityForResult(intent, ENTRYLIST);
                     return false;
                 }
             });
@@ -229,6 +239,17 @@ public class MainActivity extends Activity {
             //DataSetObserver o;
             //adapter.registerDataSetObserver(o);
         }
+
+        SharedPreferences mPrefs = getSharedPreferences(
+                "bunkmonitor.SHARED_PREF", 0);
+        String lastEntryDate = mPrefs.getString("bunkmonitor.LAST_ENTRY_DATE", "0");
+        String today = Utilities.getDate(Utilities.getCurrentTime());
+        Button entry = (Button)findViewById(R.id.courses_entry_b);
+        if(today.equals(lastEntryDate))
+            entry.setEnabled(false);
+        else
+            entry.setEnabled(true);
+
         ///list.invalidateViews();
 
 //        }

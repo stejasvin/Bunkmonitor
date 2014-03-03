@@ -51,11 +51,15 @@ public class EntryActivity extends Activity {
         Utilities.toggleActiveCourses(this,cal.get(Calendar.DAY_OF_WEEK));
 
         listView = (ListView) findViewById(R.id.listview1);
+        listView.setClickable(false);
+        listView.setItemsCanFocus(false);
+        listView.setCacheColorHint(0);
 
         final CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
         final EntryDetailsDatabaseHandler entryDetailsDatabaseHandler = new EntryDetailsDatabaseHandler(this);
 
         Button done = (Button)findViewById(R.id.es_b_done);
+        Button attAll = (Button)findViewById(R.id.es_b_attall);
 
         if(MODE == Utilities.WRITE){
             cList = courseDatabaseHandler.getAllActiveCourses();
@@ -78,47 +82,71 @@ public class EntryActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                EntryDetails entryDetails = new EntryDetails();
-
-                for(int i=0;i<cList.size();i++){
-                    //Adding the difflist entries to orig list and updating the db
-                    Course c = cList.get(i);
-                    Entry e = eList.get(i);
-                    c.setAttended(c.getAttended() + e.getAttended());
-                    c.setBunked(c.getBunked() + e.getBunked());
-                    c.setCancelled(c.getCancelled() + e.getCancelled());
-                    courseDatabaseHandler.updateCourse(c);
-
-                    entryDetails.setCourse_id(c.getId());
-                    entryDetails.setEntered(1);
-
-                    if(e.getAttended()==1)
-                        entryDetails.setStatus(Utilities.ATTENDED);
-                    else if(e.getBunked()==1)
-                        entryDetails.setStatus(Utilities.BUNKED);
-                    else if(e.getCancelled()==1)
-                        entryDetails.setStatus(Utilities.CANCELLED);
-
-                    entryDetails.setTime(date);
-                    Log.i(TAG,"Date: "+Utilities.getDate(Utilities.getCurrentTime()));
-                    entryDetailsDatabaseHandler.addEntry(entryDetails);
-
-                }
-
-                SharedPreferences mPrefs = getSharedPreferences(
-                        "bunkmonitor.SHARED_PREF", 0);
-                SharedPreferences.Editor mEditor = mPrefs.edit();
-                mEditor.putString("bunkmonitor.LAST_ENTRY_DATE", Utilities.getDate(Utilities.getCurrentTime())).commit();
-
-                setResult(RESULT_OK);
-                finish();
+            postEntry(false);
 
             }
         });
 
+        attAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postEntry(true);
+            }
+        });
+
+
+
         //Setting alarm for next day
         setRecurringAlarm(this);
 
+    }
+
+    private void postEntry(boolean isAttAll){
+
+        CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
+        EntryDetailsDatabaseHandler entryDetailsDatabaseHandler = new EntryDetailsDatabaseHandler(this);
+        EntryDetails entryDetails = new EntryDetails();
+
+        if(isAttAll){
+            for(Entry e:eList){
+                e.setAttended(1);
+                e.setBunked(0);
+                e.setCancelled(0);
+            }
+        }
+
+        for(int i=0;i<cList.size();i++){
+            //Adding the difflist entries to orig list and updating the db
+            Course c = cList.get(i);
+            Entry e = eList.get(i);
+            c.setAttended(c.getAttended() + e.getAttended());
+            c.setBunked(c.getBunked() + e.getBunked());
+            c.setCancelled(c.getCancelled() + e.getCancelled());
+            courseDatabaseHandler.updateCourse(c);
+
+            entryDetails.setCourse_id(c.getId());
+            entryDetails.setEntered(1);
+
+            if(e.getAttended()==1)
+                entryDetails.setStatus(Utilities.ATTENDED);
+            else if(e.getBunked()==1)
+                entryDetails.setStatus(Utilities.BUNKED);
+            else if(e.getCancelled()==1)
+                entryDetails.setStatus(Utilities.CANCELLED);
+
+            entryDetails.setTime(date);
+            Log.i(TAG,"Date: "+Utilities.getDate(Utilities.getCurrentTime()));
+            entryDetailsDatabaseHandler.addEntry(entryDetails);
+
+        }
+
+        SharedPreferences mPrefs = getSharedPreferences(
+                "bunkmonitor.SHARED_PREF", 0);
+        SharedPreferences.Editor mEditor = mPrefs.edit();
+        mEditor.putString("bunkmonitor.LAST_ENTRY_DATE", Utilities.getDate(Utilities.getCurrentTime())).commit();
+
+        setResult(RESULT_OK);
+        finish();
     }
 
     private void setRecurringAlarm(Context context) {

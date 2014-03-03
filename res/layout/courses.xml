@@ -3,26 +3,49 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="15sp"
-    android:background="@color/mybackcolor">
+    android:layout_height="fill_parent"
+    android:background="@color/mybackcolor"
+    android:padding="15sp">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_gravity="top"
-        android:layout_weight="0.4"
+        android:layout_weight="1"
+        android:padding="15sp"
+        >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="top"
+
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/textView"
+        <LinearLayout
+            android:layout_width="0sp"
             android:layout_weight="1"
-            android:text="Courses"
-            android:textSize="40sp"
-            android:padding="10sp" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/textView"
+                android:layout_weight="1"
+                android:text="Courses"
+                android:textSize="40sp"
+                android:padding="10sp" />
+
+            <Button
+                android:layout_width="125sp"
+                android:layout_height="25sp"
+                android:background="@drawable/entry_selector"
+                android:id="@+id/courses_entry_b"
+                android:layout_gravity="left"
+                android:layout_marginLeft="20sp" />
+        </LinearLayout>
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -35,12 +58,14 @@
 
     </LinearLayout>
 
+</ScrollView>
+
     <LinearLayout
         android:id="@+id/c_list_layout"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="2">
 
         <Button
             android:background="@drawable/empty_scr"
@@ -53,3 +78,5 @@
     </LinearLayout>
 
 </LinearLayout>
+
+

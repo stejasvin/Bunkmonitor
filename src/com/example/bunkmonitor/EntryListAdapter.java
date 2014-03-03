@@ -37,8 +37,6 @@ public class EntryListAdapter extends ArrayAdapter {
      */
     private Context context;
 
-
-
     public EntryListAdapter(Context context, List<Entry> diffList, int mode) {
         super(context, R.layout.single_list_item_entry, diffList);
         this.context = context;
@@ -56,6 +54,7 @@ public class EntryListAdapter extends ArrayAdapter {
             row = inflater.inflate(textViewResourceId, parent, false); // inflate view from xml file
         }
 
+        row.setEnabled(false);
         final Entry entry = diffList.get(position);
 
         TextView tv = (TextView) row.findViewById(R.id.elist_text);
@@ -126,6 +125,9 @@ public class EntryListAdapter extends ArrayAdapter {
         return row;
     }
 
+    public void setAllAtt(){
+
+    }
     /*void toggleTicks(int c) {
         entry.setAttended(0);
         entry.setBunked(0);
