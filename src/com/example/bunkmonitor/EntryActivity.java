@@ -119,10 +119,6 @@ public class EntryActivity extends Activity {
             //Adding the difflist entries to orig list and updating the db
             Course c = cList.get(i);
             Entry e = eList.get(i);
-            c.setAttended(c.getAttended() + e.getAttended());
-            c.setBunked(c.getBunked() + e.getBunked());
-            c.setCancelled(c.getCancelled() + e.getCancelled());
-            courseDatabaseHandler.updateCourse(c);
 
             entryDetails.setCourse_id(c.getId());
             entryDetails.setEntered(1);
@@ -136,8 +132,19 @@ public class EntryActivity extends Activity {
 
             entryDetails.setTime(date);
             Log.i(TAG,"Date: "+Utilities.getDate(Utilities.getCurrentTime()));
-            entryDetailsDatabaseHandler.addEntry(entryDetails);
 
+            //if error in inserting data, unique contraint!
+            if(entryDetailsDatabaseHandler.addEntry(entryDetails)!=-1){
+                //recalculating all bunks and attendance in case of conflict on replace
+                Entry entry = entryDetailsDatabaseHandler.getAllAttTotal(c.getLocalId());
+                c.setAttended(entry.getAttended());
+                c.setBunked(entry.getBunked());
+                c.setCancelled(entry.getCancelled());
+//                c.setAttended(c.getAttended() + e.getAttended());
+//                c.setBunked(c.getBunked() + e.getBunked());
+//                c.setCancelled(c.getCancelled() + e.getCancelled());
+                courseDatabaseHandler.updateCourse(c);
+            }
         }
 
         SharedPreferences mPrefs = getSharedPreferences(

@@ -44,7 +44,8 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
                 + KEY_COURSE_ID + " TEXT,"
 				+ KEY_STATUS + " INT,"
                 + KEY_TIME + " TEXT,"
-                + KEY_ENTERED + " INT "+")";
+                + KEY_ENTERED + " INT,"
+                + "UNIQUE ("+KEY_TIME+","+KEY_COURSE_ID+")"+" ON CONFLICT REPLACE )";
 		db.execSQL(CREATE_courseS_TABLE);
 	}
 
@@ -62,7 +63,7 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
 	 * All CRUD(Create, Read, Update, Delete) Operations
 	 */
 
-	public void addEntry(EntryDetails entryDetails) {
+	public int addEntry(EntryDetails entryDetails) {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -75,9 +76,13 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_ENTERED, entryDetails.getEntered());
 
 		// Inserting Row
-		if(db.insert(TABLE_ENTRY, null, values)==-1)
+		if(db.insert(TABLE_ENTRY, null, values)==-1){
             Log.e(TAG, "error in inserting");
+            db.close();
+            return -1;
+        }
 		db.close(); // Closing database connection
+        return 0;
 	}
 
     public void updateEntryDetails(EntryDetails entryDetails) {
@@ -122,34 +127,62 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
 		return entryDetails;
 	}
 	
-	public List<EntryDetails> getAllActiveEntryDetails() {
-		List<EntryDetails> entryDetailsList = new ArrayList<EntryDetails>();
-		// Select All Query
+//	public List<EntryDetails> getAllActiveEntryDetails() {
+//		List<EntryDetails> entryDetailsList = new ArrayList<EntryDetails>();
+//		// Select All Query
+//        SQLiteDatabase db = this.getReadableDatabase();
+//
+//        Cursor cursor = db.query(TABLE_ENTRY, new String[]{"*"},
+//                KEY_TIME + "=1",
+//                new String[] {}, null, null, null, null);
+//
+//        // looping through all rows and adding to list
+//		if (cursor.moveToFirst()) {
+//			do {
+//                EntryDetails entryDetails = new EntryDetails();
+//                entryDetails.setL_id(cursor.getString(0));
+//                entryDetails.setCourse_id(cursor.getString(1));
+//                entryDetails.setStatus(cursor.getInt(2));
+//                entryDetails.setTime(cursor.getString(3));
+//                entryDetails.setEntered(cursor.getInt(4));
+//
+//                // Adding course to list
+//			    entryDetailsList.add(entryDetails);
+//			} while (cursor.moveToNext());
+//		}
+//        db.close();
+//
+//        // return course list
+//		return entryDetailsList;
+//	}
+
+    public Entry getAllAttTotal(String localId) {
+        Entry entry = new Entry();
+        entry.setCourse_id(localId);
+        // Select All Query
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_ENTRY, new String[]{"*"},
-                KEY_TIME + "=1",
-                new String[] {}, null, null, null, null);
-
-		// looping through all rows and adding to list
-		if (cursor.moveToFirst()) {
-			do {
-                EntryDetails entryDetails = new EntryDetails();
-                entryDetails.setL_id(cursor.getString(0));
-                entryDetails.setCourse_id(cursor.getString(1));
-                entryDetails.setStatus(cursor.getInt(2));
-                entryDetails.setTime(cursor.getString(3));
-                entryDetails.setEntered(cursor.getInt(4));
-
-                // Adding course to list
-			    entryDetailsList.add(entryDetails);
-			} while (cursor.moveToNext());
-		}
+        Cursor cursor = db.rawQuery("select count(*) from " + TABLE_ENTRY + " where " +KEY_LOCAL_ID+"="+localId+" AND "+ KEY_STATUS + "="+Utilities.ATTENDED,new String[]{});
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+                entry.setAttended(cursor.getInt(0));
+        }
+        cursor = db.rawQuery("select count(*) from " + TABLE_ENTRY + " where " +KEY_LOCAL_ID+"="+localId+" AND "+ KEY_STATUS + "="+Utilities.BUNKED,new String[]{});
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            entry.setBunked(cursor.getInt(0));
+        }
+        cursor = db.rawQuery("select count(*) from " + TABLE_ENTRY + " where " +KEY_LOCAL_ID+"="+localId+" AND "+ KEY_STATUS + "="+Utilities.CANCELLED,new String[]{});
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            entry.setCancelled(cursor.getInt(0));
+        }
         db.close();
 
         // return course list
-		return entryDetailsList;
-	}
+        return entry;
+    }
+
 
     public List<Entry> getEntryListByDate(String date) {
 
@@ -237,12 +270,12 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
                 entryDetails.setEntered(1);
                 entryDetails.setSlot(c.getSlot());
                 addEntry(entryDetails);
-                switch (mode){
-                    case Utilities.ATTENDED: c.incAttended();break;
-                    case Utilities.BUNKED: c.incBunked();break;
-                    case Utilities.CANCELLED: c.incCancelled();break;
-                }
-                courseDatabaseHandler.updateCourse(c);
+//                switch (mode){
+//                    case Utilities.ATTENDED: c.incAttended();break;
+//                    case Utilities.BUNKED: c.incBunked();break;
+//                    case Utilities.CANCELLED: c.incCancelled();break;
+//                }
+//                courseDatabaseHandler.updateCourse(c);
             }
 
             cal.add(Calendar.DAY_OF_MONTH,1);
@@ -250,6 +283,16 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
             //termination condition
             if(Utilities.getDate(cal.getTime().toString()).equals(toDate))
                 flag = false;
+        }
+        //counts att,bunks for all courses
+        Entry entry;
+        cList = courseDatabaseHandler.getAllCourses();
+        for(Course c: cList){
+            entry= getAllAttTotal(c.getLocalId());
+            c.setAttended(entry.getAttended());
+            c.setBunked(entry.getBunked());
+            c.setCancelled(entry.getCancelled());
+            courseDatabaseHandler.updateCourse(c);
         }
 
         cal = Calendar.getInstance();
