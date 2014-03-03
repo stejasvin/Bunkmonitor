@@ -27,6 +27,11 @@ public class Utilities {
     public static final int CANCELLED = 30;
     public static final int EXTRA = 40;
 
+    public class MyInteger{
+        int i;
+        public MyInteger(int j){ i = j;}
+    }
+
     public static String getCurrentTime() {
         Calendar c = Calendar.getInstance();
         String currentTime = (c.getTime()).toString();
@@ -39,6 +44,8 @@ public class Utilities {
      * @param input full time n date
      * @return date
      */
+
+
     public static String getDate(String input) {
         if (input != null) {
             SimpleDateFormat dateFormat = null;

@@ -10,8 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import java.util.List;
 
@@ -22,9 +22,11 @@ public class MainActivity extends Activity {
     private static final int ENTRYLIST = 10;
     private static final int ADDNEWCOURSE = 20;
     private static final int REQUEST_CHECK_ENTRY = 30;
-    private ListView list;
-    CoursesListAdapter adapter;
+//    private ListView list;
+    CoursesExpListAdapter adapter;
     List<Course> cList;
+    //List<Boolean> isExpanded = new ArrayList<Boolean>();
+    private ExpandableListView expList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,7 @@ public class MainActivity extends Activity {
         if (cList.isEmpty())
             imDef.setVisibility(View.VISIBLE);
         else {
-            list = new ListView(this);
+            /*list = new ListView(this);
             list.setDivider(null);
             adapter = new CoursesListAdapter(this, R.layout.single_list_item_courses, cList);
             list.setAdapter(adapter);
@@ -71,7 +73,40 @@ public class MainActivity extends Activity {
             });
 
             LinearLayout ll = (LinearLayout) findViewById(R.id.c_list_layout);
-            ll.addView(list);
+            ll.addView(list);*/
+
+            //initiate boolean list
+
+            expList = new ExpandableListView(this);
+            expList.setGroupIndicator(null);
+            expList.setDivider(null);
+            adapter = new CoursesExpListAdapter(this, R.layout.single_list_item_courses,R.layout.single_list_item_courses_child, cList);
+            expList.setAdapter(adapter);
+            expList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(MainActivity.this, AddNewCourse.class);
+                    intent.putExtra("IS_EDIT", true);
+
+                    //calculating position
+                    int index = 0,temp=0;
+                    for(Boolean b:adapter.getIsExpanded()){
+                        if(temp==position)
+                            break;
+                        index++;
+                        temp++;
+                        if(b.booleanValue())
+                            temp++;
+
+                    }
+                    intent.putExtra("COURSE_ID", cList.get(index).getId());
+                    startActivity(intent);
+                    return false;
+                }
+            });
+
+            LinearLayout ll = (LinearLayout) findViewById(R.id.c_list_layout);
+            ll.addView(expList);
         }
 
         Button bAddCourses = (Button) findViewById(R.id.b_courses);
@@ -191,7 +226,8 @@ public class MainActivity extends Activity {
 //            tvDef.setVisibility(View.VISIBLE);
 //        else{
 //
-            adapter.notifyDataSetChanged();
+            //DataSetObserver o;
+            //adapter.registerDataSetObserver(o);
         }
         ///list.invalidateViews();
 

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/clist_layout"
+    android:padding="25sp"
+    android:background="@drawable/unfolded_down"
+    >
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="0sp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingRight="15sp">
+
+        <TextView
+            android:id="@+id/clist1_cid"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/clist1_cred"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/clist1_prof"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0sp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/clist1_a"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/clist1_b"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/clist1_c"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="17sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
