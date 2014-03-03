@@ -205,7 +205,6 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_LOCAL_ID, course.getLocalId());
         values.put(KEY_ID, course.getId());
         values.put(KEY_NAME, course.getName());
         values.put(KEY_CREDITS, course.getCredits());

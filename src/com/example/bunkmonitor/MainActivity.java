@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -58,6 +59,16 @@ public class MainActivity extends Activity {
             list.setDivider(null);
             adapter = new CoursesListAdapter(this, R.layout.single_list_item_courses, cList);
             list.setAdapter(adapter);
+            list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(MainActivity.this,AddNewCourse.class);
+                    intent.putExtra("IS_EDIT",true);
+                    intent.putExtra("COURSE_ID",cList.get(position).getId());
+                    startActivity(intent);
+                    return false;
+                }
+            });
 
             LinearLayout ll = (LinearLayout) findViewById(R.id.c_list_layout);
             ll.addView(list);
