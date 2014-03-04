@@ -28,6 +28,9 @@
         <activity android:name=".CheckEntryCal" ></activity>
         <activity android:name=".EditEntryActivity" ></activity>
         <activity android:name=".EditSlotsActivity" ></activity>
+        <activity android:name=".LockscreenActivity" ></activity>
+        <activity android:name=".Settings"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
 
         <activity android:name="com.exina.android.calendar.CalendarActivity" ></activity>
 

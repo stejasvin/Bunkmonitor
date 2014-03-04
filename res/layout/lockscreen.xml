@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_dark"
+
+    >
+
+    <LinearLayout
+        android:layout_width="0sp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:text="BunkMonitor"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:textSize="30sp"/>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/ls_snooze"
+            android:text="Snooze"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:background="@drawable/ls_selector"
+            android:layout_margin="5sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0sp"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.5"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/ls_attall"
+            android:text="Att. All"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:background="@drawable/ls_selector"
+            android:layout_margin="5sp"
+            />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/ls_go_app"
+            android:text="Entry"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:background="@drawable/ls_selector"
+            android:layout_margin="5sp"/>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/ls_bunk"
+            android:text="Bunked All"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:background="@drawable/ls_selector"
+            android:layout_margin="5sp"
+            android:padding="5sp"/>
+
+        </LinearLayout>
+
+
+</LinearLayout>

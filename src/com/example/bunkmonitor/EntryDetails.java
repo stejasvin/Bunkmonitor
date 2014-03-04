@@ -5,7 +5,7 @@ package com.example.bunkmonitor;
  */
 public class EntryDetails {
     private String l_id;
-    private String course_id;
+    private String course_lid;
     private int status;
     private String time;
     private int entered;
@@ -53,12 +53,12 @@ public class EntryDetails {
         this.status = status;
     }
 
-    public String getCourse_id() {
-        return course_id;
+    public String getCourse_lid() {
+        return course_lid;
     }
 
-    public void setCourse_id(String course_id) {
-        this.course_id = course_id;
+    public void setCourse_lid(String course_lid) {
+        this.course_lid = course_lid;
     }
 
 

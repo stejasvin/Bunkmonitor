@@ -1,8 +1,7 @@
 package com.example.bunkmonitor;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,7 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -36,6 +37,10 @@ public class EntryActivity extends Activity {
 
         setContentView(R.layout.entry_sheet);
 
+        //Clear notification
+        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(0);
+
         Intent iThis = getIntent();
 
         MODE = iThis.getIntExtra("bunkmonitor.MODE",Utilities.WRITE);
@@ -58,14 +63,22 @@ public class EntryActivity extends Activity {
         final CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
         final EntryDetailsDatabaseHandler entryDetailsDatabaseHandler = new EntryDetailsDatabaseHandler(this);
 
+        TextView noCourses = (TextView)findViewById(R.id.entry_no_courses);
+        LinearLayout llAll = (LinearLayout)findViewById(R.id.entry_ll);
+
         Button done = (Button)findViewById(R.id.es_b_done);
         Button attAll = (Button)findViewById(R.id.es_b_attall);
 
         if(MODE == Utilities.WRITE){
             cList = courseDatabaseHandler.getAllActiveCourses();
-            eList = Entry.getEntryList(cList);
-            EntryListAdapter adapter = new EntryListAdapter(this,eList,MODE);
-            listView.setAdapter(adapter);
+            if(cList.size()==0){
+                noCourses.setVisibility(View.VISIBLE);
+                llAll.setVisibility(View.GONE);
+            }else{
+                eList = Entry.getEntryList(cList);
+                EntryListAdapter adapter = new EntryListAdapter(this,eList,MODE);
+                listView.setAdapter(adapter);
+            }
         }else if(MODE == Utilities.READ){
             if(date==null){
                 Toast.makeText(this,"Error date null",Toast.LENGTH_LONG).show();
@@ -74,8 +87,13 @@ public class EntryActivity extends Activity {
             }
             done.setVisibility(View.GONE);
             eList = entryDetailsDatabaseHandler.getEntryListByDate(date);
-            EntryListAdapter adapter = new EntryListAdapter(this,eList,MODE);
-            listView.setAdapter(adapter);
+            if(eList.size()==0){
+                noCourses.setVisibility(View.VISIBLE);
+                llAll.setVisibility(View.GONE);
+            }else{
+                EntryListAdapter adapter = new EntryListAdapter(this,eList,MODE);
+                listView.setAdapter(adapter);
+            }
         }
 
         done.setOnClickListener(new View.OnClickListener() {
@@ -94,10 +112,8 @@ public class EntryActivity extends Activity {
             }
         });
 
-
-
-        //Setting alarm for next day
-        setRecurringAlarm(this);
+//        //Setting alarm for next day
+//        Utilities.setRecurringAlarm(this,0);
 
     }
 
@@ -120,7 +136,7 @@ public class EntryActivity extends Activity {
             Course c = cList.get(i);
             Entry e = eList.get(i);
 
-            entryDetails.setCourse_id(c.getId());
+            entryDetails.setCourse_lid(c.getLocalId());
             entryDetails.setEntered(1);
 
             if(e.getAttended()==1)
@@ -154,22 +170,6 @@ public class EntryActivity extends Activity {
 
         setResult(RESULT_OK);
         finish();
-    }
-
-    private void setRecurringAlarm(Context context) {
-        Log.i(TAG, "setting Alarm");
-        Calendar updateTime = Calendar.getInstance();
-//        updateTime.setTimeZone(TimeZone.getTimeZone("GMT"));
-//        updateTime.set(Calendar.HOUR_OF_DAY, 11);
-//        updateTime.set(Calendar.MINUTE, 45);
-        Intent downloader = new Intent(context, AlarmReceiver.class);
-        PendingIntent recurringDownload = PendingIntent.getBroadcast(context,
-                0, downloader, PendingIntent.FLAG_CANCEL_CURRENT);
-        AlarmManager alarms = (AlarmManager) this.getSystemService(
-                Context.ALARM_SERVICE);
-        alarms.setInexactRepeating(AlarmManager.RTC_WAKEUP,
-                updateTime.getTimeInMillis(),
-                AlarmManager.INTERVAL_HOUR, recurringDownload);  //Need to use INTERVAL_DAY instead of 10000
     }
 
 

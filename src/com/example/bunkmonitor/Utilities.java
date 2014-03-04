@@ -1,6 +1,9 @@
 package com.example.bunkmonitor;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -19,6 +22,7 @@ public class Utilities {
     public static final int READ = 1;
     public static final int SINGLE = 2;
     public static final int BATCH = 3;
+    private static final String TAG = "Utilities";
     public final int NOC_ENTRY_SHEET = 5;
 
     //Entry status
@@ -157,6 +161,41 @@ public class Utilities {
         if(s[2].charAt(0)=='0')
             s[2]=s[2].substring(1);
 
+    }
+
+    public static void setRecurringAlarm(Context context,int snooze) {
+        Log.i(TAG, "setting Alarm");
+        Calendar updateTime = Calendar.getInstance();
+
+        SharedPreferences mPrefs = context.getSharedPreferences(
+                "bunkmonitor.SHARED_PREF", 0);
+        int time = mPrefs.getInt("NOTIF_TIME",1700);
+
+        if(snooze == 0){
+            updateTime.set(Calendar.HOUR_OF_DAY, time/100);
+            updateTime.set(Calendar.MINUTE, time%100);
+        }else{
+            //snooze for 1 hour
+            updateTime.add(Calendar.HOUR_OF_DAY,1);
+        }
+        Intent downloader = new Intent(context, AlarmReceiver.class);
+        PendingIntent recurringDownload = PendingIntent.getBroadcast(context,
+                0, downloader, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager alarms = (AlarmManager) context.getSystemService(
+                Context.ALARM_SERVICE);
+
+        alarms.setRepeating(AlarmManager.RTC_WAKEUP,
+                updateTime.getTimeInMillis(),
+                AlarmManager.INTERVAL_HOUR, recurringDownload);  //Need to use INTERVAL_DAY instead of 10000
+    }
+
+    public static void cancelAlarm(Context context){
+        Intent downloader = new Intent(context, AlarmReceiver.class);
+        PendingIntent recurringDownload = PendingIntent.getBroadcast(context,
+                0, downloader, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager alarms = (AlarmManager) context.getSystemService(
+                Context.ALARM_SERVICE);
+        alarms.cancel(recurringDownload);
     }
 }
 

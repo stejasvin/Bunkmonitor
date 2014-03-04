@@ -22,7 +22,8 @@ public class MainActivity extends Activity {
     private static final int ENTRYLIST = 10;
     private static final int ADDNEWCOURSE = 20;
     private static final int REQUEST_CHECK_ENTRY = 30;
-//    private ListView list;
+    private static final String TAG = "MainActivity";
+    //    private ListView list;
     CoursesExpListAdapter adapter;
     List<Course> cList;
     //List<Boolean> isExpanded = new ArrayList<Boolean>();
@@ -38,9 +39,11 @@ public class MainActivity extends Activity {
         if (mPrefs.getString("MONDAY", null) == null)
             initializePrefs();
 
-        //Checking for entry once
-        Intent downloader = new Intent(this, DailyNotifService.class);
-        startService(downloader);
+//        //Checking for entry once
+        if(!mPrefs.getBoolean("SNOOZE",false)){
+            Intent downloader = new Intent(this, DailyNotifService.class);
+            startService(downloader);
+        }
         //Demo();
 
         Button imDef = (Button) findViewById(R.id.textView2);
@@ -109,7 +112,7 @@ public class MainActivity extends Activity {
                             temp++;
 
                     }
-                    intent.putExtra("COURSE_ID", cList.get(index).getId());
+                    intent.putExtra("COURSE_LID", cList.get(index).getLocalId());
                     startActivityForResult(intent, ENTRYLIST);
                     return false;
                 }
@@ -135,6 +138,7 @@ public class MainActivity extends Activity {
         SharedPreferences mPrefs = getSharedPreferences(
                 "bunkmonitor.SHARED_PREF", 0);
         SharedPreferences.Editor mEditor = mPrefs.edit();
+        mEditor.putInt("NOTIF_TIME",1700);
         mEditor.putString("MONDAY", "ABCDGP").commit();
         mEditor.putString("TUESDAY", "BCDEAQ").commit();
         mEditor.putString("WEDNESDAY", "CDEFBR").commit();
@@ -142,6 +146,10 @@ public class MainActivity extends Activity {
         mEditor.putString("FRIDAY", "FGABCE").commit();
         mEditor.putString("SATURDAY", "").commit();
         mEditor.putString("SUNDAY", "").commit();
+
+        //Set recurring alarms if not snoozed
+        if(!mPrefs.getBoolean("SNOOZE",false))
+            Utilities.setRecurringAlarm(this,0);
     }
 
     void Demo() {
@@ -184,6 +192,12 @@ public class MainActivity extends Activity {
             case R.id.manual_settings:
 
                 intent = new Intent(MainActivity.this, EditEntryActivity.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.settings:
+
+                intent = new Intent(MainActivity.this, Settings.class);
                 startActivity(intent);
                 return true;
 

@@ -32,7 +32,7 @@ public class AddNewCourse extends Activity {
         final EditText etSlot = (EditText)findViewById(R.id.et_slot);
 
         if(isEdit){
-            c = courseDatabaseHandler.getCourse(iThis.getStringExtra("COURSE_ID"));
+            c = courseDatabaseHandler.getCourse(iThis.getStringExtra("COURSE_LID"));
             etName.setText(c.getName());
             etId.setText(c.getId());
             etCredits.setText(c.getCredits());
@@ -56,6 +56,11 @@ public class AddNewCourse extends Activity {
                     Toast.makeText(AddNewCourse.this,"Enter valid credits",Toast.LENGTH_LONG).show();
                     return;
                 }
+                if(etName.getText().toString().equals("")){
+                    Toast.makeText(AddNewCourse.this,"Enter valid name",Toast.LENGTH_LONG).show();
+                    return;
+                }
+
 
                 Course cnew = new Course();
                 cnew.setId(etId.getText().toString());

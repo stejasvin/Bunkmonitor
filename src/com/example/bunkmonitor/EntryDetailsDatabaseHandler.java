@@ -25,7 +25,7 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
 
 	// courseions Table Columns names
 	public static final String KEY_LOCAL_ID = "l_id";
-	public static final String KEY_COURSE_ID = "course_id";
+	public static final String KEY_LOCAL_COURSE_ID = "course_lid";
     public static final String KEY_STATUS = "status";
     public static final String KEY_TIME = "time";
     public static final String KEY_ENTERED = "entered";
@@ -41,11 +41,11 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		String CREATE_courseS_TABLE = "CREATE TABLE " + TABLE_ENTRY + "("
 				+ KEY_LOCAL_ID + " INTEGER PRIMARY KEY,"
-                + KEY_COURSE_ID + " TEXT,"
+                + KEY_LOCAL_COURSE_ID + " TEXT,"
 				+ KEY_STATUS + " INT,"
                 + KEY_TIME + " TEXT,"
                 + KEY_ENTERED + " INT,"
-                + "UNIQUE ("+KEY_TIME+","+KEY_COURSE_ID+")"+" ON CONFLICT REPLACE )";
+                + "UNIQUE ("+KEY_TIME+","+KEY_LOCAL_COURSE_ID+")"+" ON CONFLICT REPLACE )";
 		db.execSQL(CREATE_courseS_TABLE);
 	}
 
@@ -69,8 +69,7 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		 // course primary key
 
-        values.put(KEY_LOCAL_ID, entryDetails.getL_id());
-        values.put(KEY_COURSE_ID, entryDetails.getCourse_id());
+        values.put(KEY_LOCAL_COURSE_ID, entryDetails.getCourse_lid());
         values.put(KEY_STATUS , entryDetails.getStatus());
         values.put(KEY_TIME, entryDetails.getTime());
         values.put(KEY_ENTERED, entryDetails.getEntered());
@@ -90,7 +89,7 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_LOCAL_ID, entryDetails.getL_id());
-        values.put(KEY_COURSE_ID, entryDetails.getCourse_id());
+        values.put(KEY_LOCAL_COURSE_ID, entryDetails.getCourse_lid());
         values.put(KEY_STATUS , entryDetails.getStatus());
         values.put(KEY_TIME, entryDetails.getTime());
         values.put(KEY_ENTERED, entryDetails.getEntered());
@@ -117,7 +116,7 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
 
 		EntryDetails entryDetails = new EntryDetails();
         entryDetails.setL_id(cursor.getString(0));
-        entryDetails.setCourse_id(cursor.getString(1));
+        entryDetails.setCourse_lid(cursor.getString(1));
         entryDetails.setStatus(cursor.getInt(2));
         entryDetails.setTime(cursor.getString(3));
         entryDetails.setEntered(cursor.getInt(4));
@@ -158,21 +157,21 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
 
     public Entry getAllAttTotal(String localId) {
         Entry entry = new Entry();
-        entry.setCourse_id(localId);
+        entry.setCourse_lid(localId);
         // Select All Query
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("select count(*) from " + TABLE_ENTRY + " where " +KEY_LOCAL_ID+"="+localId+" AND "+ KEY_STATUS + "="+Utilities.ATTENDED,new String[]{});
+        Cursor cursor = db.rawQuery("select count(*) from " + TABLE_ENTRY + " where " +KEY_LOCAL_COURSE_ID+"="+localId+" AND "+ KEY_STATUS + "="+Utilities.ATTENDED,new String[]{});
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
                 entry.setAttended(cursor.getInt(0));
         }
-        cursor = db.rawQuery("select count(*) from " + TABLE_ENTRY + " where " +KEY_LOCAL_ID+"="+localId+" AND "+ KEY_STATUS + "="+Utilities.BUNKED,new String[]{});
+        cursor = db.rawQuery("select count(*) from " + TABLE_ENTRY + " where " +KEY_LOCAL_COURSE_ID+"="+localId+" AND "+ KEY_STATUS + "="+Utilities.BUNKED,new String[]{});
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             entry.setBunked(cursor.getInt(0));
         }
-        cursor = db.rawQuery("select count(*) from " + TABLE_ENTRY + " where " +KEY_LOCAL_ID+"="+localId+" AND "+ KEY_STATUS + "="+Utilities.CANCELLED,new String[]{});
+        cursor = db.rawQuery("select count(*) from " + TABLE_ENTRY + " where " +KEY_LOCAL_COURSE_ID+"="+localId+" AND "+ KEY_STATUS + "="+Utilities.CANCELLED,new String[]{});
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             entry.setCancelled(cursor.getInt(0));
@@ -201,8 +200,7 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Entry entry = new Entry();
-                entry.setCourse_id(cursor.getString(1));
-
+                entry.setCourse_lid(cursor.getString(1));
                 int status = cursor.getInt(2);
                 switch (status){
                     case Utilities.ATTENDED:
@@ -264,7 +262,7 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
                 if(c.getActive()==0)
                     continue;
 
-                entryDetails.setCourse_id(c.getId());
+                entryDetails.setCourse_lid(c.getLocalId());
                 entryDetails.setStatus(mode);
                 entryDetails.setTime(Utilities.getDate(cal.getTime().toString()));
                 entryDetails.setEntered(1);

@@ -31,8 +31,11 @@ public class DailyNotifService extends IntentService {
 
         SharedPreferences mPrefs = getSharedPreferences(
                 "bunkmonitor.SHARED_PREF", 0);
+        int notifTime = mPrefs.getInt("NOTIF_TIME",1700);
         String lastEntryDate = mPrefs.getString("bunkmonitor.LAST_ENTRY_DATE", "0");
         String today = Utilities.getDate(Utilities.getCurrentTime());
+        String sunSlots = mPrefs.getString("SUNDAY","");
+        String satSlots = mPrefs.getString("SUNDAY","");
 
         //TODO Need to add checks for long gaps and unsyncs
 
@@ -46,10 +49,20 @@ public class DailyNotifService extends IntentService {
             cal.set(Integer.decode(s[2]), Integer.decode(s[1]) - 1, Integer.decode(s[0]));
             Log.i(TAG,cal.get(Calendar.HOUR_OF_DAY)+"");
             //cal.get(Calendar.HOUR_OF_DAY)>17 &&
-            if (cal.get(Calendar.HOUR_OF_DAY)>5 && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) {
+            if (cal.get(Calendar.HOUR_OF_DAY)>=notifTime/100 && cal.get(Calendar.MINUTE)>=notifTime%100
+                    && (sunSlots.equals("") && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
+                    && (satSlots.equals("") && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY)) {
                 //sendBroadcast(new Intent(UpdatesListActivity.REFRESH_ACTION));
                 Utilities.toggleActiveCourses(this, Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
                 generateNotification(DailyNotifService.this, "Time to fill daily entry!");
+
+                Intent intent1 = new Intent(DailyNotifService.this,LockscreenActivity.class);
+                intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                startActivity(intent1);
+
+
+
             }
 
         }
@@ -88,7 +101,9 @@ public class DailyNotifService extends IntentService {
 
         // Vibrate if vibrate is enabled
         notification.defaults |= Notification.DEFAULT_VIBRATE;
+        //id always 0
         notificationManager.notify(0, notification);
+
     }
 
 

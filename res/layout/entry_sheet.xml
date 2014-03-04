@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/chalk_board">
 
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/chalk_board"
     android:padding="20sp">
+
+    <com.example.bunkmonitor.MyTextView
+        android:id="@+id/entry_no_courses"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:text=" No courses for the day! "
+        android:textSize="35sp"
+        android:gravity="center"
+        android:padding="20sp"
+        android:visibility="gone"/>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/entry_ll">
 
     <!-- This layout should be same a that in single_list_item_entry for alignment -->
     <LinearLayout
@@ -24,7 +37,7 @@
             android:text="Course"
             android:textSize="35sp"
             android:layout_weight="3"
-            android:gravity="center"/>
+            android:gravity="center" />
 
         <com.example.bunkmonitor.MyTextView
             android:layout_height="wrap_content"
@@ -32,7 +45,7 @@
             android:text="A"
             android:textSize="35sp"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:gravity="center" />
 
         <com.example.bunkmonitor.MyTextView
             android:layout_height="wrap_content"
@@ -40,7 +53,7 @@
             android:text="B"
             android:textSize="35sp"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:gravity="center" />
 
         <com.example.bunkmonitor.MyTextView
             android:layout_height="wrap_content"
@@ -48,37 +61,45 @@
             android:text="C"
             android:textSize="35sp"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:gravity="center" />
 
-        </LinearLayout>
+    </LinearLayout>
 
     <ListView
         android:id="@+id/listview1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="5"/>
+        android:layout_weight="5" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:layout_weight="2"
-        android:gravity="center"
-        android:orientation="vertical">
+        >
 
-        <Button
-            android:id="@+id/es_b_attall"
-            android:layout_width="120sp"
-            android:layout_height="50sp"
-            android:background="@drawable/attall_selector"
-            android:padding="5sp"/>
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/es_b_done"
-            android:layout_height="50sp"
-            android:layout_width="100sp"
-            android:background="@drawable/done_selector"
-            android:padding="5sp"/>
+            <Button
+                android:id="@+id/es_b_attall"
+                android:layout_width="120sp"
+                android:layout_height="50sp"
+                android:background="@drawable/attall_selector"
+                android:padding="5sp" />
+
+            <Button
+                android:id="@+id/es_b_done"
+                android:layout_height="50sp"
+                android:layout_width="100sp"
+                android:background="@drawable/done_selector"
+                android:padding="5sp" />
         </LinearLayout>
+    </ScrollView>
+    </LinearLayout>
+
+
 
 </LinearLayout>
-</ScrollView>

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="mybackcolor">#ededed</color>
+    <color name="lockscreen_norm">#5b5b5b</color>
+    <color name="lockscreen_press">#bbbbbb</color>
 </resources>

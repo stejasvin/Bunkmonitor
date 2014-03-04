@@ -268,7 +268,7 @@ public class CalendarView extends ImageView {
 
         drawGridLines(canvas);
 
-        drawNameOfMonthYear(canvas);
+        //drawNameOfMonthYear(canvas);
 
 		// draw today
 		if(mDecoration!=null && mToday!=null) {

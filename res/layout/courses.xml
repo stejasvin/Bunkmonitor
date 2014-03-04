@@ -36,7 +36,7 @@
                 android:layout_weight="1"
                 android:text="Courses"
                 android:textSize="40sp"
-                android:padding="10sp" />
+                android:paddingBottom="10sp" />
 
             <Button
                 android:layout_width="125sp"

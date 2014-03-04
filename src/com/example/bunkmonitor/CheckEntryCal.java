@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -46,11 +47,15 @@ public class CheckEntryCal extends Activity implements CalendarView.OnCellTouchL
         mView = (CalendarView) findViewById(R.id.calendar);
         mView.setOnCellTouchListener(this);
 
+        final TextView month = (TextView)findViewById(R.id.cal_text);
+        month.setText(DateUtils.getMonthString(mView.getMonth(), DateUtils.LENGTH_LONG)+" "+mView.getYear());
+
         Button prev = (Button)findViewById(R.id.b_prev);
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mView.previousMonth();
+                month.setText(DateUtils.getMonthString(mView.getMonth(), DateUtils.LENGTH_LONG)+" "+mView.getYear());
             }
         });
         Button next = (Button)findViewById(R.id.b_next);
@@ -58,9 +63,12 @@ public class CheckEntryCal extends Activity implements CalendarView.OnCellTouchL
             @Override
             public void onClick(View v) {
                 mView.nextMonth();
+                month.setText(DateUtils.getMonthString(mView.getMonth(), DateUtils.LENGTH_LONG)+" "+mView.getYear());
 
             }
         });
+
+
 
     }
 

@@ -36,12 +36,14 @@ public class EntryListAdapter extends ArrayAdapter {
      * Context
      */
     private Context context;
+    CourseDatabaseHandler courseDatabaseHandler = null;
 
     public EntryListAdapter(Context context, List<Entry> diffList, int mode) {
         super(context, R.layout.single_list_item_entry, diffList);
         this.context = context;
         this.diffList = diffList;
         MODE = mode;
+        courseDatabaseHandler = new CourseDatabaseHandler(context);
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -108,8 +110,8 @@ public class EntryListAdapter extends ArrayAdapter {
         }
 
         //Button b = (Button) row.findViewById(R.id.elist_extra);
-
-        tv.setText(entry.getCourse_id());
+        Course c = courseDatabaseHandler.getCourse(entry.getCourse_lid());
+        tv.setText(c.getName());
         //tvExtra.setVisibility(View.GONE);
         imva.setImageResource(R.drawable.e_chalkbox);
         imvb.setImageResource(R.drawable.e_chalkbox);

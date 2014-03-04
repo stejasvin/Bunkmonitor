@@ -47,7 +47,7 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		String CREATE_courseS_TABLE = "CREATE TABLE " + TABLE_COURSES + "("
 				+ KEY_LOCAL_ID + " INTEGER PRIMARY KEY,"
-                + KEY_ID + " TEXT UNIQUE,"
+                + KEY_ID + " TEXT,"
 				+ KEY_NAME + " TEXT,"
                 + KEY_CREDITS + " TEXT,"
                 + KEY_SLOT + " TEXT,"
@@ -98,15 +98,15 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	// Getting single course
-	public Course getCourse(String id) {
-        if(id==null)
+	public Course getCourse(String lid) {
+        if(lid==null)
             return null;
 
 		SQLiteDatabase db = this.getReadableDatabase();
 
 		Cursor cursor = db.query(TABLE_COURSES, new String[]{"*"},
-                KEY_ID + "=?",
-				new String[] { id }, null, null, null, null);
+                KEY_LOCAL_ID + "=?",
+				new String[] { lid }, null, null, null, null);
 
 		if (cursor != null)
 			cursor.moveToFirst();

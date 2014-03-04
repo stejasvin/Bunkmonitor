@@ -1,7 +1,6 @@
 package com.example.bunkmonitor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -9,7 +8,7 @@ import java.util.List;
 */
 public class Entry {
 
-    private String course_id;
+    private String course_lid;
     private int attended;
     private int bunked;
     private int cancelled;
@@ -48,19 +47,19 @@ public class Entry {
         this.attended = attended;
     }
 
-    public String getCourse_id() {
-        return course_id;
+    public String getCourse_lid() {
+        return course_lid;
     }
 
-    public void setCourse_id(String course_id) {
-        this.course_id = course_id;
+    public void setCourse_lid(String course_lid) {
+        this.course_lid = course_lid;
     }
 
     public static List<Entry> getEntryList(List<Course> activeCList){
         List<Entry> entryList = new ArrayList<Entry>();
         for(Course c: activeCList){
             Entry entry = new Entry();
-            entry.setCourse_id(c.getId());
+            entry.setCourse_lid(c.getLocalId());
             entryList.add(entry);
         }
         return entryList;
