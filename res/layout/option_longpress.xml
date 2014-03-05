@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit details"
+        android:id="@+id/longp_edit"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignLeft="@+id/longp_rem"
+        android:layout_alignRight="@+id/longp_rem"
+        android:background="@drawable/ls_selector"
+        android:textColor="@android:color/white"
+        android:padding="10sp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remove course"
+        android:id="@+id/longp_rem"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/longp_edit"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/ls_selector"
+        android:textColor="@android:color/white"
+        android:padding="10sp"/>
+</RelativeLayout>

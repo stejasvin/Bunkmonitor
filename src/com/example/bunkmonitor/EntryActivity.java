@@ -12,9 +12,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -51,9 +51,8 @@ public class EntryActivity extends Activity {
             date = Utilities.getDate(Utilities.getCurrentTime());
         String[] s = date.split("/");
         Utilities.processDateArray(s);
-        Calendar cal = Calendar.getInstance();
+        final Calendar cal = Calendar.getInstance();
         cal.set(Integer.decode(s[2]),Integer.decode(s[1])-1,Integer.decode(s[0]));
-        Utilities.toggleActiveCourses(this,cal.get(Calendar.DAY_OF_WEEK));
 
         listView = (ListView) findViewById(R.id.listview1);
         listView.setClickable(false);
@@ -70,31 +69,47 @@ public class EntryActivity extends Activity {
         Button attAll = (Button)findViewById(R.id.es_b_attall);
 
         if(MODE == Utilities.WRITE){
+            Utilities.toggleActiveCourses(this,cal.get(Calendar.DAY_OF_WEEK));
             cList = courseDatabaseHandler.getAllActiveCourses();
             if(cList.size()==0){
                 noCourses.setVisibility(View.VISIBLE);
                 llAll.setVisibility(View.GONE);
             }else{
+                //gets an empty list
                 eList = Entry.getEntryList(cList);
-                EntryListAdapter adapter = new EntryListAdapter(this,eList,MODE);
-                listView.setAdapter(adapter);
-            }
-        }else if(MODE == Utilities.READ){
-            if(date==null){
-                Toast.makeText(this,"Error date null",Toast.LENGTH_LONG).show();
-                finish();
-                return;
-            }
-            done.setVisibility(View.GONE);
-            eList = entryDetailsDatabaseHandler.getEntryListByDate(date);
-            if(eList.size()==0){
-                noCourses.setVisibility(View.VISIBLE);
-                llAll.setVisibility(View.GONE);
-            }else{
+
+                //Getting a hashmap of entries on that date and adding to list of courses.
+                //The map might not contain all courses available on that date as only
+                //those entries will be there
+                HashMap<String,Entry> eMap = entryDetailsDatabaseHandler.getEntryListByDate(date);
+                if(eMap!=null && eMap.size()>0)
+                    for (Entry entry : eList) {
+                        Entry temp = eMap.get(entry.getCourse_lid());
+                        entry.setAttended(temp.getAttended());
+                        entry.setBunked(temp.getBunked());
+                        entry.setCancelled(temp.getCancelled());
+                    }
+
                 EntryListAdapter adapter = new EntryListAdapter(this,eList,MODE);
                 listView.setAdapter(adapter);
             }
         }
+//        else if(MODE == Utilities.READ){
+//            if(date==null){
+//                Toast.makeText(this,"Error date null",Toast.LENGTH_LONG).show();
+//                finish();
+//                return;
+//            }
+//            done.setVisibility(View.GONE);
+//            eList = entryDetailsDatabaseHandler.getEntryListByDate(date);
+//            if(eList.size()==0){
+//                noCourses.setVisibility(View.VISIBLE);
+//                llAll.setVisibility(View.GONE);
+//            }else{
+//                EntryListAdapter adapter = new EntryListAdapter(this,eList,MODE);
+//                listView.setAdapter(adapter);
+//            }
+//        }
 
         done.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +127,29 @@ public class EntryActivity extends Activity {
             }
         });
 
+        /*prev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                cal.add(Calendar.DAY_OF_MONTH,-1);
+                Intent intent = getIntent();
+                intent.putExtra("date",Utilities.getDate(cal.getTime().toString()));
+                startActivity(intent);
+
+            }
+        });
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                cal.add(Calendar.DAY_OF_MONTH, 1);
+                Intent intent = getIntent();
+                intent.putExtra("date", Utilities.getDate(cal.getTime().toString()));
+                startActivity(intent);
+
+            }
+        });*/
 //        //Setting alarm for next day
 //        Utilities.setRecurringAlarm(this,0);
 

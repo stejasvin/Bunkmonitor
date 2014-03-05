@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
@@ -183,7 +183,7 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public List<Entry> getEntryListByDate(String date) {
+    /*public List<Entry> getEntryListByDate(String date) {
 
         if(date==null)
             return null;
@@ -230,7 +230,48 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
 
         return entryList;
 
+    }*/
+
+    public HashMap<String,Entry> getEntryListByDate(String date) {
+
+        if(date==null)
+            return null;
+
+        HashMap<String,Entry> entryList = new HashMap<String,Entry>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_ENTRY, new String[]{"*"},
+                KEY_TIME + "=?",
+                new String[] { date }, null, null, null, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Entry entry = new Entry();
+                entry.setCourse_lid(cursor.getString(1));
+                int status = cursor.getInt(2);
+                switch (status){
+                    case Utilities.ATTENDED:
+                        entry.setAttended(1);
+                        break;
+                    case Utilities.BUNKED:
+                        entry.setBunked(1);
+                        break;
+                    case Utilities.CANCELLED:
+                        entry.setCancelled(1);
+                        break;
+                }
+                // Adding course to list
+                entryList.put(entry.getCourse_lid(),entry);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+
+        return entryList;
+
     }
+
 
     public void batchEdit(Context context, String fromDate, String toDate, int mode){
         String[] sf = fromDate.split("/");

@@ -3,10 +3,6 @@ package com.example.bunkmonitor;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,13 +15,12 @@ import java.util.List;
 /**
  * Created by stejasvin on 3/5/14.
  */
-public class LockscreenActivity extends Activity implements SensorEventListener{
+public class LockscreenActivity extends Activity{
 
     private static final String TAG = "LockscreenActivity";
 
-    SensorManager mSensorManager;
-    Sensor mSensor;
-
+//    SensorManager mSensorManager;
+//    Sensor mSensor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +30,8 @@ public class LockscreenActivity extends Activity implements SensorEventListener{
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
-
-        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-
-        if(getIntent().getIntExtra("PROX", 0)==1)
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+//        if(getIntent().getIntExtra("PROX", 0)==1)
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
         Button snooze = (Button) findViewById(R.id.ls_snooze);
         Button attall = (Button) findViewById(R.id.ls_attall);
@@ -162,39 +153,39 @@ public class LockscreenActivity extends Activity implements SensorEventListener{
         finish();
     }
 
-    protected void onResume() {
-
-        super.onResume();
-        SharedPreferences mPrefs = getSharedPreferences(
-                "bunkmonitor.SHARED_PREF", 0);
-        if(mPrefs.getBoolean("FLAG_LS_ACT",true))
-            mSensorManager.registerListener(this, mSensor,SensorManager.SENSOR_DELAY_FASTEST);
-    }
-
-    protected void onDestroy() {
-        super.onPause();
-        mSensorManager.unregisterListener(this);
-    }
-
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-    }
-
-    public void onSensorChanged(SensorEvent event) {
-        if (event.values[0] == 0) {
-            //near
-            int a;
-            a=1;
-        } else {
-            //far
-            Intent i = getIntent();
-            i.putExtra("PROX",1);
-//            finish();
-//            startActivity(i);
-        }
-        SharedPreferences mPrefs = getSharedPreferences(
-                "bunkmonitor.SHARED_PREF", 0);
-        SharedPreferences.Editor mEditor = mPrefs.edit();
-        //mEditor.putBoolean("FLAG_LS_ACT",false).commit();
-        //mSensorManager.unregisterListener(this);
-    }
+//    protected void onResume() {
+//
+//        super.onResume();
+//        SharedPreferences mPrefs = getSharedPreferences(
+//                "bunkmonitor.SHARED_PREF", 0);
+//        if(mPrefs.getBoolean("FLAG_LS_ACT",true))
+//            mSensorManager.registerListener(this, mSensor,SensorManager.SENSOR_DELAY_FASTEST);
+//    }
+//
+//    protected void onDestroy() {
+//        super.onPause();
+//        mSensorManager.unregisterListener(this);
+//    }
+//
+//    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+//    }
+//
+//    public void onSensorChanged(SensorEvent event) {
+//        if (event.values[0] == 0) {
+//            //near
+//            int a;
+//            a=1;
+//        } else {
+//            //far
+//            Intent i = getIntent();
+//            i.putExtra("PROX",1);
+////            finish();
+////            startActivity(i);
+//        }
+//        SharedPreferences mPrefs = getSharedPreferences(
+//                "bunkmonitor.SHARED_PREF", 0);
+//        SharedPreferences.Editor mEditor = mPrefs.edit();
+//        //mEditor.putBoolean("FLAG_LS_ACT",false).commit();
+//        //mSensorManager.unregisterListener(this);
+//    }
 }

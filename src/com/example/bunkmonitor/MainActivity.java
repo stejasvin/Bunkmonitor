@@ -99,7 +99,7 @@ public class MainActivity extends Activity {
             expList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(MainActivity.this, AddNewCourse.class);
+                    Intent intent = new Intent(MainActivity.this, optionsLongPress.class);
                     intent.putExtra("IS_EDIT", true);
 
                     //calculating position
@@ -114,7 +114,7 @@ public class MainActivity extends Activity {
 
                     }
                     intent.putExtra("COURSE_LID", cList.get(index).getLocalId());
-                    startActivityForResult(intent, ENTRYLIST);
+                    startActivityForResult(intent, REFRESH);
                     return false;
                 }
             });
@@ -226,13 +226,14 @@ public class MainActivity extends Activity {
                 Intent i = getIntent();
                 finish();
                 startActivity(i);
-            } else if (requestCode == REQUEST_CHECK_ENTRY) {
-                Intent ret = new Intent(this, EntryActivity.class);
-                ret.putExtra("date", Utilities.getDate(data.getStringExtra("date")));
-                ret.putExtra("bunkmonitor.MODE", Utilities.READ);
-                //this.setResult(RESULT_OK, ret);
-                startActivity(ret);
             }
+//            else if (requestCode == REQUEST_CHECK_ENTRY) {
+//                Intent ret = new Intent(this, EntryActivity.class);
+//                ret.putExtra("date", Utilities.getDate(data.getStringExtra("date")));
+//                ret.putExtra("bunkmonitor.MODE", Utilities.READ);
+//                //this.setResult(RESULT_OK, ret);
+//                startActivity(ret);
+//            }
     }
 
     @Override

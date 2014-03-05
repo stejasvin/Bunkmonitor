@@ -21,7 +21,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 "bunkmonitor.SHARED_PREF", 0);
         SharedPreferences.Editor mEditor = mPrefs.edit();
         mEditor.putBoolean("SNOOZE", false).commit();
-        mEditor.putBoolean("FLAG_LS_ACT",true).commit();
+        //mEditor.putBoolean("FLAG_LS_ACT",true).commit();
 
 
         Intent downloader = new Intent(context, DailyNotifService.class);

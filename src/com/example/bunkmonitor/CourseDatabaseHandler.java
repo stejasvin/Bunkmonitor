@@ -222,4 +222,11 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deleteCourse(String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_COURSES, KEY_LOCAL_ID + " = ?",
+                new String[]{id});
+        db.close();
+    }
+
 }
