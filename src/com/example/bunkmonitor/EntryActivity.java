@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -54,6 +57,9 @@ public class EntryActivity extends Activity {
         final Calendar cal = Calendar.getInstance();
         cal.set(Integer.decode(s[2]),Integer.decode(s[1])-1,Integer.decode(s[0]));
 
+        TextView tvDate = (TextView)findViewById(R.id.entry_date);
+        tvDate.setText(date);
+
         listView = (ListView) findViewById(R.id.listview1);
         listView.setClickable(false);
         listView.setItemsCanFocus(false);
@@ -64,6 +70,8 @@ public class EntryActivity extends Activity {
 
         TextView noCourses = (TextView)findViewById(R.id.entry_no_courses);
         LinearLayout llAll = (LinearLayout)findViewById(R.id.entry_ll);
+        LinearLayout llAll1 = (LinearLayout)findViewById(R.id.entry_ll1);
+        LinearLayout llAll2 = (LinearLayout)findViewById(R.id.entry_ll2);
 
         Button done = (Button)findViewById(R.id.es_b_done);
         Button attAll = (Button)findViewById(R.id.es_b_attall);
@@ -73,7 +81,11 @@ public class EntryActivity extends Activity {
             cList = courseDatabaseHandler.getAllActiveCourses();
             if(cList.size()==0){
                 noCourses.setVisibility(View.VISIBLE);
-                llAll.setVisibility(View.GONE);
+                //llAll.setVisibility(View.GONE);
+                llAll1.setVisibility(View.GONE);
+                listView.setVisibility(View.GONE);
+                llAll2.setVisibility(View.INVISIBLE);
+
             }else{
                 //gets an empty list
                 eList = Entry.getEntryList(cList);
@@ -127,18 +139,21 @@ public class EntryActivity extends Activity {
             }
         });
 
-        /*prev.setOnClickListener(new View.OnClickListener() {
+        Button prev = (Button)findViewById(R.id.es_b_prev);
+        prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 cal.add(Calendar.DAY_OF_MONTH,-1);
                 Intent intent = getIntent();
                 intent.putExtra("date",Utilities.getDate(cal.getTime().toString()));
+                finish();
                 startActivity(intent);
 
             }
         });
 
+        Button next = (Button)findViewById(R.id.es_b_next);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,10 +161,11 @@ public class EntryActivity extends Activity {
                 cal.add(Calendar.DAY_OF_MONTH, 1);
                 Intent intent = getIntent();
                 intent.putExtra("date", Utilities.getDate(cal.getTime().toString()));
+                finish();
                 startActivity(intent);
 
             }
-        });*/
+        });
 //        //Setting alarm for next day
 //        Utilities.setRecurringAlarm(this,0);
 
@@ -208,6 +224,27 @@ public class EntryActivity extends Activity {
 
         setResult(RESULT_OK);
         finish();
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.entry, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.extras:
+
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
