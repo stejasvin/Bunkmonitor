@@ -62,38 +62,38 @@ public class EditEntryActivity extends Activity {
             }
         });
 
-        Button bCal1 = (Button)findViewById(R.id.edit_b1);
-        Button bCal2 = (Button)findViewById(R.id.edit_b2);
-        Button bCal3 = (Button)findViewById(R.id.edit_b3);
+//        Button bCal1 = (Button)findViewById(R.id.edit_b1);
+//        Button bCal2 = (Button)findViewById(R.id.edit_b2);
+//        Button bCal3 = (Button)findViewById(R.id.edit_b3);
         Button bDone = (Button)findViewById(R.id.edit_done);
 
-        bCal1.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(EditEntryActivity.this,CheckEntryCal.class);
-                startActivityForResult(intent,REQUEST_SINGLE);
-            }
-        });
-
-        bCal2.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(EditEntryActivity.this,CheckEntryCal.class);
-                startActivityForResult(intent,REQUEST_BATCH_FROM);
-            }
-        });
-
-        bCal3.setOnClickListener(new View.OnClickListener() {
-
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(EditEntryActivity.this,CheckEntryCal.class);
-                startActivityForResult(intent,REQUEST_BATCH_TO);
-            }
-        });
+//        bCal1.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(EditEntryActivity.this,CheckEntryCal.class);
+//                startActivityForResult(intent,REQUEST_SINGLE);
+//            }
+//        });
+//
+//        bCal2.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(EditEntryActivity.this,CheckEntryCal.class);
+//                startActivityForResult(intent,REQUEST_BATCH_FROM);
+//            }
+//        });
+//
+//        bCal3.setOnClickListener(new View.OnClickListener() {
+//
+//
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(EditEntryActivity.this,CheckEntryCal.class);
+//                startActivityForResult(intent,REQUEST_BATCH_TO);
+//            }
+//        });
 
         bDone.setOnClickListener(new View.OnClickListener() {
             @Override

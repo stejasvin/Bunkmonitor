@@ -23,6 +23,7 @@ public class MainActivity extends Activity {
     private static final int ADDNEWCOURSE = 20;
     private static final int REQUEST_CHECK_ENTRY = 30;
     private static final String TAG = "MainActivity";
+    private static final int REFRESH = 40;
     //    private ListView list;
     CoursesExpListAdapter adapter;
     List<Course> cList;
@@ -192,7 +193,7 @@ public class MainActivity extends Activity {
             case R.id.manual_settings:
 
                 intent = new Intent(MainActivity.this, EditEntryActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,REFRESH);
                 return true;
 
             case R.id.settings:
@@ -210,6 +211,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REFRESH) {
+            Intent i = getIntent();
+            finish();
+            startActivity(i);
+        }
         if (resultCode == RESULT_OK)
             if (requestCode == ENTRYLIST) {
                 Intent i = getIntent();

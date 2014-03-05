@@ -41,14 +41,13 @@
             android:layout_width="fill_parent"
             android:orientation="vertical"
             android:visibility="visible"
-            android:padding="20sp"
-            >
+            android:padding="20sp">
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:text="Single Entry"
-                android:textSize="30sp"/>
+                android:textSize="30sp" />
 
             <LinearLayout
 
@@ -58,27 +57,12 @@
                 android:paddingTop="10sp"
                 android:gravity="center">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Select date "
-                        android:textSize="20sp"
-                        android:layout_weight="1"/>
-
-                <Button
-                    android:id="@+id/edit_b1"
-                    android:layout_height="70sp"
-                    android:layout_width="70dp"
-                    android:background="@drawable/calendar_icon1"
-                    android:padding="10sp"
-                    />
-
-                </LinearLayout>
+                    android:text="Select date "
+                    android:textSize="20sp"
+                    android:gravity="center" />
 
 
                 <DatePicker
@@ -96,14 +80,13 @@
             android:layout_width="fill_parent"
             android:orientation="vertical"
             android:visibility="gone"
-            android:padding="20sp"
-            >
+            android:padding="20sp">
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:text="Batch Entry"
-                android:textSize="30sp"/>
+                android:textSize="30sp" />
 
             <LinearLayout
                 android:layout_height="wrap_content"
@@ -112,26 +95,15 @@
                 android:paddingTop="10sp"
                 android:gravity="center">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:text="Select From date "
+                    android:textSize="20sp"
+                    android:gravity="center" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Select From date "
-                        android:textSize="20sp"
-                        android:layout_weight="1"/>
-                    <Button
-                        android:id="@+id/edit_b2"
-                        android:layout_height="70sp"
-                        android:layout_width="70dp"
-                        android:background="@drawable/calendar_icon1"
-                        android:padding="10sp"/>
-                </LinearLayout>
 
-                    <DatePicker
+                <DatePicker
                     android:id="@+id/edit_date2"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"></DatePicker>
@@ -143,28 +115,17 @@
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:orientation="vertical"
-                android:paddingTop="15sp">
+                android:paddingTop="15sp"
+                android:gravity="center">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:text="Select To date "
+                    android:textSize="20sp"
+                    android:gravity="center" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Select To date "
-                        android:textSize="20sp"
-                        android:layout_weight="1"/>
-                    <Button
-                        android:id="@+id/edit_b3"
-                        android:layout_height="70sp"
-                        android:layout_width="70dp"
-                        android:background="@drawable/calendar_icon1"
-                        android:padding="10sp"/>
-                </LinearLayout>
-
-                    <DatePicker
+                <DatePicker
                     android:id="@+id/edit_date3"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"></DatePicker>
@@ -176,8 +137,7 @@
                 android:id="@+id/edit_rg2"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
-                android:paddingTop="15sp"
-                >
+                android:paddingTop="15sp">
 
                 <RadioButton
                     android:id="@+id/edit_rb3"
@@ -199,12 +159,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center">
-        <Button
-            android:id="@+id/edit_done"
-            android:layout_height="70sp"
-            android:layout_width="70sp"
-            android:background="@drawable/go_selector"
-            />
+
+            <Button
+                android:id="@+id/edit_done"
+                android:layout_height="70sp"
+                android:layout_width="70sp"
+                android:background="@drawable/go_selector" />
         </LinearLayout>
 
 

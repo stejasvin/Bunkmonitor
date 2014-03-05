@@ -36,11 +36,10 @@ public class Settings extends Activity {
                 SharedPreferences.Editor mEditor = mPrefs.edit();
                 mEditor.putInt("NOTIF_TIME", timePicker.getCurrentHour() * 100 + timePicker.getCurrentMinute()).commit();
                 Utilities.setRecurringAlarm(Settings.this,0);
+                setResult(RESULT_OK);
                 finish();
             }
         });
-
-
 
     }
 }

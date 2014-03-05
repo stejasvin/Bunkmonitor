@@ -21,7 +21,8 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/entry_ll">
+        android:id="@+id/entry_ll"
+        android:orientation="vertical">
 
     <!-- This layout should be same a that in single_list_item_entry for alignment -->
     <LinearLayout
