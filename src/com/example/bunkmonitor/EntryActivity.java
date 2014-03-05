@@ -28,6 +28,7 @@ public class EntryActivity extends Activity {
 
     private static final String TAG = "EntryActivity";
     int MODE = Utilities.WRITE;
+
     ListView listView;
     List<Course> cList;
     List<Entry> eList;
@@ -41,23 +42,24 @@ public class EntryActivity extends Activity {
         setContentView(R.layout.entry_sheet);
 
         //Clear notification
-        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(0);
 
         Intent iThis = getIntent();
 
-        MODE = iThis.getIntExtra("bunkmonitor.MODE",Utilities.WRITE);
+        MODE = iThis.getIntExtra("bunkmonitor.MODE", Utilities.WRITE);
+        boolean extraMode = iThis.getBooleanExtra("EXTRAS", false);
 
         //To make sure the correct courses are displayed
         date = iThis.getStringExtra("date");
-        if(date==null)
+        if (date == null)
             date = Utilities.getDate(Utilities.getCurrentTime());
         String[] s = date.split("/");
         Utilities.processDateArray(s);
         final Calendar cal = Calendar.getInstance();
-        cal.set(Integer.decode(s[2]),Integer.decode(s[1])-1,Integer.decode(s[0]));
+        cal.set(Integer.decode(s[2]), Integer.decode(s[1]) - 1, Integer.decode(s[0]));
 
-        TextView tvDate = (TextView)findViewById(R.id.entry_date);
+        TextView tvDate = (TextView) findViewById(R.id.entry_date);
         tvDate.setText(date);
 
         listView = (ListView) findViewById(R.id.listview1);
@@ -68,41 +70,64 @@ public class EntryActivity extends Activity {
         final CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
         final EntryDetailsDatabaseHandler entryDetailsDatabaseHandler = new EntryDetailsDatabaseHandler(this);
 
-        TextView noCourses = (TextView)findViewById(R.id.entry_no_courses);
-        LinearLayout llAll = (LinearLayout)findViewById(R.id.entry_ll);
-        LinearLayout llAll1 = (LinearLayout)findViewById(R.id.entry_ll1);
-        LinearLayout llAll2 = (LinearLayout)findViewById(R.id.entry_ll2);
+        TextView noCourses = (TextView) findViewById(R.id.entry_no_courses);
+        LinearLayout llAll = (LinearLayout) findViewById(R.id.entry_ll);
+        LinearLayout llAll1 = (LinearLayout) findViewById(R.id.entry_ll1);
+        LinearLayout llAll2 = (LinearLayout) findViewById(R.id.entry_ll2);
 
-        Button done = (Button)findViewById(R.id.es_b_done);
-        Button attAll = (Button)findViewById(R.id.es_b_attall);
+        Button done = (Button) findViewById(R.id.es_b_done);
+        Button attAll = (Button) findViewById(R.id.es_b_attall);
 
-        if(MODE == Utilities.WRITE){
-            Utilities.toggleActiveCourses(this,cal.get(Calendar.DAY_OF_WEEK));
-            cList = courseDatabaseHandler.getAllActiveCourses();
-            if(cList.size()==0){
+        if (MODE == Utilities.WRITE) {
+            Utilities.toggleActiveCourses(this, cal.get(Calendar.DAY_OF_WEEK));
+            if (!extraMode)
+                cList = courseDatabaseHandler.getAllActiveCourses();
+            else
+                cList = courseDatabaseHandler.getAllCourses();
+
+            //gets an empty list
+            eList = Entry.getEntryList(cList);
+
+            //Getting a hashmap of entries on that date and adding to list of courses.
+            //The map might not contain all courses available on that date as only
+            //those entries will be there
+            HashMap<String, Entry> eMap = entryDetailsDatabaseHandler.getEntryListByDate(date);
+            if (eMap != null && eMap.size() > 0) {
+                for (Entry entry : eList) {
+                    if(!eMap.containsKey(entry.getCourse_lid()))
+                        continue;
+                    Entry temp = eMap.get(entry.getCourse_lid());
+                    entry.setAttended(temp.getAttended());
+                    entry.setBunked(temp.getBunked());
+                    entry.setCancelled(temp.getCancelled());
+                    eMap.remove(entry.getCourse_lid());
+                }
+
+                //for extra classes
+                if (eMap.size() > 0) {
+                    List<Course> courseList = courseDatabaseHandler.getAllCourses();
+                    for (Course c : courseList) {
+                        if (eMap.containsKey(c.getLocalId())) {
+                            eList.add(eMap.get(c.getLocalId()));
+                            eMap.remove(c.getLocalId());
+                            if (eMap.size() == 0){
+
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (eList.size() == 0) {
                 noCourses.setVisibility(View.VISIBLE);
                 //llAll.setVisibility(View.GONE);
                 llAll1.setVisibility(View.GONE);
                 listView.setVisibility(View.GONE);
                 llAll2.setVisibility(View.INVISIBLE);
 
-            }else{
-                //gets an empty list
-                eList = Entry.getEntryList(cList);
-
-                //Getting a hashmap of entries on that date and adding to list of courses.
-                //The map might not contain all courses available on that date as only
-                //those entries will be there
-                HashMap<String,Entry> eMap = entryDetailsDatabaseHandler.getEntryListByDate(date);
-                if(eMap!=null && eMap.size()>0)
-                    for (Entry entry : eList) {
-                        Entry temp = eMap.get(entry.getCourse_lid());
-                        entry.setAttended(temp.getAttended());
-                        entry.setBunked(temp.getBunked());
-                        entry.setCancelled(temp.getCancelled());
-                    }
-
-                EntryListAdapter adapter = new EntryListAdapter(this,eList,MODE);
+            } else {
+                EntryListAdapter adapter = new EntryListAdapter(this, eList, MODE);
                 listView.setAdapter(adapter);
             }
         }
@@ -127,7 +152,7 @@ public class EntryActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-            postEntry(false);
+                postEntry(false);
 
             }
         });
@@ -139,27 +164,29 @@ public class EntryActivity extends Activity {
             }
         });
 
-        Button prev = (Button)findViewById(R.id.es_b_prev);
+        Button prev = (Button) findViewById(R.id.es_b_prev);
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                cal.add(Calendar.DAY_OF_MONTH,-1);
+                cal.add(Calendar.DAY_OF_MONTH, -1);
                 Intent intent = getIntent();
-                intent.putExtra("date",Utilities.getDate(cal.getTime().toString()));
+                intent.putExtra("EXTRAS", false);
+                intent.putExtra("date", Utilities.getDate(cal.getTime().toString()));
                 finish();
                 startActivity(intent);
 
             }
         });
 
-        Button next = (Button)findViewById(R.id.es_b_next);
+        Button next = (Button) findViewById(R.id.es_b_next);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 cal.add(Calendar.DAY_OF_MONTH, 1);
                 Intent intent = getIntent();
+                intent.putExtra("EXTRAS", false);
                 intent.putExtra("date", Utilities.getDate(cal.getTime().toString()));
                 finish();
                 startActivity(intent);
@@ -171,21 +198,21 @@ public class EntryActivity extends Activity {
 
     }
 
-    private void postEntry(boolean isAttAll){
+    private void postEntry(boolean isAttAll) {
 
         CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
         EntryDetailsDatabaseHandler entryDetailsDatabaseHandler = new EntryDetailsDatabaseHandler(this);
         EntryDetails entryDetails = new EntryDetails();
 
-        if(isAttAll){
-            for(Entry e:eList){
+        if (isAttAll) {
+            for (Entry e : eList) {
                 e.setAttended(1);
                 e.setBunked(0);
                 e.setCancelled(0);
             }
         }
 
-        for(int i=0;i<cList.size();i++){
+        for (int i = 0; i < cList.size(); i++) {
             //Adding the difflist entries to orig list and updating the db
             Course c = cList.get(i);
             Entry e = eList.get(i);
@@ -193,18 +220,18 @@ public class EntryActivity extends Activity {
             entryDetails.setCourse_lid(c.getLocalId());
             entryDetails.setEntered(1);
 
-            if(e.getAttended()==1)
+            if (e.getAttended() == 1)
                 entryDetails.setStatus(Utilities.ATTENDED);
-            else if(e.getBunked()==1)
+            else if (e.getBunked() == 1)
                 entryDetails.setStatus(Utilities.BUNKED);
-            else if(e.getCancelled()==1)
+            else if (e.getCancelled() == 1)
                 entryDetails.setStatus(Utilities.CANCELLED);
 
             entryDetails.setTime(date);
-            Log.i(TAG,"Date: "+Utilities.getDate(Utilities.getCurrentTime()));
+            Log.i(TAG, "Date: " + Utilities.getDate(Utilities.getCurrentTime()));
 
             //if error in inserting data, unique contraint!
-            if(entryDetailsDatabaseHandler.addEntry(entryDetails)!=-1){
+            if (entryDetailsDatabaseHandler.addEntry(entryDetails) != -1) {
                 //recalculating all bunks and attendance in case of conflict on replace
                 Entry entry = entryDetailsDatabaseHandler.getAllAttTotal(c.getLocalId());
                 c.setAttended(entry.getAttended());
@@ -240,7 +267,10 @@ public class EntryActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.extras:
 
-
+                Intent intent1 = getIntent();
+                intent1.putExtra("EXTRAS", true);
+                finish();
+                startActivity(intent1);
 
             default:
                 return super.onOptionsItemSelected(item);
