@@ -140,13 +140,15 @@ public class MainActivity extends Activity {
                 "bunkmonitor.SHARED_PREF", 0);
         SharedPreferences.Editor mEditor = mPrefs.edit();
         mEditor.putInt("NOTIF_TIME",1700);
-        mEditor.putString("MONDAY", "ABCDGP").commit();
-        mEditor.putString("TUESDAY", "BCDEAQ").commit();
-        mEditor.putString("WEDNESDAY", "CDEFBR").commit();
-        mEditor.putString("THURSDAY", "EFGADS").commit();
-        mEditor.putString("FRIDAY", "FGABCE").commit();
+        mEditor.putString("MONDAY", "").commit();
+        mEditor.putString("TUESDAY", "").commit();
+        mEditor.putString("WEDNESDAY", "").commit();
+        mEditor.putString("THURSDAY", "").commit();
+        mEditor.putString("FRIDAY", "").commit();
         mEditor.putString("SATURDAY", "").commit();
         mEditor.putString("SUNDAY", "").commit();
+
+        mEditor.putString("LAST_SLOT","a");
 
         //Set recurring alarms if not snoozed
         if(!mPrefs.getBoolean("SNOOZE",false))

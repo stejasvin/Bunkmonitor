@@ -2,9 +2,11 @@ package com.example.bunkmonitor;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,10 +17,17 @@ import android.widget.Toast;
 //Intent params - IS_EDIT,COURSE_ID
 public class AddNewCourse extends Activity {
 
+    String[] slotsDays;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_courses);
+
+        final SharedPreferences mPrefs = getSharedPreferences(
+                "bunkmonitor.SHARED_PREF", 0);
+        final SharedPreferences.Editor mEditor = mPrefs.edit();
+
+        slotsDays = Utilities.getSlotsPerDay(this);
 
         Intent iThis = getIntent();
         final boolean isEdit = iThis.getBooleanExtra("IS_EDIT", false);
@@ -29,7 +38,16 @@ public class AddNewCourse extends Activity {
         final EditText etId = (EditText)findViewById(R.id.et_id);
         final EditText etCredits = (EditText)findViewById(R.id.et_credits);
         final EditText etProf = (EditText)findViewById(R.id.et_prof);
-        final EditText etSlot = (EditText)findViewById(R.id.et_slot);
+
+        final CheckBox[] cbArray = new CheckBox[6];
+        cbArray[0] = (CheckBox)findViewById(R.id.add_mon);
+        cbArray[1] = (CheckBox)findViewById(R.id.add_tue);
+        cbArray[2] = (CheckBox)findViewById(R.id.add_wed);
+        cbArray[3] = (CheckBox)findViewById(R.id.add_thu);
+        cbArray[4] = (CheckBox)findViewById(R.id.add_fri);
+        cbArray[5] = (CheckBox)findViewById(R.id.add_sat);
+
+        //final EditText etSlot = (EditText)findViewById(R.id.et_slot);
 
         if(isEdit){
             c = courseDatabaseHandler.getCourse(iThis.getStringExtra("COURSE_LID"));
@@ -37,7 +55,11 @@ public class AddNewCourse extends Activity {
             etId.setText(c.getId());
             etCredits.setText(c.getCredits());
             etProf.setText(c.getProf());
-            etSlot.setText(c.getSlot());
+
+            for(int i=0;i<6;i++)
+                if(slotsDays[i].contains(c.getSlot()))
+                    cbArray[i].setChecked(true);
+
         }
 
         Button bCreate = (Button)findViewById(R.id.b_create);
@@ -67,10 +89,32 @@ public class AddNewCourse extends Activity {
                 cnew.setName(etName.getText().toString());
                 cnew.setCredits(etCredits.getText().toString());
                 cnew.setProf(etProf.getText().toString());
-                cnew.setSlot(etSlot.getText().toString());
+
+                String lastSlot = mPrefs.getString("LAST_SLOT", "a");
+                int charValue = lastSlot.charAt(0);
+                String nextSlot = String.valueOf( (char) (charValue + 1));
+
                 cnew.setActive(1);
-                if(isEdit)
+                if(isEdit){
                     cnew.setLocalId(finalC.getLocalId());
+                }else{
+                    cnew.setSlot(nextSlot);
+                }
+                if(!cnew.getSlot().equals("") && isEdit)
+                    nextSlot = cnew.getSlot();
+                else{
+                    mEditor.putString("LAST_SLOT",nextSlot).commit();
+                }
+
+                for(int i=0;i<6;i++){
+                    slotsDays[i].replace(cnew.getSlot(),"");
+                }
+                for(int i=0;i<6;i++){
+                    if(cbArray[i].isChecked())
+                        slotsDays[i] = slotsDays[i]+nextSlot;
+                }
+
+                Utilities.setSlotsPerDay(AddNewCourse.this,slotsDays);
 
                 if(!isEdit)
                     courseDatabaseHandler.addCourse(cnew);

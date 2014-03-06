@@ -192,6 +192,39 @@ public class Utilities {
                 AlarmManager.INTERVAL_HOUR, recurringDownload);  //Need to use INTERVAL_DAY instead of 10000
     }
 
+    public static String[] getSlotsPerDay(Context context){
+
+         String[] days = new String[6];
+
+         SharedPreferences mPrefs = context.getSharedPreferences(
+                "bunkmonitor.SHARED_PREF", 0);
+
+         days[0] = mPrefs.getString("MONDAY","");
+         days[1] = mPrefs.getString("TUESDAY","");
+         days[2] = mPrefs.getString("WEDNESDAY","");
+         days[3] = mPrefs.getString("THURSDAY","");
+         days[4] = mPrefs.getString("FRIDAY","");
+         days[5] = mPrefs.getString("SATURDAY","");
+
+        return days;
+
+    }
+
+    public static void setSlotsPerDay(Context context,String[] days){
+
+        SharedPreferences mPrefs = context.getSharedPreferences(
+                "bunkmonitor.SHARED_PREF", 0);
+        SharedPreferences.Editor mEditor = mPrefs.edit();
+        mEditor.putString("MONDAY",days[0]).commit();
+        mEditor.putString("TUESDAY",days[1]).commit();
+        mEditor.putString("WEDNESDAY",days[2]).commit();
+        mEditor.putString("THURSDAY",days[3]).commit();
+        mEditor.putString("FRIDAY",days[4]).commit();
+        mEditor.putString("SATURDAY",days[5]).commit();
+
+    }
+
+
     public static void cancelAlarm(Context context){
         Intent downloader = new Intent(context, AlarmReceiver.class);
         PendingIntent recurringDownload = PendingIntent.getBroadcast(context,
