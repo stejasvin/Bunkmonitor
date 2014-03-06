@@ -1,9 +1,13 @@
 package com.example.bunkmonitor;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,13 +26,69 @@ public class LockscreenActivity extends Activity{
 //    SensorManager mSensorManager;
 //    Sensor mSensor;
 
+    private BroadcastReceiver callDetectReceiver;
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+
+        callDetectReceiver = new BroadcastReceiver() {
+
+            public void onReceive(Context context, Intent intent) {
+
+                Log.i(TAG, "calldetectReceiver triggered");
+                String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+
+                if(state.equals(TelephonyManager.EXTRA_STATE_RINGING)){
+                    //Phone is ringing
+                    SharedPreferences mPrefs = getSharedPreferences(
+                            "bunkmonitor.SHARED_PREF", 0);
+                    SharedPreferences.Editor mEditor = mPrefs.edit();
+                    mEditor.putBoolean("SNOOZE",true).commit();
+                    finish();
+                    return;
+
+                }else if(state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)){
+                    //Call received
+
+                }
+                else if (state.equals(TelephonyManager.EXTRA_STATE_IDLE)){
+                    //Call Dropped or rejected
+
+                }
+
+            }
+        };
+        registerReceiver(callDetectReceiver, new IntentFilter("android.intent.action.PHONE_STATE"));
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        unregisterReceiver(callDetectReceiver);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lockscreen);
+        SharedPreferences mPrefs = getSharedPreferences(
+                "bunkmonitor.SHARED_PREF", 0);
+        SharedPreferences.Editor mEditor = mPrefs.edit();
+        mPrefs = getSharedPreferences(
+                "bunkmonitor.SHARED_PREF", 0);
+
+        if(mPrefs.getBoolean("SNOOZE",false)){
+            finish();
+            return;
+        }
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+
 
 //        if(getIntent().getIntExtra("PROX", 0)==1)
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);

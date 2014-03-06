@@ -6,6 +6,12 @@
     android:gravity="center"
     android:padding="15sp">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Notification time"
+        android:textSize="20sp"/>
+
     <TimePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,4 +23,13 @@
         android:id="@+id/set_b"
         android:text="Change"
         android:padding="10sp"/>
+
+    <CheckBox
+        android:id="@+id/set_wakeup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Wake up on notification"
+        android:layout_margin="5sp"
+        android:textSize="15sp"/>
+
 </LinearLayout>

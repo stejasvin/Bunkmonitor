@@ -35,7 +35,7 @@ public class DailyNotifService extends IntentService {
         String lastEntryDate = mPrefs.getString("bunkmonitor.LAST_ENTRY_DATE", "0");
         String today = Utilities.getDate(Utilities.getCurrentTime());
         String sunSlots = mPrefs.getString("SUNDAY","");
-        String satSlots = mPrefs.getString("SUNDAY","");
+        String satSlots = mPrefs.getString("SATURDAY","");
 
         //TODO Need to add checks for long gaps and unsyncs
 

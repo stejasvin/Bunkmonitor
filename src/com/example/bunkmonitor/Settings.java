@@ -20,6 +20,8 @@ public class Settings extends Activity {
         SharedPreferences mPrefs = getSharedPreferences(
                 "bunkmonitor.SHARED_PREF", 0);
         int notifTime = mPrefs.getInt("NOTIF_TIME",1700);
+        boolean isWake = mPrefs.getBoolean("IS_WAKE_UP",true);
+        boolean isLs = mPrefs.getBoolean("IS_LS",true);
 
         final TimePicker timePicker = (TimePicker)findViewById(R.id.timePicker);
         timePicker.setCurrentHour(notifTime/100);

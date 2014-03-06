@@ -178,9 +178,12 @@ public class Utilities {
             //snooze for 1 hour
             updateTime.add(Calendar.HOUR_OF_DAY,1);
         }
-        Intent downloader = new Intent(context, AlarmReceiver.class);
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        intent.putExtra("ALARM", true);
+
         PendingIntent recurringDownload = PendingIntent.getBroadcast(context,
-                0, downloader, PendingIntent.FLAG_CANCEL_CURRENT);
+                0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
         AlarmManager alarms = (AlarmManager) context.getSystemService(
                 Context.ALARM_SERVICE);
 

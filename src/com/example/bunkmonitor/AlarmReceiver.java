@@ -16,6 +16,9 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d(DEBUG_TAG, "Recurring alarm; requesting download service.");
 
+        if(!intent.getBooleanExtra("ALARM",false))
+            return;
+
         //reseting flag for snooze set in Lockscreen Activity
         SharedPreferences mPrefs = context.getSharedPreferences(
                 "bunkmonitor.SHARED_PREF", 0);
