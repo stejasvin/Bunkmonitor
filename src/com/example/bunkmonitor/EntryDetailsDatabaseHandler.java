@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -323,6 +324,7 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
             if(Utilities.getDate(cal.getTime().toString()).equals(toDate))
                 flag = false;
         }
+
         //counts att,bunks for all courses
         Entry entry;
         cList = courseDatabaseHandler.getAllCourses();
@@ -339,6 +341,65 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
         Utilities.toggleActiveCourses(context,cal.get(Calendar.DAY_OF_WEEK));
 
     }
+
+    public HashMap<String,ArrayList<String>> getBunksDates(){
+
+        HashMap<String,ArrayList<String>> hashMap = new HashMap<String, ArrayList<String>>();
+        // Select All Query
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_ENTRY, new String[]{KEY_LOCAL_COURSE_ID,KEY_TIME},
+                KEY_STATUS + "=?", new String[] {Utilities.BUNKED+""}, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                if(hashMap.containsKey(cursor.getString(0)))
+                    hashMap.get(cursor.getString(0)).add(cursor.getString(1));
+                else{
+                    ArrayList<String> temp = new ArrayList<String>();
+                    temp.add(cursor.getString(1));
+                    hashMap.put(cursor.getString(0),temp);
+                }
+
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        return hashMap;
+
+    }
+
+    public void changeBunkToAttEntry(Context context, Course course,String date){
+
+        //to be consistent with course database
+        CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(context);
+        course.decBunked();
+        course.incAttended();
+        courseDatabaseHandler.updateCourse(course);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_ENTRY, new String[]{"*"},
+                KEY_LOCAL_COURSE_ID + "=? AND "+KEY_TIME + "=?",
+                new String[] { course.getLocalId(),date }, null, null, null, null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        EntryDetails entryDetails = new EntryDetails();
+        entryDetails.setL_id(cursor.getString(0));
+        entryDetails.setCourse_lid(cursor.getString(1));
+        entryDetails.setStatus(cursor.getInt(2));
+        entryDetails.setTime(cursor.getString(3));
+        entryDetails.setEntered(cursor.getInt(4));
+
+        entryDetails.setStatus(Utilities.ATTENDED);
+
+        db.close();
+        updateEntryDetails(entryDetails);
+    }
+
     /*public List<EntryDetails> getActiveDiffList() {
         List<EntryDetails> entryDetailsList = new ArrayList<EntryDetails>();
         // Select All Query

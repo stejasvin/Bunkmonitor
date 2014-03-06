@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static java.lang.Math.random;
@@ -61,7 +63,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,EntryActivity.class);
-                startActivityForResult(intent, ENTRYLIST);
+                startActivityForResult(intent, REFRESH);
             }
         });
 
@@ -71,30 +73,15 @@ public class MainActivity extends Activity {
         if (cList.isEmpty())
             imDef.setVisibility(View.VISIBLE);
         else {
-            /*list = new ListView(this);
-            list.setDivider(null);
-            adapter = new CoursesListAdapter(this, R.layout.single_list_item_courses, cList);
-            list.setAdapter(adapter);
-            list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(MainActivity.this,AddNewCourse.class);
-                    intent.putExtra("IS_EDIT",true);
-                    intent.putExtra("COURSE_ID",cList.get(position).getId());
-                    startActivity(intent);
-                    return false;
-                }
-            });
-
-            LinearLayout ll = (LinearLayout) findViewById(R.id.c_list_layout);
-            ll.addView(list);*/
+            EntryDetailsDatabaseHandler entryDetailsDatabaseHandler = new EntryDetailsDatabaseHandler(this);
+            HashMap<String,ArrayList<String>> hashMap = entryDetailsDatabaseHandler.getBunksDates();
 
             //initiate boolean list
 
             expList = new ExpandableListView(this);
             expList.setGroupIndicator(null);
             expList.setDivider(null);
-            adapter = new CoursesExpListAdapter(this, R.layout.single_list_item_courses,R.layout.single_list_item_courses_child, cList);
+            adapter = new CoursesExpListAdapter(this, R.layout.single_list_item_courses,R.layout.single_list_item_courses_child, cList,hashMap);
             expList.setAdapter(adapter);
             expList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override

@@ -2,65 +2,60 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:id="@+id/clist_layout"
     android:padding="25sp"
-    android:background="@drawable/unfolded_down"
-    >
+    android:background="@drawable/unfolded_down">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/clist1_nob"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_width="0sp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:paddingRight="15sp">
-
-        <TextView
-            android:id="@+id/clist1_cid"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="17sp" />
-
-        <TextView
-            android:id="@+id/clist1_cred"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="17sp" />
-
-        <TextView
-            android:id="@+id/clist1_prof"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="17sp" />
-
-    </LinearLayout>
-
+        android:text="Keep it up! No bunks 'yet' ;)"
+        android:textSize="25sp"
+        android:gravity="center" />
 
     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/clist1_llt"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:id="@+id/clist1_ll"
+            android:orientation="vertical">
+
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0sp"
             android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/clist1_llb"
             android:orientation="vertical"
-            >
+            android:gravity="center"
+            android:visibility="gone">
 
-            <TextView
-                android:id="@+id/clist1_a"
-                android:layout_width="fill_parent"
+            <Button
+                android:id="@+id/clist1_addb"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17sp" />
+                android:text="Add"/>
 
-            <TextView
-                android:id="@+id/clist1_b"
-                android:layout_width="fill_parent"
+            <Button
+                android:id="@+id/clist1_delb"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17sp" />
+                android:text="Del."/>
 
-            <TextView
-                android:id="@+id/clist1_c"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textSize="17sp" />
+        </LinearLayout>
+
 
     </LinearLayout>
+
 
 </LinearLayout>

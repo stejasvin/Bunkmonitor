@@ -1,14 +1,22 @@
 package com.example.bunkmonitor;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,23 +26,25 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
 
     List<Course> cList;
     boolean[] isExpanded;
+    HashMap<String, ArrayList<String>> hashMap;
 
-    int textViewResourceId,textViewResourceId2;
+    int textViewResourceId, textViewResourceId2;
     /**
      * Context
      */
     private Context context;
 
-    public CoursesExpListAdapter(Context context, int textViewResourceId, int textViewResourceId2, List<Course> cList) {
+    public CoursesExpListAdapter(Context context, int textViewResourceId, int textViewResourceId2,
+                                 List<Course> cList, HashMap<String, ArrayList<String>> hashMap) {
         //super(context, textViewResourceId, cList);
         this.textViewResourceId = textViewResourceId;
         this.textViewResourceId2 = textViewResourceId2;
         this.context = context;
         this.cList = cList;
-
+        this.hashMap = hashMap;
         isExpanded = new boolean[cList.size()];
-        for(int i=0;i<cList.size();i++){
-            isExpanded[i]=false;
+        for (int i = 0; i < cList.size(); i++) {
+            isExpanded[i] = false;
         }
 
     }
@@ -95,7 +105,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
             row = inflater.inflate(textViewResourceId, parent, false); // inflate view from xml file
         }
 
-        if(isExpanded)
+        if (isExpanded)
             row.setBackgroundResource(R.drawable.unfolded_up1);
         else
             row.setBackgroundResource(R.drawable.note1);
@@ -105,40 +115,31 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
         TextView tvSlot = (TextView) row.findViewById(R.id.clist_slot);
         ImageView imgHm = (ImageView) row.findViewById(R.id.clist_hm);
         imgHm.setVisibility(View.VISIBLE);
-//        TextView tvA = (TextView) row.findViewById(R.id.clist_att);
         TextView tvB = (TextView) row.findViewById(R.id.clist_bunked);
-//        TextView tvC = (TextView) row.findViewById(R.id.clist_cancelled);
-//        TextView tvPercent = (TextView) row.findViewById(R.id.clist_percent);
-//        ProgressBar pb = (ProgressBar)row.findViewById(R.id.clist_pb);
-        //LinearLayout layout = (LinearLayout) row.findViewById(R.id.list_viewmes_layout);
         Course c = cList.get(groupPosition);
         tvName.setText(c.getName());
-//        tvId.setText("ID: "+c.getId());
         tvSlot.setText("Slot: " + c.getSlot());
-//        tvA.setText("Attended: "+c.getAttended());
-//        tvB.setText("Bunked  : "+c.getBunked());
-//        tvC.setText("Cancelled: "+c.getCancelled());
         int creditno = 0;
         String tvbString;
         try {
             creditno = Integer.decode(c.getCredits());
             if (creditno < 0) {
                 imgHm.setVisibility(View.GONE);
-                tvB.setText("#bunks - "+c.getBunked());
+                tvB.setText("#bunks - " + c.getBunked());
                 return row;
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
             imgHm.setVisibility(View.GONE);
-            tvB.setText("#bunks - "+c.getBunked());
+            tvB.setText("#bunks - " + c.getBunked());
             return row;
 
         }
 
-        if(2*creditno > c.getBunked())
-            tvbString = "bunks left - "+(2*creditno - c.getBunked());
+        if (2 * creditno > c.getBunked())
+            tvbString = "bunks left - " + (2 * creditno - c.getBunked());
         else
-            tvbString = "Cross your fingers!";
+            tvbString = "Cross your fingers! Your bunks are over";
         tvB.setText(tvbString);
 
         float fraction = (float) (c.getBunked() * 1.0 / (2 * creditno));
@@ -187,7 +188,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
         View row = convertView;
 
@@ -197,22 +198,74 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
             row = inflater.inflate(textViewResourceId2, parent, false); // inflate view from xml file
         }
 
-        TextView tvCid = (TextView) row.findViewById(R.id.clist1_cid);
-        TextView tvCred = (TextView) row.findViewById(R.id.clist1_cred);
-        TextView tvProf = (TextView) row.findViewById(R.id.clist1_prof);
-        TextView tvA = (TextView) row.findViewById(R.id.clist1_a);
-        TextView tvB = (TextView) row.findViewById(R.id.clist1_b);
-        TextView tvC = (TextView) row.findViewById(R.id.clist1_c);
+        final TextView tvNob = (TextView) row.findViewById(R.id.clist1_nob);
+        final LinearLayout linearLayout = (LinearLayout) row.findViewById(R.id.clist1_ll);
+        final LinearLayout llButtons = (LinearLayout) row.findViewById(R.id.clist1_llb);
+        linearLayout.removeAllViews();
 
-        tvCid.setText("ID: "+cList.get(groupPosition).getId());
-        tvCred.setText("Cr: "+ cList.get(groupPosition).getCredits());
-        tvProf.setText("Prof: "+cList.get(groupPosition).getProf());
-        tvA.setText("Attended: "+cList.get(groupPosition).getAttended());
-        tvB.setText("Bunked: "+cList.get(groupPosition).getBunked());
-        tvC.setText("Cancelled: "+cList.get(groupPosition).getCancelled());
+        final ArrayList<String> dateList = hashMap.get(cList.get(groupPosition).getLocalId());
 
+        if (dateList != null && !dateList.isEmpty()) {
+            tvNob.setVisibility(View.GONE);
+            llButtons.setVisibility(View.VISIBLE);
 
+            final CheckBox[] checkBoxes = new CheckBox[dateList.size()];
+
+            for (int i = 0; i < dateList.size(); i++) {
+                String s = dateList.get(i);
+                //CheckBox checkBox = new CheckBox(context);
+                checkBoxes[i] = new CheckBox(context);
+                checkBoxes[i].setText(s);
+                checkBoxes[i].setId(i);
+                linearLayout.addView(checkBoxes[i]);
+            }
+
+            Button bAdd = (Button) row.findViewById(R.id.clist1_addb);
+            bAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, EditEntryActivity.class);
+                    context.startActivity(intent);
+                }
+            });
+            Button bDel = (Button) row.findViewById(R.id.clist1_delb);
+            bDel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new AlertDialog.Builder(context)
+                            .setTitle("Confirmation")
+                            .setMessage("Are you sure you want to remove selected bunk(s)?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    EntryDetailsDatabaseHandler entryDetailsDatabaseHandler = new EntryDetailsDatabaseHandler(context);
+                                    for (int i = 0; i < checkBoxes.length; i++) {
+                                        if (checkBoxes[i].isChecked()) {
+                                            entryDetailsDatabaseHandler.changeBunkToAttEntry(context, cList.get(groupPosition), dateList.get(i));
+                                            linearLayout.removeView(checkBoxes[i]);
+                                            hashMap.get(cList.get(groupPosition).getLocalId()).remove(i);
+
+                                        }
+                                    }
+                                    if (hashMap.get(cList.get(groupPosition).getLocalId()).isEmpty()) {
+                                        tvNob.setVisibility(View.VISIBLE);
+                                        llButtons.setVisibility(View.GONE);
+                                    }
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .show();
+                }
+            });
+        }
         return row;
+    }
+
+    private void deleteBunk(String cId, String sDate) {
+
     }
 
     @Override
@@ -232,13 +285,13 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
 
     @Override
     public void onGroupExpanded(int groupPosition) {
-        isExpanded[groupPosition]=true;
+        isExpanded[groupPosition] = true;
 
     }
 
     @Override
     public void onGroupCollapsed(int groupPosition) {
-        isExpanded[groupPosition]=false;
+        isExpanded[groupPosition] = false;
     }
 
     @Override
@@ -251,7 +304,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
         return 0;
     }
 
-    public boolean[] getIsExpanded(){
+    public boolean[] getIsExpanded() {
         return isExpanded;
     }
 }
