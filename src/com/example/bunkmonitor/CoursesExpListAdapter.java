@@ -116,7 +116,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
 
         TextView tvName = (TextView) row.findViewById(R.id.clist_name);
         //TextView tvId = (TextView) row.findViewById(R.id.clist_id);
-        TextView tvSlot = (TextView) row.findViewById(R.id.clist_slot);
+//        TextView tvSlot = (TextView) row.findViewById(R.id.clist_slot);
         ImageView imgHm = (ImageView) row.findViewById(R.id.clist_hm);
         imgHm.setVisibility(View.VISIBLE);
         TextView tvB = (TextView) row.findViewById(R.id.clist_bunked);
@@ -125,7 +125,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
         int totalCredits;
 
         tvName.setText(c.getName());
-        tvSlot.setText("Slot: " + c.getSlot());
+        //tvSlot.setText("Slot: " + c.getSlot());
         int maxBunks = 0;
         String tvbString;
         try {
@@ -209,9 +209,22 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
             childRow = inflater.inflate(textViewResourceId2, parent, false); // inflate view from xml file
         }
 
+        final TextView tvNob = (TextView) childRow.findViewById(R.id.clist1_nob);
+        final LinearLayout linearLayout = (LinearLayout) childRow.findViewById(R.id.clist1_ll);
+        //final LinearLayout llButtons = (LinearLayout) row.findViewById(R.id.clist1_llb);
+        //final LinearLayout llTotal = (LinearLayout) childRow.findViewById(R.id.clist1_llt);
+        final LinearLayout llDatedBunks = (LinearLayout) childRow.findViewById(R.id.clist1_ll4);
+        linearLayout.removeAllViews();
+
         final TextView tvUd = (TextView)childRow.findViewById(R.id.clist1_udbunk_tv);
         tvUd.setText(""+course.getUdBunks());
         final Button bUdInc = (Button)childRow.findViewById(R.id.clist1_udbunk_inc);
+
+        if(course.getUdBunks()==0)
+            tvNob.setVisibility(View.VISIBLE);
+        else
+            tvNob.setVisibility(View.GONE);
+
         bUdInc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,6 +246,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
                 row.destroyDrawingCache();
                 row.setVisibility(View.INVISIBLE);
                 row.setVisibility(View.VISIBLE);
+                tvNob.setVisibility(View.GONE);
 
 
             }
@@ -244,33 +258,27 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
             public void onClick(View v) {
 
                 int i = Integer.decode(tvUd.getText().toString());
-                if(i<=0)
+                if(i<=0){
                     bUddec.setEnabled(false);
+                }
                 else{
                     i--;
                     tvUd.setText(i+"");
                     course.setUdBunks(i);
                     courseDatabaseHandler.updateCourse(course);
-                    row.destroyDrawingCache();
-                    row.setVisibility(View.INVISIBLE);
-                    row.setVisibility(View.VISIBLE);
+                    if(i==0)
+                        tvNob.setVisibility(View.VISIBLE);
+
                 }
             }
         });
 
 
-        final TextView tvNob = (TextView) childRow.findViewById(R.id.clist1_nob);
-        final LinearLayout linearLayout = (LinearLayout) childRow.findViewById(R.id.clist1_ll);
-        //final LinearLayout llButtons = (LinearLayout) row.findViewById(R.id.clist1_llb);
-        final LinearLayout llTotal = (LinearLayout) childRow.findViewById(R.id.clist1_llt);
-        final LinearLayout llDatedBunks = (LinearLayout) childRow.findViewById(R.id.clist1_ll4);
-        linearLayout.removeAllViews();
-
         final ArrayList<String> dateList = hashMap.get(cList.get(groupPosition).getLocalId());
 
         if (dateList != null && !dateList.isEmpty()) {
             tvNob.setVisibility(View.GONE);
-            llTotal.setVisibility(View.VISIBLE);
+            //llTotal.setVisibility(View.VISIBLE);
             llDatedBunks.setVisibility(View.VISIBLE);
 
             final CheckBox[] checkBoxes = new CheckBox[dateList.size()];
@@ -315,7 +323,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
                                     }
                                     if (hashMap.get(cList.get(groupPosition).getLocalId()).isEmpty()) {
                                         tvNob.setVisibility(View.VISIBLE);
-                                        llTotal.setVisibility(View.GONE);
+                                        //llTotal.setVisibility(View.GONE);
                                     }
 
                                 }

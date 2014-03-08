@@ -173,13 +173,13 @@ public class MainActivity extends Activity {
 
         Intent intent;
         switch (item.getItemId()) {
-            case R.id.timetable_settings:
-
-                intent = new Intent(MainActivity.this, EditSlotsActivity.class);
-                startActivity(intent);
-
-                return true;
-
+//            case R.id.timetable_settings:
+//
+//                intent = new Intent(MainActivity.this, EditSlotsActivity.class);
+//                startActivity(intent);
+//
+//                return true;
+//
             case R.id.manual_settings:
 
                 intent = new Intent(MainActivity.this, EditEntryActivity.class);
