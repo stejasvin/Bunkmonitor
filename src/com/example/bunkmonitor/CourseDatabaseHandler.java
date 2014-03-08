@@ -35,6 +35,8 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
     public static final String KEY_BUNKED = "bunked";
     public static final String KEY_CANCELLED = "cancelled";
     public static final String KEY_ACTIVE = "active";
+    public static final String KEY_UNDATED_BUNKS = "ud_bunks";
+    public static final String KEY_IS_LAB = "lab";
     private static final String TAG = "courseDatabaseHandler";
 
     public CourseDatabaseHandler(Context context) {
@@ -55,7 +57,9 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
                 + KEY_ATTENDED + " INT,"
                 + KEY_BUNKED + " INT,"
                 + KEY_CANCELLED + " INT,"
-                + KEY_ACTIVE + " INT " +")";
+                + KEY_ACTIVE + " INT, "
+                + KEY_UNDATED_BUNKS + " INT DEFAULT 0, "
+                + KEY_IS_LAB + " INT DEFAULT 0 )";
         db.execSQL(CREATE_courseS_TABLE);
 	}
 
@@ -90,6 +94,8 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_BUNKED, course.getBunked());
         values.put(KEY_CANCELLED, course.getCancelled());
         values.put(KEY_ACTIVE, course.getActive());
+        values.put(KEY_UNDATED_BUNKS, course.getUdBunks());
+        values.put(KEY_IS_LAB, course.getIsLab());
 
 		// Inserting Row
 		if(db.insert(TABLE_COURSES, null, values)==-1)
@@ -122,6 +128,8 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
         course.setBunked(cursor.getInt(7));
         course.setCancelled(cursor.getInt(8));
         course.setActive(cursor.getInt(9));
+        course.setUdBunks(cursor.getInt(10));
+        course.setIsLab(cursor.getInt(11));
 
 		// return course
 
@@ -154,6 +162,8 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
                 course.setBunked(cursor.getInt(7));
                 course.setCancelled(cursor.getInt(8));
                 course.setActive(cursor.getInt(9));
+                course.setUdBunks(cursor.getInt(10));
+                course.setIsLab(cursor.getInt(11));
 
                 // Adding course to list
                 courseList.add(course);
@@ -170,7 +180,7 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
         List<Course> courseList = new ArrayList<Course>();
         // Select All Query
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.query(TABLE_COURSES, new String[]{"*"},
                 null,
@@ -190,6 +200,8 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
                 course.setBunked(cursor.getInt(7));
                 course.setCancelled(cursor.getInt(8));
                 course.setActive(cursor.getInt(9));
+                course.setUdBunks(cursor.getInt(10));
+                course.setIsLab(cursor.getInt(11));
 
                 // Adding course to list
                 courseList.add(course);
@@ -214,6 +226,8 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_BUNKED, course.getBunked());
         values.put(KEY_CANCELLED, course.getCancelled());
         values.put(KEY_ACTIVE, course.getActive());
+        values.put(KEY_UNDATED_BUNKS, course.getUdBunks());
+        values.put(KEY_IS_LAB, course.getIsLab());
 
         db.update(TABLE_COURSES,
                 values,

@@ -63,6 +63,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,EntryActivity.class);
+                intent.putExtra("TODAY_ENTRY",true);
                 startActivityForResult(intent, REFRESH);
             }
         });

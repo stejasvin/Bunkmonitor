@@ -15,6 +15,7 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
      */
     private Context context;
     private Activity activity;
+    View row;
 
     public CoursesExpListAdapter(Activity activity, int textViewResourceId, int textViewResourceId2,
                                  List<Course> cList, HashMap<String, ArrayList<String>> hashMap) {
@@ -99,7 +101,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
-        View row = convertView;
+        row = convertView;
 
         if (row == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -119,32 +121,37 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
         imgHm.setVisibility(View.VISIBLE);
         TextView tvB = (TextView) row.findViewById(R.id.clist_bunked);
         Course c = cList.get(groupPosition);
+        int totalBunks = c.getBunked()+c.getUdBunks();
+        int totalCredits;
+
         tvName.setText(c.getName());
         tvSlot.setText("Slot: " + c.getSlot());
-        int creditno = 0;
+        int maxBunks = 0;
         String tvbString;
         try {
-            creditno = Integer.decode(c.getCredits());
-            if (creditno < 0) {
+            maxBunks = 2*Integer.decode(c.getCredits());
+            if(c.getIsLab()==1)
+                maxBunks/=2;
+            if (maxBunks < 0) {
                 imgHm.setVisibility(View.GONE);
-                tvB.setText("#bunks - " + c.getBunked());
+                tvB.setText("#bunks - " + totalBunks);
                 return row;
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
             imgHm.setVisibility(View.GONE);
-            tvB.setText("#bunks - " + c.getBunked());
+            tvB.setText("#bunks - " + c.getBunked()+c.getUdBunks());
             return row;
 
         }
 
-        if (2 * creditno > c.getBunked())
-            tvbString = "bunks left - " + (2 * creditno - c.getBunked());
+        if (maxBunks > (totalBunks))
+            tvbString = "bunks left - " + (maxBunks - totalBunks);
         else
             tvbString = "Cross your fingers! Your bunks are over";
         tvB.setText(tvbString);
 
-        float fraction = (float) (c.getBunked() * 1.0 / (2 * creditno));
+        float fraction = (float) ( (totalBunks) * 1.0 / (maxBunks));
         if (fraction >= 1)
             imgHm.setImageResource(R.drawable.hm_6);
         else {
@@ -192,18 +199,71 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
     @Override
     public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-        View row = convertView;
+        View childRow = convertView;
+        final Course course = cList.get(groupPosition);
+        final CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(context);
 
-        if (row == null) {
+        if (childRow == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            row = inflater.inflate(textViewResourceId2, parent, false); // inflate view from xml file
+            childRow = inflater.inflate(textViewResourceId2, parent, false); // inflate view from xml file
         }
 
-        final TextView tvNob = (TextView) row.findViewById(R.id.clist1_nob);
-        final LinearLayout linearLayout = (LinearLayout) row.findViewById(R.id.clist1_ll);
+        final TextView tvUd = (TextView)childRow.findViewById(R.id.clist1_udbunk_tv);
+        tvUd.setText(""+course.getUdBunks());
+        final Button bUdInc = (Button)childRow.findViewById(R.id.clist1_udbunk_inc);
+        bUdInc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int i;
+                try {
+                    i = Integer.decode(tvUd.getText().toString());
+                }catch (NumberFormatException e){
+                    i=0;
+                }
+
+                if(i>0)
+                    bUdInc.setEnabled(true);
+
+                i++;
+                tvUd.setText(i+"");
+                course.setUdBunks(i);
+                courseDatabaseHandler.updateCourse(course);
+                row.destroyDrawingCache();
+                row.setVisibility(View.INVISIBLE);
+                row.setVisibility(View.VISIBLE);
+
+
+            }
+        });
+
+        final Button bUddec = (Button)childRow.findViewById(R.id.clist1_udbunk_dec);
+        bUddec.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int i = Integer.decode(tvUd.getText().toString());
+                if(i<=0)
+                    bUddec.setEnabled(false);
+                else{
+                    i--;
+                    tvUd.setText(i+"");
+                    course.setUdBunks(i);
+                    courseDatabaseHandler.updateCourse(course);
+                    row.destroyDrawingCache();
+                    row.setVisibility(View.INVISIBLE);
+                    row.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+
+        final TextView tvNob = (TextView) childRow.findViewById(R.id.clist1_nob);
+        final LinearLayout linearLayout = (LinearLayout) childRow.findViewById(R.id.clist1_ll);
         //final LinearLayout llButtons = (LinearLayout) row.findViewById(R.id.clist1_llb);
-        final LinearLayout llTotal = (LinearLayout) row.findViewById(R.id.clist1_llt);
+        final LinearLayout llTotal = (LinearLayout) childRow.findViewById(R.id.clist1_llt);
+        final LinearLayout llDatedBunks = (LinearLayout) childRow.findViewById(R.id.clist1_ll4);
         linearLayout.removeAllViews();
 
         final ArrayList<String> dateList = hashMap.get(cList.get(groupPosition).getLocalId());
@@ -211,6 +271,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
         if (dateList != null && !dateList.isEmpty()) {
             tvNob.setVisibility(View.GONE);
             llTotal.setVisibility(View.VISIBLE);
+            llDatedBunks.setVisibility(View.VISIBLE);
 
             final CheckBox[] checkBoxes = new CheckBox[dateList.size()];
 
@@ -223,7 +284,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
                 linearLayout.addView(checkBoxes[i]);
             }
 
-            Button bAdd = (Button) row.findViewById(R.id.clist1_addb);
+            Button bAdd = (Button) childRow.findViewById(R.id.clist1_addb);
             bAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -232,10 +293,11 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
 
                 }
             });
-            Button bDel = (Button) row.findViewById(R.id.clist1_delb);
+            Button bDel = (Button) childRow.findViewById(R.id.clist1_delb);
             bDel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(dateList!=null && !dateList.isEmpty()){
                     new AlertDialog.Builder(context)
                             .setTitle("Confirmation")
                             .setMessage("Are you sure you want to remove selected bunk(s)?")
@@ -247,7 +309,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
                                             entryDetailsDatabaseHandler.changeBunkToAttEntry(context, cList.get(groupPosition), dateList.get(i));
                                             linearLayout.removeView(checkBoxes[i]);
                                             hashMap.get(cList.get(groupPosition).getLocalId()).remove(i);
-                                            dateList.remove(i);
+                                            //dateList.remove(i);
 
                                         }
                                     }
@@ -264,10 +326,15 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
                                 }
                             })
                             .show();
+                    }else{
+                        Toast.makeText(context,"Tick any date",Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
+        }else {
+            llDatedBunks.setVisibility(View.GONE);
         }
-        return row;
+        return childRow;
     }
 
     private void deleteBunk(String cId, String sDate) {

@@ -1,7 +1,5 @@
 package com.example.bunkmonitor;
 
-import java.util.HashMap;
-
 /**
 * Created by Tejas on 6/15/13.
 */
@@ -11,6 +9,8 @@ public class Course {
     private int bunked;
     private int cancelled;
     private int active;
+    private int udBunks;
+    private int isLab;
 
     public Course(){
 
@@ -123,4 +123,21 @@ public class Course {
     public void decCancelled(){
         cancelled--;
     }
+
+    public int getUdBunks() {
+        return udBunks;
+    }
+
+    public void setUdBunks(int udBunks) {
+        this.udBunks = udBunks;
+    }
+
+    public int getIsLab() {
+        return isLab;
+    }
+
+    public void setIsLab(int isLab) {
+        this.isLab = isLab;
+    }
 }
+

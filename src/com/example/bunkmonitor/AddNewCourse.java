@@ -39,6 +39,8 @@ public class AddNewCourse extends Activity {
         final EditText etCredits = (EditText)findViewById(R.id.et_credits);
         final EditText etProf = (EditText)findViewById(R.id.et_prof);
 
+        final CheckBox cbLab = (CheckBox)findViewById(R.id.et_lab);
+
         final CheckBox[] cbArray = new CheckBox[6];
         cbArray[0] = (CheckBox)findViewById(R.id.add_mon);
         cbArray[1] = (CheckBox)findViewById(R.id.add_tue);
@@ -87,8 +89,13 @@ public class AddNewCourse extends Activity {
                 Course cnew = new Course();
                 cnew.setId(etId.getText().toString());
                 cnew.setName(etName.getText().toString());
-                cnew.setCredits(etCredits.getText().toString());
                 cnew.setProf(etProf.getText().toString());
+                cnew.setCredits(etCredits.getText().toString());
+
+                if(cbLab.isChecked())
+                    cnew.setIsLab(1);
+                else
+                    cnew.setIsLab(0);
 
                 String lastSlot = mPrefs.getString("LAST_SLOT", "a");
                 int charValue = lastSlot.charAt(0);

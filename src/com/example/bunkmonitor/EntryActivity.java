@@ -49,11 +49,14 @@ public class EntryActivity extends Activity {
 
         MODE = iThis.getIntExtra("bunkmonitor.MODE", Utilities.WRITE);
         boolean extraMode = iThis.getBooleanExtra("EXTRAS", false);
+        boolean todayEntry = iThis.getBooleanExtra("TODAY_ENTRY", false);
 
         //To make sure the correct courses are displayed
         date = iThis.getStringExtra("date");
-        if (date == null)
+        if (date == null){
             date = Utilities.getDate(Utilities.getCurrentTime());
+            Utilities.clearNotifications(EntryActivity.this);
+        }
         String[] s = date.split("/");
         Utilities.processDateArray(s);
         final Calendar cal = Calendar.getInstance();
@@ -77,6 +80,15 @@ public class EntryActivity extends Activity {
 
         Button done = (Button) findViewById(R.id.es_b_done);
         Button attAll = (Button) findViewById(R.id.es_b_attall);
+        Button prev = (Button) findViewById(R.id.es_b_prev);
+        Button next = (Button) findViewById(R.id.es_b_next);
+
+        if(todayEntry){
+            prev.setVisibility(View.INVISIBLE);
+            next.setVisibility(View.INVISIBLE);
+        }else if(date.equals(Utilities.getDate(Utilities.getCurrentTime()))){
+            next.setVisibility(View.INVISIBLE);
+        }
 
         if (MODE == Utilities.WRITE) {
             Utilities.toggleActiveCourses(this, cal.get(Calendar.DAY_OF_WEEK));
@@ -164,7 +176,6 @@ public class EntryActivity extends Activity {
             }
         });
 
-        Button prev = (Button) findViewById(R.id.es_b_prev);
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,7 +190,7 @@ public class EntryActivity extends Activity {
             }
         });
 
-        Button next = (Button) findViewById(R.id.es_b_next);
+
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

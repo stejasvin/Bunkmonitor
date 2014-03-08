@@ -31,11 +31,11 @@ public class DailyNotifService extends IntentService {
 
         SharedPreferences mPrefs = getSharedPreferences(
                 "bunkmonitor.SHARED_PREF", 0);
-        int notifTime = mPrefs.getInt("NOTIF_TIME",1700);
+        int notifTime = mPrefs.getInt("NOTIF_TIME", 1700);
         String lastEntryDate = mPrefs.getString("bunkmonitor.LAST_ENTRY_DATE", "0");
         String today = Utilities.getDate(Utilities.getCurrentTime());
-        String sunSlots = mPrefs.getString("SUNDAY","");
-        String satSlots = mPrefs.getString("SATURDAY","");
+        String sunSlots = mPrefs.getString("SUNDAY", "");
+        String satSlots = mPrefs.getString("SATURDAY", "");
 
         //TODO Need to add checks for long gaps and unsyncs
 
@@ -47,23 +47,26 @@ public class DailyNotifService extends IntentService {
             Calendar cal = Calendar.getInstance();
             Utilities.processDateArray(s);
             cal.set(Integer.decode(s[2]), Integer.decode(s[1]) - 1, Integer.decode(s[0]));
-            Log.i(TAG,cal.get(Calendar.HOUR_OF_DAY)+"");
+            Log.i(TAG, cal.get(Calendar.HOUR_OF_DAY) + "");
             //cal.get(Calendar.HOUR_OF_DAY)>17 &&
-            if (cal.get(Calendar.HOUR_OF_DAY)>=notifTime/100 && cal.get(Calendar.MINUTE)>=notifTime%100
-                    && (sunSlots.equals("") && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
-                    && (satSlots.equals("") && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY)) {
-                //sendBroadcast(new Intent(UpdatesListActivity.REFRESH_ACTION));
-                Utilities.toggleActiveCourses(this, Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
-                generateNotification(DailyNotifService.this, "Time to fill daily entry!");
+            if (mPrefs.getBoolean("ENABLE_NOTIF", true)) {
+                if (cal.get(Calendar.HOUR_OF_DAY) >= notifTime / 100 && cal.get(Calendar.MINUTE) >= notifTime % 100
+                        && (sunSlots.equals("") && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
+                        && (satSlots.equals("") && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY)) {
+                    //sendBroadcast(new Intent(UpdatesListActivity.REFRESH_ACTION));
+                    Utilities.toggleActiveCourses(this, Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+                    generateNotification(DailyNotifService.this, "Time to fill daily entry!");
 
-                if(mPrefs.getBoolean("LOCKSCREEN_ENABLE",false)){
-                    Intent intent1 = new Intent(DailyNotifService.this,LockscreenActivity.class);
-                    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent1);
+                    if (mPrefs.getBoolean("LOCKSCREEN_ENABLE", false)) {
+                        Intent intent1 = new Intent(DailyNotifService.this, LockscreenActivity.class);
+                        intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent1);
+                    }
+
+
                 }
-
-
-
+            }else{
+                Utilities.cancelAlarm(DailyNotifService.this);
             }
 
         }
@@ -75,7 +78,7 @@ public class DailyNotifService extends IntentService {
 //        Log.i(TAG, "Generating notification + count: " + count);
 
 //        int icon = R.drawable.ic_launcher;
-        int icon = R.drawable.ic_launcher;
+        int icon = R.drawable.applogo;
 
         long when = System.currentTimeMillis();
 

@@ -1,6 +1,7 @@
 package com.example.bunkmonitor;
 
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +31,7 @@ public class Utilities {
     public static final int BUNKED = 20;
     public static final int CANCELLED = 30;
     public static final int EXTRA = 40;
+
 
     public class MyInteger{
         int i;
@@ -233,5 +235,16 @@ public class Utilities {
                 Context.ALARM_SERVICE);
         alarms.cancel(recurringDownload);
     }
+
+    public static void clearNotifications(Context context) {
+
+        if (Context.NOTIFICATION_SERVICE!=null) {
+            String ns = Context.NOTIFICATION_SERVICE;
+            NotificationManager nMgr = (NotificationManager) context.getApplicationContext().getSystemService(ns);
+            nMgr.cancel(0);
+        }
+
+    }
+
 }
 

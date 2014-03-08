@@ -48,7 +48,8 @@
                 android:layout_width="fill_parent"
                 android:orientation="horizontal"
                 android:layout_weight="1"
-                android:gravity="center">
+                android:gravity="center"
+                android:paddingBottom="10sp">
 
                 <com.example.bunkmonitor.MyTextView
                     android:layout_height="wrap_content"
@@ -61,24 +62,24 @@
                 <com.example.bunkmonitor.MyTextView
                     android:layout_height="wrap_content"
                     android:layout_width="0sp"
-                    android:text="A"
-                    android:textSize="35sp"
+                    android:text="Att."
+                    android:textSize="20sp"
                     android:layout_weight="1"
                     android:gravity="center" />
 
                 <com.example.bunkmonitor.MyTextView
                     android:layout_height="wrap_content"
                     android:layout_width="0sp"
-                    android:text="B"
-                    android:textSize="35sp"
+                    android:text="Bunk"
+                    android:textSize="20sp"
                     android:layout_weight="1"
                     android:gravity="center" />
 
                 <com.example.bunkmonitor.MyTextView
                     android:layout_height="wrap_content"
                     android:layout_width="0sp"
-                    android:text="C"
-                    android:textSize="35sp"
+                    android:text="Canc."
+                    android:textSize="20sp"
                     android:layout_weight="1"
                     android:gravity="center" />
 
