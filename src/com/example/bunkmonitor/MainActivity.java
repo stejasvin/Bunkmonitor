@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
     private static final int ADDNEWCOURSE = 20;
     private static final int REQUEST_CHECK_ENTRY = 30;
     private static final String TAG = "MainActivity";
-    private static final int REFRESH = 40;
+    public static final int REFRESH = 40;
     //    private ListView list;
     CoursesExpListAdapter adapter;
     List<Course> cList;

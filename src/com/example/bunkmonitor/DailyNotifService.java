@@ -56,10 +56,11 @@ public class DailyNotifService extends IntentService {
                 Utilities.toggleActiveCourses(this, Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
                 generateNotification(DailyNotifService.this, "Time to fill daily entry!");
 
-                Intent intent1 = new Intent(DailyNotifService.this,LockscreenActivity.class);
-                intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                startActivity(intent1);
+                if(mPrefs.getBoolean("LOCKSCREEN_ENABLE",false)){
+                    Intent intent1 = new Intent(DailyNotifService.this,LockscreenActivity.class);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent1);
+                }
 
 
 

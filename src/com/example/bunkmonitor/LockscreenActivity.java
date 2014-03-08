@@ -89,9 +89,8 @@ public class LockscreenActivity extends Activity{
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
-
-//        if(getIntent().getIntExtra("PROX", 0)==1)
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        if(mPrefs.getBoolean("WAKE_UP",false))
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
         Button snooze = (Button) findViewById(R.id.ls_snooze);
         Button attall = (Button) findViewById(R.id.ls_attall);

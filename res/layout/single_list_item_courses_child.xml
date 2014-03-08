@@ -19,15 +19,34 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/clist1_llt"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:id="@+id/clist1_ll"
+            android:id="@+id/clist1_ll3"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/clist1_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Bunk dates"
+                android:paddingLeft="10sp"
+                android:textSize="25sp"
+                android:gravity="left" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/clist1_ll"
+                android:orientation="vertical">
+
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -38,19 +57,19 @@
             android:id="@+id/clist1_llb"
             android:orientation="vertical"
             android:gravity="center"
-            android:visibility="gone">
+            >
 
             <Button
                 android:id="@+id/clist1_addb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add"/>
+                android:text="Add" />
 
             <Button
                 android:id="@+id/clist1_delb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Del."/>
+                android:text="Del." />
 
         </LinearLayout>
 

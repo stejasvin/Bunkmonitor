@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TimePicker;
 
 /**
@@ -17,7 +19,7 @@ public class Settings extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
 
-        SharedPreferences mPrefs = getSharedPreferences(
+        final SharedPreferences mPrefs = getSharedPreferences(
                 "bunkmonitor.SHARED_PREF", 0);
         int notifTime = mPrefs.getInt("NOTIF_TIME",1700);
         boolean isWake = mPrefs.getBoolean("IS_WAKE_UP",true);
@@ -27,21 +29,52 @@ public class Settings extends Activity {
         timePicker.setCurrentHour(notifTime/100);
         timePicker.setCurrentMinute(notifTime % 100);
 
+        final CheckBox cbls = (CheckBox)findViewById(R.id.set_enable_ls);
+        final CheckBox cbwake = (CheckBox)findViewById(R.id.set_wakeup);
+        cbls.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cbwake.setEnabled(isChecked);
+                if(!isChecked)
+                    cbwake.setChecked(false);
+            }
+        });
+
+
+
+
         Button button = (Button)findViewById(R.id.set_b);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-                SharedPreferences mPrefs = getSharedPreferences(
-                        "bunkmonitor.SHARED_PREF", 0);
                 SharedPreferences.Editor mEditor = mPrefs.edit();
                 mEditor.putInt("NOTIF_TIME", timePicker.getCurrentHour() * 100 + timePicker.getCurrentMinute()).commit();
+                mEditor.putBoolean("LOCKSCREEN_ENABLE", cbls.isChecked()).commit();
+                mEditor.putBoolean("WAKE_UP", cbwake.isChecked()).commit();
+
+
                 Utilities.setRecurringAlarm(Settings.this,0);
                 setResult(RESULT_OK);
                 finish();
             }
         });
+
+        Button buttonLs = (Button)findViewById(R.id.set_enable_ls);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                SharedPreferences.Editor mEditor = mPrefs.edit();
+                mEditor.putInt("LOCKSCREEN_ENABLE", timePicker.getCurrentHour() * 100 + timePicker.getCurrentMinute()).commit();
+                Utilities.setRecurringAlarm(Settings.this,0);
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
+
+
+
 
     }
 }

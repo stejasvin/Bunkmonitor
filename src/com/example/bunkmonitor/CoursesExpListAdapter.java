@@ -1,5 +1,6 @@
 package com.example.bunkmonitor;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,19 +28,20 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
     List<Course> cList;
     boolean[] isExpanded;
     HashMap<String, ArrayList<String>> hashMap;
-
     int textViewResourceId, textViewResourceId2;
     /**
      * Context
      */
     private Context context;
+    private Activity activity;
 
-    public CoursesExpListAdapter(Context context, int textViewResourceId, int textViewResourceId2,
+    public CoursesExpListAdapter(Activity activity, int textViewResourceId, int textViewResourceId2,
                                  List<Course> cList, HashMap<String, ArrayList<String>> hashMap) {
         //super(context, textViewResourceId, cList);
         this.textViewResourceId = textViewResourceId;
         this.textViewResourceId2 = textViewResourceId2;
-        this.context = context;
+        this.context = activity;
+        this.activity = activity;
         this.cList = cList;
         this.hashMap = hashMap;
         isExpanded = new boolean[cList.size()];
@@ -200,14 +202,15 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
 
         final TextView tvNob = (TextView) row.findViewById(R.id.clist1_nob);
         final LinearLayout linearLayout = (LinearLayout) row.findViewById(R.id.clist1_ll);
-        final LinearLayout llButtons = (LinearLayout) row.findViewById(R.id.clist1_llb);
+        //final LinearLayout llButtons = (LinearLayout) row.findViewById(R.id.clist1_llb);
+        final LinearLayout llTotal = (LinearLayout) row.findViewById(R.id.clist1_llt);
         linearLayout.removeAllViews();
 
         final ArrayList<String> dateList = hashMap.get(cList.get(groupPosition).getLocalId());
 
         if (dateList != null && !dateList.isEmpty()) {
             tvNob.setVisibility(View.GONE);
-            llButtons.setVisibility(View.VISIBLE);
+            llTotal.setVisibility(View.VISIBLE);
 
             final CheckBox[] checkBoxes = new CheckBox[dateList.size()];
 
@@ -225,7 +228,8 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, EditEntryActivity.class);
-                    context.startActivity(intent);
+                    activity.startActivityForResult(intent,MainActivity.REFRESH);
+
                 }
             });
             Button bDel = (Button) row.findViewById(R.id.clist1_delb);
@@ -243,13 +247,15 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
                                             entryDetailsDatabaseHandler.changeBunkToAttEntry(context, cList.get(groupPosition), dateList.get(i));
                                             linearLayout.removeView(checkBoxes[i]);
                                             hashMap.get(cList.get(groupPosition).getLocalId()).remove(i);
+                                            dateList.remove(i);
 
                                         }
                                     }
                                     if (hashMap.get(cList.get(groupPosition).getLocalId()).isEmpty()) {
                                         tvNob.setVisibility(View.VISIBLE);
-                                        llButtons.setVisibility(View.GONE);
+                                        llTotal.setVisibility(View.GONE);
                                     }
+
                                 }
                             })
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
