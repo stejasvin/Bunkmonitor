@@ -49,22 +49,38 @@ public class MainActivity extends Activity {
         }
         //Demo();
 
-        Button imDef = (Button) findViewById(R.id.textView2);
+        final Button imDef = (Button) findViewById(R.id.textView2);
         imDef.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                imDef.setEnabled(false);
                 Intent intent = new Intent(MainActivity.this, AddNewCourse.class);
                 startActivityForResult(intent, ADDNEWCOURSE);
+                imDef.setEnabled(true);
             }
         });
 
-        Button bEntry = (Button) findViewById(R.id.courses_entry_b);
+        final Button bSet = (Button) findViewById(R.id.b_listview);
+        bSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bSet.setEnabled(false);
+                Intent intent = new Intent(MainActivity.this, BunkList.class);
+                startActivity(intent);
+                bSet.setEnabled(true);
+            }
+        });
+
+
+        final Button bEntry = (Button) findViewById(R.id.courses_entry_b);
         bEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bEntry.setEnabled(false);
                 Intent intent = new Intent(MainActivity.this,EntryActivity.class);
                 intent.putExtra("TODAY_ENTRY",true);
                 startActivityForResult(intent, REFRESH);
+                bEntry.setEnabled(true);
             }
         });
 

@@ -29,10 +29,14 @@
         <activity android:name=".EditEntryActivity" ></activity>
         <activity android:name=".EditSlotsActivity" ></activity>
         <activity android:name=".LockscreenActivity" ></activity>
+        <activity android:name=".BunkList"
+            android:theme="@android:style/Theme.Dialog"
+            android:label="Quick View"></activity>
         <activity android:name=".Settings"
             android:theme="@android:style/Theme.Dialog"></activity>
         <activity android:name=".optionsLongPress"
             android:theme="@android:style/Theme.Dialog"></activity>
+
 
 
         <activity android:name="com.exina.android.calendar.CalendarActivity" ></activity>

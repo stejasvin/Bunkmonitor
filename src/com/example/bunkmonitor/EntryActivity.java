@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -49,11 +50,11 @@ public class EntryActivity extends Activity {
 
         MODE = iThis.getIntExtra("bunkmonitor.MODE", Utilities.WRITE);
         boolean extraMode = iThis.getBooleanExtra("EXTRAS", false);
-        boolean todayEntry = iThis.getBooleanExtra("TODAY_ENTRY", false);
+        final boolean todayEntry = iThis.getBooleanExtra("TODAY_ENTRY", false);
 
         //To make sure the correct courses are displayed
         date = iThis.getStringExtra("date");
-        if (date == null){
+        if (date == null) {
             date = Utilities.getDate(Utilities.getCurrentTime());
             Utilities.clearNotifications(EntryActivity.this);
         }
@@ -78,24 +79,30 @@ public class EntryActivity extends Activity {
         LinearLayout llAll1 = (LinearLayout) findViewById(R.id.entry_ll1);
         LinearLayout llAll2 = (LinearLayout) findViewById(R.id.entry_ll2);
 
-        Button done = (Button) findViewById(R.id.es_b_done);
-        Button attAll = (Button) findViewById(R.id.es_b_attall);
-        Button prev = (Button) findViewById(R.id.es_b_prev);
-        Button next = (Button) findViewById(R.id.es_b_next);
+        final Button done = (Button) findViewById(R.id.es_b_done);
+        final Button attAll = (Button) findViewById(R.id.es_b_attall);
+        final Button prev = (Button) findViewById(R.id.es_b_prev);
+        final Button next = (Button) findViewById(R.id.es_b_next);
 
-        if(todayEntry){
+        if (todayEntry) {
             prev.setVisibility(View.INVISIBLE);
             next.setVisibility(View.INVISIBLE);
-        }else if(date.equals(Utilities.getDate(Utilities.getCurrentTime()))){
+        } else if (date.equals(Utilities.getDate(Utilities.getCurrentTime()))) {
             next.setVisibility(View.INVISIBLE);
         }
 
         if (MODE == Utilities.WRITE) {
-            Utilities.toggleActiveCourses(this, cal.get(Calendar.DAY_OF_WEEK));
-            if (!extraMode)
-                cList = courseDatabaseHandler.getAllActiveCourses();
-            else
-                cList = courseDatabaseHandler.getAllCourses();
+            String clid = getIntent().getStringExtra("COURSE_LOCAL_ID");
+            if (clid != null) {
+                cList = new ArrayList<Course>();
+                cList.add(courseDatabaseHandler.getCourse(clid));
+            } else {
+                Utilities.toggleActiveCourses(this, cal.get(Calendar.DAY_OF_WEEK));
+                if (!extraMode)
+                    cList = courseDatabaseHandler.getAllActiveCourses();
+                else
+                    cList = courseDatabaseHandler.getAllCourses();
+            }
 
             //gets an empty list
             eList = Entry.getEntryList(cList);
@@ -106,7 +113,7 @@ public class EntryActivity extends Activity {
             HashMap<String, Entry> eMap = entryDetailsDatabaseHandler.getEntryListByDate(date);
             if (eMap != null && eMap.size() > 0) {
                 for (Entry entry : eList) {
-                    if(!eMap.containsKey(entry.getCourse_lid()))
+                    if (!eMap.containsKey(entry.getCourse_lid()))
                         continue;
                     Entry temp = eMap.get(entry.getCourse_lid());
                     entry.setAttended(temp.getAttended());
@@ -121,8 +128,9 @@ public class EntryActivity extends Activity {
                     for (Course c : courseList) {
                         if (eMap.containsKey(c.getLocalId())) {
                             eList.add(eMap.get(c.getLocalId()));
+                            cList.add(c);
                             eMap.remove(c.getLocalId());
-                            if (eMap.size() == 0){
+                            if (eMap.size() == 0) {
 
                                 break;
                             }
@@ -164,15 +172,18 @@ public class EntryActivity extends Activity {
             @Override
             public void onClick(View v) {
 
+                done.setEnabled(false);
                 postEntry(false);
-
+                done.setEnabled(true);
             }
         });
 
         attAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                attAll.setEnabled(false);
                 postEntry(true);
+                attAll.setEnabled(true);
             }
         });
 
@@ -180,12 +191,14 @@ public class EntryActivity extends Activity {
             @Override
             public void onClick(View v) {
 
+                prev.setEnabled(false);
                 cal.add(Calendar.DAY_OF_MONTH, -1);
                 Intent intent = getIntent();
                 intent.putExtra("EXTRAS", false);
                 intent.putExtra("date", Utilities.getDate(cal.getTime().toString()));
                 finish();
                 startActivity(intent);
+                prev.setEnabled(true);
 
             }
         });
@@ -195,12 +208,14 @@ public class EntryActivity extends Activity {
             @Override
             public void onClick(View v) {
 
+                next.setEnabled(false);
                 cal.add(Calendar.DAY_OF_MONTH, 1);
                 Intent intent = getIntent();
                 intent.putExtra("EXTRAS", false);
                 intent.putExtra("date", Utilities.getDate(cal.getTime().toString()));
                 finish();
                 startActivity(intent);
+                next.setEnabled(true);
 
             }
         });
@@ -248,9 +263,6 @@ public class EntryActivity extends Activity {
                 c.setAttended(entry.getAttended());
                 c.setBunked(entry.getBunked());
                 c.setCancelled(entry.getCancelled());
-//                c.setAttended(c.getAttended() + e.getAttended());
-//                c.setBunked(c.getBunked() + e.getBunked());
-//                c.setCancelled(c.getCancelled() + e.getCancelled());
                 courseDatabaseHandler.updateCourse(c);
             }
         }

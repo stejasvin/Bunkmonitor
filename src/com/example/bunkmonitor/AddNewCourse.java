@@ -38,7 +38,6 @@ public class AddNewCourse extends Activity {
         final EditText etId = (EditText)findViewById(R.id.et_id);
         final EditText etCredits = (EditText)findViewById(R.id.et_credits);
         final EditText etProf = (EditText)findViewById(R.id.et_prof);
-
         final CheckBox cbLab = (CheckBox)findViewById(R.id.et_lab);
 
         final CheckBox[] cbArray = new CheckBox[6];
@@ -64,12 +63,13 @@ public class AddNewCourse extends Activity {
 
         }
 
-        Button bCreate = (Button)findViewById(R.id.b_create);
+        final Button bCreate = (Button)findViewById(R.id.b_create);
         final Course finalC = c;
         bCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                bCreate.setEnabled(false);
                 try{
                     if(Integer.decode(etCredits.getText().toString())<=0){
                         Toast.makeText(AddNewCourse.this,"Enter valid credits",Toast.LENGTH_LONG).show();
@@ -85,6 +85,16 @@ public class AddNewCourse extends Activity {
                     return;
                 }
 
+                boolean flag = false;
+                for(CheckBox cb:cbArray)
+                    if(cb.isChecked()){
+                        flag = true;
+                        break;
+                    }
+                if(!flag){
+                    Toast.makeText(AddNewCourse.this,"Tick atleast one day",Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                 Course cnew = new Course();
                 cnew.setId(etId.getText().toString());
@@ -99,19 +109,28 @@ public class AddNewCourse extends Activity {
 
                 String lastSlot = mPrefs.getString("LAST_SLOT", "a");
                 int charValue = lastSlot.charAt(0);
-                String nextSlot = String.valueOf( (char) (charValue + 1));
+                String nextSlot = String.valueOf((char) (charValue + 1));
 
                 cnew.setActive(1);
                 if(isEdit){
                     cnew.setLocalId(finalC.getLocalId());
+                    if(cnew.getSlot()==null || cnew.getSlot().equals(""))
+                        cnew.setSlot(nextSlot);
+                    else{
+                        nextSlot = cnew.getSlot();
+                        mEditor.putString("LAST_SLOT",nextSlot).commit();
+                    }
+
                 }else{
                     cnew.setSlot(nextSlot);
-                }
-                if(!cnew.getSlot().equals("") && isEdit)
-                    nextSlot = cnew.getSlot();
-                else{
                     mEditor.putString("LAST_SLOT",nextSlot).commit();
                 }
+
+//                if(!cnew.getSlot().equals("") && isEdit)
+//
+//                else{
+//
+//                }
 
                 for(int i=0;i<6;i++){
                     slotsDays[i].replace(cnew.getSlot(),"");
@@ -131,6 +150,7 @@ public class AddNewCourse extends Activity {
                 //startActivity(new Intent(AddNewCourse.this,MainActivity.class));
                 setResult(RESULT_OK);
                 finish();
+                bCreate.setEnabled(true);
             }
         });
 

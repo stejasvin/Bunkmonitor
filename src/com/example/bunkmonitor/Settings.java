@@ -59,9 +59,6 @@ public class Settings extends Activity {
             }
         });
 
-
-
-
         Button button = (Button)findViewById(R.id.set_b);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

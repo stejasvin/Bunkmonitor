@@ -8,7 +8,8 @@
     android:paddingRight="25sp"
     android:paddingTop="10sp"
     android:paddingBottom="20sp"
-    android:background="@drawable/unfolded_down">
+    android:background="@drawable/unfolded_down"
+    >
 
 
     <TextView
@@ -16,6 +17,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Bunk Stats"
+        android:textStyle="bold"
         android:paddingLeft="10sp"
         android:textSize="25sp"
         android:gravity="left" />
@@ -25,14 +27,16 @@
         android:layout_height="wrap_content"
         android:id="@+id/clist1_ll5"
         android:orientation="vertical"
-        android:paddingTop="5sp">
+        android:paddingTop="5sp"
+        android:layout_gravity="center">
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:text="'Date-less' bunks"
-            android:layout_marginBottom="5sp" />
+            android:layout_marginBottom="5sp"
+            android:gravity="center"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -92,7 +96,7 @@
         android:orientation="horizontal"
         android:paddingTop="5sp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:id="@+id/clist1_ll3"
@@ -102,21 +106,31 @@
             android:paddingBottom="15sp">
 
             <TextView
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="25sp"
                 android:text="Bunk Dates"
-                android:layout_marginBottom="5sp" />
+                android:layout_gravity="center"
+                android:id="@+id/textView"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/clist1_ll"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_alignLeft="@+id/textView" >
+
+
+
 
             </LinearLayout>
 
-        </LinearLayout>
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="0sp"

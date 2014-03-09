@@ -142,7 +142,6 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
             imgHm.setVisibility(View.GONE);
             tvB.setText("#bunks - " + c.getBunked()+c.getUdBunks());
             return row;
-
         }
 
         if (maxBunks > (totalBunks))
@@ -205,20 +204,17 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
 
         if (childRow == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
             childRow = inflater.inflate(textViewResourceId2, parent, false); // inflate view from xml file
         }
 
         final TextView tvNob = (TextView) childRow.findViewById(R.id.clist1_nob);
         final LinearLayout linearLayout = (LinearLayout) childRow.findViewById(R.id.clist1_ll);
-        //final LinearLayout llButtons = (LinearLayout) row.findViewById(R.id.clist1_llb);
-        //final LinearLayout llTotal = (LinearLayout) childRow.findViewById(R.id.clist1_llt);
         final LinearLayout llDatedBunks = (LinearLayout) childRow.findViewById(R.id.clist1_ll4);
         linearLayout.removeAllViews();
-
         final TextView tvUd = (TextView)childRow.findViewById(R.id.clist1_udbunk_tv);
         tvUd.setText(""+course.getUdBunks());
         final Button bUdInc = (Button)childRow.findViewById(R.id.clist1_udbunk_inc);
+        final ArrayList<String> dateList = hashMap.get(cList.get(groupPosition).getLocalId());
 
         if(course.getUdBunks()==0)
             tvNob.setVisibility(View.VISIBLE);
@@ -229,16 +225,16 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
             @Override
             public void onClick(View v) {
 
+                bUdInc.setEnabled(false);
+
                 int i;
                 try {
                     i = Integer.decode(tvUd.getText().toString());
                 }catch (NumberFormatException e){
                     i=0;
                 }
-
                 if(i>0)
                     bUdInc.setEnabled(true);
-
                 i++;
                 tvUd.setText(i+"");
                 course.setUdBunks(i);
@@ -248,7 +244,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
                 row.setVisibility(View.VISIBLE);
                 tvNob.setVisibility(View.GONE);
 
-
+                bUdInc.setEnabled(true);
             }
         });
 
@@ -256,6 +252,8 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
         bUddec.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                bUddec.setEnabled(false);
 
                 int i = Integer.decode(tvUd.getText().toString());
                 if(i<=0){
@@ -266,23 +264,19 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
                     tvUd.setText(i+"");
                     course.setUdBunks(i);
                     courseDatabaseHandler.updateCourse(course);
-                    if(i==0)
+                    if(i==0 && (dateList==null || dateList.isEmpty()))
                         tvNob.setVisibility(View.VISIBLE);
-
                 }
+
+                bUddec.setEnabled(true);
             }
         });
-
-
-        final ArrayList<String> dateList = hashMap.get(cList.get(groupPosition).getLocalId());
 
         if (dateList != null && !dateList.isEmpty()) {
             tvNob.setVisibility(View.GONE);
             //llTotal.setVisibility(View.VISIBLE);
             llDatedBunks.setVisibility(View.VISIBLE);
-
             final CheckBox[] checkBoxes = new CheckBox[dateList.size()];
-
             for (int i = 0; i < dateList.size(); i++) {
                 String s = dateList.get(i);
                 //CheckBox checkBox = new CheckBox(context);
@@ -292,19 +286,25 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
                 linearLayout.addView(checkBoxes[i]);
             }
 
-            Button bAdd = (Button) childRow.findViewById(R.id.clist1_addb);
+            final Button bAdd = (Button) childRow.findViewById(R.id.clist1_addb);
             bAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    bAdd.setEnabled(false);
                     Intent intent = new Intent(context, EditEntryActivity.class);
+                    intent.putExtra("COURSE_LOCAL_ID",course.getLocalId());
                     activity.startActivityForResult(intent,MainActivity.REFRESH);
+                    bAdd.setEnabled(true);
 
                 }
             });
-            Button bDel = (Button) childRow.findViewById(R.id.clist1_delb);
+
+            final Button bDel = (Button) childRow.findViewById(R.id.clist1_delb);
             bDel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    bDel.setEnabled(false);
                     if(dateList!=null && !dateList.isEmpty()){
                     new AlertDialog.Builder(context)
                             .setTitle("Confirmation")
@@ -312,17 +312,23 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     EntryDetailsDatabaseHandler entryDetailsDatabaseHandler = new EntryDetailsDatabaseHandler(context);
-                                    for (int i = 0; i < checkBoxes.length; i++) {
+                                    //done in reverse so that the index of dates doesnt change
+                                    for (int i = checkBoxes.length-1; i >= 0; i--) {
                                         if (checkBoxes[i].isChecked()) {
                                             entryDetailsDatabaseHandler.changeBunkToAttEntry(context, cList.get(groupPosition), dateList.get(i));
                                             linearLayout.removeView(checkBoxes[i]);
-                                            hashMap.get(cList.get(groupPosition).getLocalId()).remove(i);
+                                            hashMap.get(cList.get(groupPosition).getLocalId());
                                             //dateList.remove(i);
 
                                         }
                                     }
+
+
                                     if (hashMap.get(cList.get(groupPosition).getLocalId()).isEmpty()) {
-                                        tvNob.setVisibility(View.VISIBLE);
+
+                                        llDatedBunks.setVisibility(View.GONE);
+                                        if(course.getUdBunks()==0)
+                                            tvNob.setVisibility(View.VISIBLE);
                                         //llTotal.setVisibility(View.GONE);
                                     }
 
@@ -337,6 +343,8 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
                     }else{
                         Toast.makeText(context,"Tick any date",Toast.LENGTH_SHORT).show();
                     }
+
+                    bDel.setEnabled(true);
                 }
             });
         }else {

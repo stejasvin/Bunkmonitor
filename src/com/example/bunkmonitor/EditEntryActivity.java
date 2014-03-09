@@ -65,7 +65,7 @@ public class EditEntryActivity extends Activity {
 //        Button bCal1 = (Button)findViewById(R.id.edit_b1);
 //        Button bCal2 = (Button)findViewById(R.id.edit_b2);
 //        Button bCal3 = (Button)findViewById(R.id.edit_b3);
-        Button bDone = (Button)findViewById(R.id.edit_done);
+        final Button bDone = (Button)findViewById(R.id.edit_done);
 
 //        bCal1.setOnClickListener(new View.OnClickListener() {
 //
@@ -98,10 +98,14 @@ public class EditEntryActivity extends Activity {
         bDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bDone.setEnabled(false);
                 if(MODE == Utilities.SINGLE){
 
                     Intent intent = new Intent(EditEntryActivity.this,EntryActivity.class);
                     intent.putExtra("bunkmonitor.MODE",Utilities.WRITE);
+
+                    intent.putExtra("COURSE_LOCAL_ID",getIntent().getStringExtra("COURSE_LOCAL_ID"));
+
                     Calendar cal = Calendar.getInstance();
                     cal.set(dp1.getYear(),dp1.getMonth(),dp1.getDayOfMonth());
                     intent.putExtra("date",Utilities.getDate(cal.getTime().toString()));
@@ -129,6 +133,7 @@ public class EditEntryActivity extends Activity {
                     finish();
 
                 }
+                bDone.setEnabled(true);
             }
         });
 
