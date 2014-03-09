@@ -81,6 +81,7 @@ public class EntryActivity extends Activity {
 
         final Button done = (Button) findViewById(R.id.es_b_done);
         final Button attAll = (Button) findViewById(R.id.es_b_attall);
+        final Button holiday = (Button) findViewById(R.id.es_b_canc);
         final Button prev = (Button) findViewById(R.id.es_b_prev);
         final Button next = (Button) findViewById(R.id.es_b_next);
 
@@ -173,7 +174,7 @@ public class EntryActivity extends Activity {
             public void onClick(View v) {
 
                 done.setEnabled(false);
-                postEntry(false);
+                postEntry(0);
                 done.setEnabled(true);
             }
         });
@@ -182,8 +183,17 @@ public class EntryActivity extends Activity {
             @Override
             public void onClick(View v) {
                 attAll.setEnabled(false);
-                postEntry(true);
+                postEntry(1);
                 attAll.setEnabled(true);
+            }
+        });
+
+        holiday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holiday.setEnabled(false);
+                postEntry(2);
+                holiday.setEnabled(true);
             }
         });
 
@@ -224,17 +234,23 @@ public class EntryActivity extends Activity {
 
     }
 
-    private void postEntry(boolean isAttAll) {
+    private void postEntry(int mode) {
 
         CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
         EntryDetailsDatabaseHandler entryDetailsDatabaseHandler = new EntryDetailsDatabaseHandler(this);
         EntryDetails entryDetails = new EntryDetails();
 
-        if (isAttAll) {
+        if (mode == 1) {
             for (Entry e : eList) {
                 e.setAttended(1);
                 e.setBunked(0);
                 e.setCancelled(0);
+            }
+        }else{
+            for (Entry e : eList) {
+                e.setAttended(0);
+                e.setBunked(0);
+                e.setCancelled(1);
             }
         }
 

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * Created by stejasvin on 3/5/14.
  */
-public class LockscreenActivity extends Activity{
+public class LockscreenActivity extends Activity {
 
     private static final String TAG = "LockscreenActivity";
 
@@ -40,20 +41,19 @@ public class LockscreenActivity extends Activity{
                 Log.i(TAG, "calldetectReceiver triggered");
                 String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 
-                if(state.equals(TelephonyManager.EXTRA_STATE_RINGING)){
+                if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
                     //Phone is ringing
                     SharedPreferences mPrefs = getSharedPreferences(
                             "bunkmonitor.SHARED_PREF", 0);
                     SharedPreferences.Editor mEditor = mPrefs.edit();
-                    mEditor.putBoolean("SNOOZE",true).commit();
+                    mEditor.putBoolean("SNOOZE", true).commit();
                     finish();
                     return;
 
-                }else if(state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)){
+                } else if (state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
                     //Call received
 
-                }
-                else if (state.equals(TelephonyManager.EXTRA_STATE_IDLE)){
+                } else if (state.equals(TelephonyManager.EXTRA_STATE_IDLE)) {
                     //Call Dropped or rejected
 
                 }
@@ -81,7 +81,7 @@ public class LockscreenActivity extends Activity{
         mPrefs = getSharedPreferences(
                 "bunkmonitor.SHARED_PREF", 0);
 
-        if(mPrefs.getBoolean("SNOOZE",false)){
+        if (mPrefs.getBoolean("SNOOZE", false)) {
             finish();
             return;
         }
@@ -89,12 +89,13 @@ public class LockscreenActivity extends Activity{
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
-        if(mPrefs.getBoolean("WAKE_UP",false))
+        if (mPrefs.getBoolean("WAKE_UP", false))
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
         Button snooze = (Button) findViewById(R.id.ls_snooze);
         Button attall = (Button) findViewById(R.id.ls_attall);
         Button bunk = (Button) findViewById(R.id.ls_bunk);
+        Button holiday = (Button) findViewById(R.id.ls_canc);
         Button goApp = (Button) findViewById(R.id.ls_go_app);
 
         CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
@@ -102,18 +103,7 @@ public class LockscreenActivity extends Activity{
         snooze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //setting flag for snooze
-                SharedPreferences mPrefs = getSharedPreferences(
-                        "bunkmonitor.SHARED_PREF", 0);
-                SharedPreferences.Editor mEditor = mPrefs.edit();
-                mEditor.putBoolean("SNOOZE",true).commit();
-
-                //Cancelling alarm
-                Utilities.cancelAlarm(getApplicationContext());
-                //set alarm with snooze of 1 hr
-                Utilities.setRecurringAlarm(getApplicationContext(),1);
-                finish();
+                doSnooze();
             }
         });
 
@@ -135,15 +125,31 @@ public class LockscreenActivity extends Activity{
             }
         });
 
+        holiday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                autoEntry(2);
+
+            }
+        });
+
+
         goApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(LockscreenActivity.this,EntryActivity.class);
+                Intent intent = new Intent(LockscreenActivity.this, EntryActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        doSnooze();
     }
 
     private void autoEntry(int mode) {
@@ -167,11 +173,16 @@ public class LockscreenActivity extends Activity{
             if (mode == 0) {
                 e.setAttended(1);
                 e.setBunked(0);
+                e.setCancelled(0);
             } else if (mode == 1) {
                 e.setAttended(0);
                 e.setBunked(1);
+                e.setCancelled(0);
+            } else if (mode == 2){
+                e.setAttended(0);
+                e.setBunked(0);
+                e.setCancelled(1);
             }
-            e.setCancelled(0);
 
         }
 
@@ -210,6 +221,22 @@ public class LockscreenActivity extends Activity{
 
         //setResult(RESULT_OK);
         finish();
+    }
+
+    public void doSnooze() {
+        //setting flag for snooze
+        SharedPreferences mPrefs = getSharedPreferences(
+                "bunkmonitor.SHARED_PREF", 0);
+        SharedPreferences.Editor mEditor = mPrefs.edit();
+        mEditor.putBoolean("SNOOZE", true).commit();
+
+        //Cancelling alarm
+        Utilities.cancelAlarm(getApplicationContext());
+        //set alarm with snooze of 1 hr
+        Utilities.setRecurringAlarm(getApplicationContext(), 1);
+        finish();
+
+        Toast.makeText(getApplicationContext(),"Snoozed for an hour",Toast.LENGTH_LONG).show();
     }
 
 //    protected void onResume() {

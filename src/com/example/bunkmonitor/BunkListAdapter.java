@@ -51,10 +51,10 @@ public class BunkListAdapter extends ArrayAdapter {
 
         row.setEnabled(false);
 
-        TextView tvCourse = (TextView)row.findViewById(R.id.bunk_course);
-        TextView tvbunks = (TextView)row.findViewById(R.id.bunk_bunks_left);
+        TextView tvCourse = (TextView) row.findViewById(R.id.bunk_course);
+        TextView tvbunks = (TextView) row.findViewById(R.id.bunk_bunks_left);
 
-        if(position==0){
+        if (position == 0) {
 
             tvCourse.setText("Course");
             tvCourse.setTextSize(20);
@@ -67,21 +67,13 @@ public class BunkListAdapter extends ArrayAdapter {
 
         final Course course = courseList.get(epos);
 
-        int maxBunks = 0,bLeft=0;
+        int maxBunks = course.getMaxBunks(), bLeft = 0;
         String tvBString;
-        try {
-            maxBunks = 2*Integer.decode(course.getCredits());
-            if(course.getIsLab()==1)
-                maxBunks/=2;
-            bLeft = maxBunks - course.getBunked() - course.getUdBunks();
-            if(bLeft<0)
-                bLeft=0;
-            tvBString = bLeft+"";
 
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            tvBString = "-";
-        }
+        bLeft = maxBunks - course.getBunked() - course.getUdBunks();
+        if (bLeft < 0)
+            bLeft = 0;
+        tvBString = bLeft + "";
 
         tvCourse.setText(course.getName());
         tvbunks.setText(tvBString);
@@ -91,6 +83,6 @@ public class BunkListAdapter extends ArrayAdapter {
 
     @Override
     public int getCount() {
-        return courseList.size()+1;
+        return courseList.size() + 1;
     }
 }

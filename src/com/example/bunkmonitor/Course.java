@@ -11,6 +11,25 @@ public class Course {
     private int active;
     private int udBunks;
     private int isLab;
+    private int maxBunks;
+
+    public int getIs85() {
+        return is85;
+    }
+
+    public void setIs85(int is85) {
+        this.is85 = is85;
+    }
+
+    private int is85;
+
+    public int getMaxBunks() {
+        return maxBunks;
+    }
+
+    public void setMaxBunks(int maxBunks) {
+        this.maxBunks = maxBunks;
+    }
 
     public Course(){
 

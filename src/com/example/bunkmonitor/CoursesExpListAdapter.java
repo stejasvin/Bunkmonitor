@@ -122,27 +122,24 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
         TextView tvB = (TextView) row.findViewById(R.id.clist_bunked);
         Course c = cList.get(groupPosition);
         int totalBunks = c.getBunked()+c.getUdBunks();
-        int totalCredits;
 
         tvName.setText(c.getName());
         //tvSlot.setText("Slot: " + c.getSlot());
-        int maxBunks = 0;
+
+        int maxBunks = c.getMaxBunks();
         String tvbString;
-        try {
-            maxBunks = 2*Integer.decode(c.getCredits());
-            if(c.getIsLab()==1)
-                maxBunks/=2;
-            if (maxBunks < 0) {
-                imgHm.setVisibility(View.GONE);
-                tvB.setText("#bunks - " + totalBunks);
-                return row;
-            }
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            imgHm.setVisibility(View.GONE);
-            tvB.setText("#bunks - " + c.getBunked()+c.getUdBunks());
-            return row;
-        }
+//        try {
+//            if (maxBunks < 0) {
+//                imgHm.setVisibility(View.GONE);
+//                tvB.setText("#bunks - " + totalBunks);
+//                return row;
+//            }
+//        } catch (NumberFormatException e) {
+//            e.printStackTrace();
+//            imgHm.setVisibility(View.GONE);
+//            tvB.setText("#bunks - " + c.getBunked()+c.getUdBunks());
+//            return row;
+//        }
 
         if (maxBunks > (totalBunks))
             tvbString = "bunks left - " + (maxBunks - totalBunks);

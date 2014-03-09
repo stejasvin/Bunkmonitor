@@ -20,7 +20,7 @@
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:text="DATE"
-            android:padding="10sp"/>
+            android:padding="10sp" />
 
         <com.example.bunkmonitor.MyTextView
             android:id="@+id/entry_no_courses"
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:orientation="horizontal"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="center"
                 android:paddingBottom="10sp">
 
@@ -88,43 +88,62 @@
             <ListView
                 android:id="@+id/listview1"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="5" />
 
             <ScrollView
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
-                android:layout_weight="2">
+                android:layout_weight="1">
 
                 <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:padding="5sp">
 
-                    <Button
-                        android:id="@+id/es_b_prev"
-                        android:layout_width="50sp"
-                        android:layout_height="50sp"
-                        android:background="@drawable/prev_selector"
-                        android:textColor="@android:color/white"
 
-                        android:layout_marginRight="5sp" />
+                    <LinearLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                        android:orientation="horizontal"
+                        android:padding="5sp"
+                        android:gravity="center">
 
+                        <Button
+                            android:id="@+id/es_b_prev"
+                            android:layout_width="50sp"
+                            android:layout_height="50sp"
+                            android:background="@drawable/prev_selector"
+                            android:textColor="@android:color/white"
+                            android:layout_gravity="left"
+                            android:layout_marginRight="5sp" />
+
+                        <Button
+                            android:id="@+id/es_b_next"
+                            android:layout_height="50sp"
+                            android:layout_width="50sp"
+                            android:textColor="@android:color/white"
+                            android:background="@drawable/next_selector"
+
+                            />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/entry_ll2"
                         android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
+                        android:layout_width="fill_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
+
 
 
                         <Button
                             android:id="@+id/es_b_attall"
-                            android:layout_width="120sp"
-                            android:layout_height="50sp"
+                            android:layout_width="80sp"
+                            android:layout_height="30sp"
                             android:background="@drawable/attall_selector"
                             android:padding="5sp" />
 
@@ -133,21 +152,20 @@
                             android:layout_height="50sp"
                             android:layout_width="100sp"
                             android:background="@drawable/done_selector"
+                            android:layout_marginLeft="15sp"
+                            android:layout_marginRight="15sp"
+                            />
+
+                        <Button
+                            android:id="@+id/es_b_canc"
+                            android:layout_width="80sp"
+                            android:layout_height="30sp"
+                            android:background="@drawable/holiday"
                             android:padding="5sp" />
 
                     </LinearLayout>
-
-
-                    <Button
-                        android:id="@+id/es_b_next"
-                        android:layout_height="50sp"
-                        android:layout_width="50sp"
-                        android:textColor="@android:color/white"
-                        android:background="@drawable/next_selector"
-
-                        />
-
                 </LinearLayout>
+
             </ScrollView>
         </LinearLayout>
 

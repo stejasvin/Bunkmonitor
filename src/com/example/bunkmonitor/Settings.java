@@ -22,8 +22,8 @@ public class Settings extends Activity {
         final SharedPreferences mPrefs = getSharedPreferences(
                 "bunkmonitor.SHARED_PREF", 0);
         int notifTime = mPrefs.getInt("NOTIF_TIME",1700);
-        boolean isWake = mPrefs.getBoolean("IS_WAKE_UP",true);
-        boolean isLs = mPrefs.getBoolean("IS_LS",true);
+        boolean isWake = mPrefs.getBoolean("WAKE_UP",true);
+        boolean isLs = mPrefs.getBoolean("LOCKSCREEN_ENABLE",true);
         boolean isNotif = mPrefs.getBoolean("ENABLE_NOTIF",true);
 
         final TimePicker timePicker = (TimePicker)findViewById(R.id.timePicker);
@@ -35,18 +35,31 @@ public class Settings extends Activity {
         final CheckBox cbwake = (CheckBox)findViewById(R.id.set_wakeup);
 
         cbnotif.setChecked(isNotif);
+
+        cbls.setEnabled(isNotif);
         cbls.setChecked(isLs);
+
+        if(isNotif && isLs)
+            cbwake.setEnabled(true);
+        else
+            cbwake.setEnabled(false);
+
         cbwake.setChecked(isWake);
 
         cbnotif.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cbwake.setEnabled(isChecked);
+                if(isChecked && cbls.isChecked())
+                    cbwake.setEnabled(true);
+                else
+                    cbwake.setEnabled(false);
+
                 cbls.setEnabled(isChecked);
-                if(!isChecked){
-                    cbwake.setChecked(false);
-                    cbls.setEnabled(false);
-                }
+
+//                if(!isChecked){
+//                    cbwake.setChecked(false);
+//                    cbls.setEnabled(false);
+//                }
             }
         });
 
@@ -54,8 +67,8 @@ public class Settings extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 cbwake.setEnabled(isChecked);
-                if(!isChecked)
-                    cbwake.setChecked(false);
+//                if(!isChecked)
+//                    cbwake.setChecked(false);
             }
         });
 

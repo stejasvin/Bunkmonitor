@@ -49,7 +49,10 @@ public class DailyNotifService extends IntentService {
             cal.set(Integer.decode(s[2]), Integer.decode(s[1]) - 1, Integer.decode(s[0]));
             Log.i(TAG, cal.get(Calendar.HOUR_OF_DAY) + "");
             //cal.get(Calendar.HOUR_OF_DAY)>17 &&
-            if (mPrefs.getBoolean("ENABLE_NOTIF", true)) {
+
+            CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
+
+            if (mPrefs.getBoolean("ENABLE_NOTIF", true) && courseDatabaseHandler.getAllActiveCourses().size()>0 ) {
                 if (cal.get(Calendar.HOUR_OF_DAY) >= notifTime / 100 && cal.get(Calendar.MINUTE) >= notifTime % 100
                         && (sunSlots.equals("") && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
                         && (satSlots.equals("") && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY)) {
@@ -57,7 +60,7 @@ public class DailyNotifService extends IntentService {
                     Utilities.toggleActiveCourses(this, Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
                     generateNotification(DailyNotifService.this, "Time to fill daily entry!");
 
-                    if (mPrefs.getBoolean("LOCKSCREEN_ENABLE", false)) {
+                    if (mPrefs.getBoolean("LOCKSCREEN_ENABLE", true)) {
                         Intent intent1 = new Intent(DailyNotifService.this, LockscreenActivity.class);
                         intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent1);
