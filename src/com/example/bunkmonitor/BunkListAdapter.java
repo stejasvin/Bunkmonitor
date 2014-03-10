@@ -63,6 +63,12 @@ public class BunkListAdapter extends ArrayAdapter {
             tvbunks.setTextSize(20);
             tvbunks.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             return row;
+        }else{
+            tvCourse.setTextSize(15);
+            tvCourse.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            tvbunks.setTextSize(20);
+            tvbunks.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+
         }
 
         final Course course = courseList.get(epos);

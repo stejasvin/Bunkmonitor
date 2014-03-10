@@ -1,9 +1,11 @@
 package com.example.bunkmonitor;
 
+import java.io.Serializable;
+
 /**
 * Created by Tejas on 6/15/13.
 */
-public class Course {
+public class Course implements Serializable {
     private String id,l_id,credits,name,slot,prof;
     private int attended;
     private int bunked;

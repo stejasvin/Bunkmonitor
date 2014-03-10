@@ -3,7 +3,9 @@ package com.example.bunkmonitor;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,7 +14,13 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +34,7 @@ public class MainActivity extends Activity {
     private static final int REQUEST_CHECK_ENTRY = 30;
     private static final String TAG = "MainActivity";
     public static final int REFRESH = 40;
+    private static final int REQUEST_IMPORT = 50;
     //    private ListView list;
     CoursesExpListAdapter adapter;
     List<Course> cList;
@@ -43,7 +52,7 @@ public class MainActivity extends Activity {
             initializePrefs();
 
 //        //Checking for entry once
-        if(!mPrefs.getBoolean("SNOOZE",false)){
+        if (!mPrefs.getBoolean("SNOOZE", false)) {
             Intent downloader = new Intent(this, DailyNotifService.class);
             startService(downloader);
         }
@@ -77,8 +86,8 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 bEntry.setEnabled(false);
-                Intent intent = new Intent(MainActivity.this,EntryActivity.class);
-                intent.putExtra("TODAY_ENTRY",true);
+                Intent intent = new Intent(MainActivity.this, EntryActivity.class);
+                intent.putExtra("TODAY_ENTRY", true);
                 startActivityForResult(intent, REFRESH);
                 bEntry.setEnabled(true);
             }
@@ -91,14 +100,14 @@ public class MainActivity extends Activity {
             imDef.setVisibility(View.VISIBLE);
         else {
             EntryDetailsDatabaseHandler entryDetailsDatabaseHandler = new EntryDetailsDatabaseHandler(this);
-            HashMap<String,ArrayList<String>> hashMap = entryDetailsDatabaseHandler.getBunksDates();
+            HashMap<String, ArrayList<String>> hashMap = entryDetailsDatabaseHandler.getBunksDates();
 
             //initiate boolean list
 
             expList = new ExpandableListView(this);
             expList.setGroupIndicator(null);
             expList.setDivider(null);
-            adapter = new CoursesExpListAdapter(this, R.layout.single_list_item_courses,R.layout.single_list_item_courses_child, cList,hashMap);
+            adapter = new CoursesExpListAdapter(this, R.layout.single_list_item_courses, R.layout.single_list_item_courses_child, cList, hashMap);
             expList.setAdapter(adapter);
             expList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
@@ -107,13 +116,13 @@ public class MainActivity extends Activity {
                     intent.putExtra("IS_EDIT", true);
 
                     //calculating position
-                    int index = 0,temp=0;
-                    for(Boolean b:adapter.getIsExpanded()){
-                        if(temp==position)
+                    int index = 0, temp = 0;
+                    for (Boolean b : adapter.getIsExpanded()) {
+                        if (temp == position)
                             break;
                         index++;
                         temp++;
-                        if(b.booleanValue())
+                        if (b.booleanValue())
                             temp++;
 
                     }
@@ -143,7 +152,7 @@ public class MainActivity extends Activity {
         SharedPreferences mPrefs = getSharedPreferences(
                 "bunkmonitor.SHARED_PREF", 0);
         SharedPreferences.Editor mEditor = mPrefs.edit();
-        mEditor.putInt("NOTIF_TIME",1700);
+        mEditor.putInt("NOTIF_TIME", 1700);
         mEditor.putString("MONDAY", "").commit();
         mEditor.putString("TUESDAY", "").commit();
         mEditor.putString("WEDNESDAY", "").commit();
@@ -152,11 +161,11 @@ public class MainActivity extends Activity {
         mEditor.putString("SATURDAY", "").commit();
         mEditor.putString("SUNDAY", "").commit();
 
-        mEditor.putString("LAST_SLOT","a");
+        mEditor.putString("LAST_SLOT", "a");
 
         //Set recurring alarms if not snoozed
-        if(!mPrefs.getBoolean("SNOOZE",false))
-            Utilities.setRecurringAlarm(this,0);
+        if (!mPrefs.getBoolean("SNOOZE", false))
+            Utilities.setRecurringAlarm(this, 0);
     }
 
     void Demo() {
@@ -189,17 +198,17 @@ public class MainActivity extends Activity {
 
         Intent intent;
         switch (item.getItemId()) {
-//            case R.id.timetable_settings:
-//
-//                intent = new Intent(MainActivity.this, EditSlotsActivity.class);
-//                startActivity(intent);
-//
-//                return true;
-//
+            case R.id.settings_load:
+
+                intent = new Intent(MainActivity.this, ActivityImport.class);
+                startActivityForResult(intent, REQUEST_IMPORT);
+
+                return true;
+
             case R.id.manual_settings:
 
                 intent = new Intent(MainActivity.this, EditEntryActivity.class);
-                startActivityForResult(intent,REFRESH);
+                startActivityForResult(intent, REFRESH);
                 return true;
 
             case R.id.settings:
@@ -208,9 +217,63 @@ public class MainActivity extends Activity {
                 startActivity(intent);
                 return true;
 
+            case R.id.settings_share:
+
+                File shareFile = generateShareFile();
+                if (shareFile == null || !shareFile.exists()) {
+                    Toast.makeText(this, "E04: Error in transfer", Toast.LENGTH_SHORT).show();
+                    finish();
+                    break;
+                }
+
+                Intent iBlue = new Intent();
+                iBlue.setAction(iBlue.ACTION_SEND);
+                iBlue.setType("image/jpg");
+                iBlue.putExtra(iBlue.EXTRA_STREAM, Uri.fromFile(shareFile));
+                startActivity(iBlue);
+
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+        return true;
+    }
+
+    private File generateShareFile() {
+
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+        CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
+        File outDir = new File(Environment.getExternalStorageDirectory() + "/BunkMonitor");
+        outDir.mkdir();
+        File outf = null;
+        try {
+            //			outf = new File(ecg.getLocalFilePath() + "_with_details.png");
+            outf = new File(outDir, "share.bkm");
+            outf.createNewFile();
+            fos = new FileOutputStream(outf);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(courseDatabaseHandler.getAllCourses());
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+                if (oos != null) {
+                    oos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (NullPointerException e){
+                e.printStackTrace();
+            }
+        }
+
+        return outf;
+
     }
 
 
@@ -232,6 +295,11 @@ public class MainActivity extends Activity {
                 Intent i = getIntent();
                 finish();
                 startActivity(i);
+            } else if (requestCode == REQUEST_IMPORT) {
+                Intent i = new Intent(this, LoadCoursesActivity.class);
+                i.putExtra("SHARE_PATH", data.getStringExtra(ActivityImport.returnFileParameter));
+                startActivityForResult(i, REFRESH);
+                //finish();
             }
 //            else if (requestCode == REQUEST_CHECK_ENTRY) {
 //                Intent ret = new Intent(this, EntryActivity.class);
@@ -271,8 +339,8 @@ public class MainActivity extends Activity {
                 "bunkmonitor.SHARED_PREF", 0);
         String lastEntryDate = mPrefs.getString("bunkmonitor.LAST_ENTRY_DATE", "0");
         String today = Utilities.getDate(Utilities.getCurrentTime());
-        Button entry = (Button)findViewById(R.id.courses_entry_b);
-        if(today.equals(lastEntryDate))
+        Button entry = (Button) findViewById(R.id.courses_entry_b);
+        if (today.equals(lastEntryDate))
             entry.setEnabled(false);
         else
             entry.setEnabled(true);

@@ -29,6 +29,10 @@
         <activity android:name=".EditEntryActivity" ></activity>
         <activity android:name=".EditSlotsActivity" ></activity>
         <activity android:name=".LockscreenActivity" ></activity>
+        <activity android:name=".ActivityImport"
+            android:theme="@android:style/Theme.Black"></activity>
+        <activity android:name=".LoadCoursesActivity"
+            android:theme="@android:style/Theme.Dialog"></activity>
         <activity android:name=".BunkList"
             android:theme="@android:style/Theme.Dialog"
             android:label="Quick View"></activity>

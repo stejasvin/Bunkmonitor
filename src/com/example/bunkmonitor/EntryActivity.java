@@ -246,7 +246,7 @@ public class EntryActivity extends Activity {
                 e.setBunked(0);
                 e.setCancelled(0);
             }
-        }else{
+        }else if(mode == 2){
             for (Entry e : eList) {
                 e.setAttended(0);
                 e.setBunked(0);

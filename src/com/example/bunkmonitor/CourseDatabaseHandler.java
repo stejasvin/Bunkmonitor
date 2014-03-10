@@ -88,7 +88,7 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		 // course primary key
 
-        values.put(KEY_LOCAL_ID, course.getLocalId());
+        //values.put(KEY_LOCAL_ID, course.getLocalId());
         values.put(KEY_ID, course.getId());
         values.put(KEY_NAME, course.getName());
         values.put(KEY_CREDITS, course.getCredits());

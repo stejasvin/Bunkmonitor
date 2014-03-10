@@ -11,4 +11,16 @@
         android:showAsAction="never"
         android:title="Settings"/>
 
+    <item
+        android:id="@+id/settings_load"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Load"/>
+
+    <item
+        android:id="@+id/settings_share"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Share"/>
+
 </menu>
