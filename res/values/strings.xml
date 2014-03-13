@@ -11,6 +11,21 @@
     <string name="pick">Pick up a Date</string>
     <string name="show_summary">start with ACTION_VIEW</string>
     <string name="show">Show Calendar</string>
+    <string-array name="slots">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+        <item>E</item>
+        <item>F</item>
+        <item>G</item>
+        <item>P</item>
+        <item>Q</item>
+        <item>R</item>
+        <item>S</item>
+        <item>T</item>
+
+    </string-array>
 
 <string name="hint">Hint: touch the first or last day of month to move to previous or next month.</string>
 </resources>

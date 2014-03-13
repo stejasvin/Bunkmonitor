@@ -38,9 +38,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Name"
+                android:text="Name*"
                 android:id="@+id/textView"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                />
 
             <EditText
                 android:layout_width="0dp"
@@ -48,8 +49,9 @@
                 android:id="@+id/et_name"
                 android:layout_weight="1"
                 android:background="@drawable/underline"
-                android:maxLength="20"
-                android:hint="Keep it short" />
+                android:maxLength="30"
+                android:hint="Keep it short"
+                android:singleLine="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -72,7 +74,8 @@
                 android:id="@+id/et_id"
                 android:layout_weight="1"
                 android:background="@drawable/underline"
-                android:maxLength="10" />
+                android:maxLength="10"
+                android:singleLine="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -95,7 +98,8 @@
                 android:id="@+id/et_credits"
                 android:layout_weight="1"
                 android:background="@drawable/underline"
-                android:inputType="number" />
+                android:inputType="number"
+                android:singleLine="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -119,8 +123,44 @@
                 android:layout_weight="1"
                 android:background="@drawable/underline"
                 android:maxLength="15"
-                android:hint="Keep it short" />
+                android:hint="Keep it short"
+                android:singleLine="true"/>
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/linearLayout5"
+            android:layout_marginTop="5sp"
+            android:gravity="center_vertical">
+
+            <TextView
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Slot - "
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/add_slot_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="A"
+                android:layout_weight="1" />
+
+            <Spinner
+                android:id="@+id/add_slot_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/slots"
+                android:paddingLeft="10sp"
+                />
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -131,15 +171,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/et_lab"
-                android:layout_marginRight="10sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Is this a lab course ?"
-                android:id="@+id/textView5"
-                android:layout_weight="1" />
+                android:layout_marginRight="10sp"
+                android:text=" Is this a lab course ?"/>
 
 
         </LinearLayout>
@@ -159,14 +192,9 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/add_maxbunks"
                     android:layout_marginRight="10sp"
-                    android:checked="true" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="85% attendance cutoff ?"
-                    android:layout_weight="1" />
+                    android:checked="true"
+                    android:text=" 85% attendance cutoff ?"/>
+s
 
             </LinearLayout>
 

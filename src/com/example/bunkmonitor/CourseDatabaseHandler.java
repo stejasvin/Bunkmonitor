@@ -39,6 +39,7 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
     public static final String KEY_IS_LAB = "lab";
     public static final String KEY_MAX_BUNKS = "max_bunks";
     public static final String KEY_IS_85 = "is_85";
+    public static final String KEY_SLOT_CHAR = "slot_char";
     private static final String TAG = "courseDatabaseHandler";
 
     public CourseDatabaseHandler(Context context) {
@@ -63,7 +64,8 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
                 + KEY_UNDATED_BUNKS + " INT DEFAULT 0, "
                 + KEY_IS_LAB + " INT DEFAULT 0,"
                 + KEY_MAX_BUNKS + " INT,"
-                + KEY_IS_85 + " INT )";
+                + KEY_IS_85 + " INT,"
+                + KEY_SLOT_CHAR + " TEXT )";
         db.execSQL(CREATE_courseS_TABLE);
 	}
 
@@ -102,6 +104,7 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_IS_LAB, course.getIsLab());
         values.put(KEY_MAX_BUNKS, course.getMaxBunks());
         values.put(KEY_IS_85, course.getIs85());
+        values.put(KEY_SLOT_CHAR, course.getSlot_char());
 
 
         // Inserting Row
@@ -139,6 +142,7 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
         course.setIsLab(cursor.getInt(11));
         course.setMaxBunks(cursor.getInt(12));
         course.setIs85(cursor.getInt(13));
+        course.setSlot_char(cursor.getString(14));
 
 		// return course
 
@@ -175,6 +179,7 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
                 course.setIsLab(cursor.getInt(11));
                 course.setMaxBunks(cursor.getInt(12));
                 course.setIs85(cursor.getInt(13));
+                course.setSlot_char(cursor.getString(14));
 
                 // Adding course to list
                 courseList.add(course);
@@ -215,6 +220,7 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
                 course.setIsLab(cursor.getInt(11));
                 course.setMaxBunks(cursor.getInt(12));
                 course.setIs85(cursor.getInt(13));
+                course.setSlot_char(cursor.getString(14));
 
                 // Adding course to list
                 courseList.add(course);
@@ -243,6 +249,7 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_IS_LAB, course.getIsLab());
         values.put(KEY_MAX_BUNKS, course.getMaxBunks());
         values.put(KEY_IS_85, course.getIs85());
+        values.put(KEY_SLOT_CHAR, course.getSlot_char());
 
         db.update(TABLE_COURSES,
                 values,
@@ -257,6 +264,21 @@ public class CourseDatabaseHandler extends SQLiteOpenHelper {
                 new String[]{id});
         db.close();
     }
+
+    public void createTxtColumnEcg(String colName, String def) {
+
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            db.rawQuery("SELECT " + colName + " FROM " + TABLE_COURSES, new String[]{});
+        } catch (Exception e) {
+            db.execSQL("ALTER TABLE " + TABLE_COURSES + " ADD COLUMN " + colName + " TEXT DEFAULT '" + def + "'");
+        }
+        db.close();
+
+    }
+
+
 
 }
 

@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -19,7 +22,7 @@ import android.widget.Toast;
 //Intent params - IS_EDIT,COURSE_ID
 public class AddNewCourse extends Activity {
 
-    //String[] slotsDays;
+    String[] slotsDays;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +33,7 @@ public class AddNewCourse extends Activity {
                 "bunkmonitor.SHARED_PREF", 0);
         final SharedPreferences.Editor mEditor = mPrefs.edit();
 
-        //slotsDays = Utilities.getSlotsPerDay(this);
+        slotsDays = Utilities.getSlotsPerDay();
 
         Intent iThis = getIntent();
         final boolean isEdit = iThis.getBooleanExtra("IS_EDIT", false);
@@ -42,6 +45,8 @@ public class AddNewCourse extends Activity {
         final EditText etCredits = (EditText) findViewById(R.id.et_credits);
         final EditText etProf = (EditText) findViewById(R.id.et_prof);
         final EditText etMaxBunks = (EditText) findViewById(R.id.et_maxBunks);
+        final TextView tvSlotChar = (TextView) findViewById(R.id.add_slot_tv);
+        final Spinner spSlotChar = (Spinner) findViewById(R.id.add_slot_spinner);
         final CheckBox cbLab = (CheckBox) findViewById(R.id.et_lab);
         final CheckBox cbMaxBunks = (CheckBox) findViewById(R.id.add_maxbunks);
         final LinearLayout llMaxBunks = (LinearLayout) findViewById(R.id.add_llmaxbunks);
@@ -56,6 +61,52 @@ public class AddNewCourse extends Activity {
         cbArray[6] = (CheckBox) findViewById(R.id.add_sat);
         cbArray[0] = (CheckBox) findViewById(R.id.add_sun);
 
+        spSlotChar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String[] slotsArray = AddNewCourse.this.getResources().getStringArray(R.array.slots);
+                tvSlotChar.setText(slotsArray[position]);
+                for(int i=0;i<7;i++){
+                    if(slotsDays[i].contains(slotsArray[position]))
+                        cbArray[i].setChecked(true);
+                    else
+                        cbArray[i].setChecked(false);
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+//                new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                String[] slotsArray = AddNewCourse.this.getResources().getStringArray(R.array.slots);
+//                tvSlotChar.setText("Slot selected - "+slotsArray[position]);
+//                for(int i=0;i<7;i++){
+//                    if(slotsDays[i].contains(slotsArray[position]))
+//                        cbArray[i].setChecked(true);
+//                    else
+//                        cbArray[i].setChecked(false);
+//
+//                }
+//            }
+//        });
+
+//        etSlotChar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                Toast.makeText(AddNewCourse.this,"Clicked - "+v.getText().toString(),Toast.LENGTH_SHORT).show();
+//                return false;
+//            }
+//        });
+
+
+
         cbMaxBunks.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -66,7 +117,23 @@ public class AddNewCourse extends Activity {
             }
         });
 
+        cbLab.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    cbMaxBunks.setChecked(false);
+                    cbMaxBunks.setVisibility(View.GONE);
+                    llMaxBunks.setVisibility(View.VISIBLE);
+                }else{
+                    cbMaxBunks.setChecked(false);
+                    cbMaxBunks.setVisibility(View.VISIBLE);
+                    llMaxBunks.setVisibility(View.GONE);
+                }
+            }
+        });
+
         //final EditText etSlot = (EditText)findViewById(R.id.et_slot);
+
 
         if (isEdit) {
             c = courseDatabaseHandler.getCourse(iThis.getStringExtra("COURSE_LID"));
@@ -74,6 +141,8 @@ public class AddNewCourse extends Activity {
             etId.setText(c.getId());
             etCredits.setText(c.getCredits());
             etProf.setText(c.getProf());
+            spSlotChar.setPrompt("Current slot - " + c.getSlot_char());
+            tvSlotChar.setText(c.getSlot_char());
 
             if (c.getIs85() == 1) {
                 cbMaxBunks.setChecked(true);
@@ -139,6 +208,7 @@ public class AddNewCourse extends Activity {
                 cnew.setName(etName.getText().toString());
                 cnew.setProf(etProf.getText().toString());
                 cnew.setCredits(etCredits.getText().toString());
+                cnew.setSlot_char(tvSlotChar.getText().toString());
 
                 if (cbLab.isChecked())
                     cnew.setIsLab(1);
@@ -179,22 +249,6 @@ public class AddNewCourse extends Activity {
                     cnew.setSlot(slots);
 
                 }
-
-//                if(!cnew.getSlot().equals("") && isEdit)
-//
-//                else{
-//
-//                }
-
-//                for (int i = 0; i < 6; i++) {
-//                    slotsDays[i].replace(cnew.getSlot(), "");
-//                }
-//                for (int i = 0; i < 6; i++) {
-//                    if (cbArray[i].isChecked())
-//                        slotsDays[i] = slotsDays[i] + nextSlot;
-//                }
-
-                //Utilities.setSlotsPerDay(AddNewCourse.this, slotsDays);
 
                 if (!isEdit)
                     courseDatabaseHandler.addCourse(cnew);

@@ -119,12 +119,18 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
 //        TextView tvSlot = (TextView) row.findViewById(R.id.clist_slot);
         ImageView imgHm = (ImageView) row.findViewById(R.id.clist_hm);
         imgHm.setVisibility(View.VISIBLE);
+        TextView tvSlot = (TextView) row.findViewById(R.id.clist_slot);
         TextView tvB = (TextView) row.findViewById(R.id.clist_bunked);
+
         Course c = cList.get(groupPosition);
         int totalBunks = c.getBunked()+c.getUdBunks();
 
         tvName.setText(c.getName());
-        //tvSlot.setText("Slot: " + c.getSlot());
+
+        if(c.getSlot_char()!=null && !c.getSlot_char().equals(""))
+            tvSlot.setText("Slot: " + c.getSlot_char());
+        else
+            tvSlot.setVisibility(View.GONE);
 
         int maxBunks = c.getMaxBunks();
         String tvbString;
@@ -154,25 +160,25 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
             int n = (int) (fraction * 6);
             switch (n) {
                 case 0:
-                    imgHm.setImageResource(R.drawable.hangman_1);
+                    imgHm.setImageResource(R.drawable.hangman_7);
                     break;
                 case 1:
-                    imgHm.setImageResource(R.drawable.hangman_2);
+                    imgHm.setImageResource(R.drawable.hangman_6);
                     break;
                 case 2:
-                    imgHm.setImageResource(R.drawable.hangman_3);
+                    imgHm.setImageResource(R.drawable.hangman_5);
                     break;
                 case 3:
                     imgHm.setImageResource(R.drawable.hangman_4);
                     break;
                 case 4:
-                    imgHm.setImageResource(R.drawable.hangman_5);
+                    imgHm.setImageResource(R.drawable.hangman_3);
                     break;
                 case 5:
-                    imgHm.setImageResource(R.drawable.hangman_6);
+                    imgHm.setImageResource(R.drawable.hangman_2);
                     break;
                 case 6:
-                    imgHm.setImageResource(R.drawable.hangman_7);
+                    imgHm.setImageResource(R.drawable.hangman_1);
                     break;
 
             }

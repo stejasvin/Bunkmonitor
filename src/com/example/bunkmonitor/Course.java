@@ -6,7 +6,23 @@ import java.io.Serializable;
 * Created by Tejas on 6/15/13.
 */
 public class Course implements Serializable {
-    private String id,l_id,credits,name,slot,prof;
+    //Here slot stores the days eg Monday, tuesday... and slot_char stores A or B or C... but its dummy currently
+    private String id;
+    private String l_id;
+    private String credits;
+    private String name;
+    private String slot;
+    private String prof;
+
+    public String getSlot_char() {
+        return slot_char;
+    }
+
+    public void setSlot_char(String slot_char) {
+        this.slot_char = slot_char;
+    }
+
+    private String slot_char;
     private int attended;
     private int bunked;
     private int cancelled;
@@ -14,6 +30,7 @@ public class Course implements Serializable {
     private int udBunks;
     private int isLab;
     private int maxBunks;
+
 
     public int getIs85() {
         return is85;

@@ -3,11 +3,10 @@
     <color name="mybackcolor">#ededed</color>
     <color name="lockscreen_norm">#5b5b5b</color>
     <color name="lockscreen_press">#bbbbbb</color>
-    <array name="sticky_colours">
-        <color name="blue">d0ecf9</color>
-        <color name="green">c0f2bc</color>
-        <color name="purple">f0c1f0</color>
-        <color name="yellow">fcfbb5</color>
+        <color name="blue">#d0ecf9</color>
+        <color name="green">#c0f2bc</color>
+        <color name="purple">#f0c1f0</color>
+        <color name="yellow">#fcfbb5</color>
 
-    </array>
+
 </resources>

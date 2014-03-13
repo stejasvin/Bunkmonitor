@@ -51,6 +51,8 @@ public class MainActivity extends Activity {
         if (mPrefs.getString("MONDAY", null) == null)
             initializePrefs();
 
+        nonBackwardCompatibleUpdates();
+
 //        //Checking for entry once
         if (!mPrefs.getBoolean("SNOOZE", false)) {
             Intent downloader = new Intent(this, DailyNotifService.class);
@@ -153,15 +155,17 @@ public class MainActivity extends Activity {
                 "bunkmonitor.SHARED_PREF", 0);
         SharedPreferences.Editor mEditor = mPrefs.edit();
         mEditor.putInt("NOTIF_TIME", 1700);
-        mEditor.putString("MONDAY", "").commit();
-        mEditor.putString("TUESDAY", "").commit();
-        mEditor.putString("WEDNESDAY", "").commit();
-        mEditor.putString("THURSDAY", "").commit();
-        mEditor.putString("FRIDAY", "").commit();
-        mEditor.putString("SATURDAY", "").commit();
-        mEditor.putString("SUNDAY", "").commit();
 
-        mEditor.putString("LAST_SLOT", "a");
+
+//        mEditor.putString("MONDAY", "").commit();
+//        mEditor.putString("TUESDAY", "").commit();
+//        mEditor.putString("WEDNESDAY", "").commit();
+//        mEditor.putString("THURSDAY", "").commit();
+//        mEditor.putString("FRIDAY", "").commit();
+//        mEditor.putString("SATURDAY", "").commit();
+//        mEditor.putString("SUNDAY", "").commit();
+
+//        mEditor.putString("LAST_SLOT", "a");
 
         //Set recurring alarms if not snoozed
         if (!mPrefs.getBoolean("SNOOZE", false))
@@ -335,19 +339,29 @@ public class MainActivity extends Activity {
             //adapter.registerDataSetObserver(o);
         }
 
-        SharedPreferences mPrefs = getSharedPreferences(
-                "bunkmonitor.SHARED_PREF", 0);
-        String lastEntryDate = mPrefs.getString("bunkmonitor.LAST_ENTRY_DATE", "0");
-        String today = Utilities.getDate(Utilities.getCurrentTime());
-        Button entry = (Button) findViewById(R.id.courses_entry_b);
-        if (today.equals(lastEntryDate))
-            entry.setEnabled(false);
-        else
-            entry.setEnabled(true);
+//        SharedPreferences mPrefs = getSharedPreferences(
+//                "bunkmonitor.SHARED_PREF", 0);
+//        String lastEntryDate = mPrefs.getString("bunkmonitor.LAST_ENTRY_DATE", "0");
+//        String today = Utilities.getDate(Utilities.getCurrentTime());
+//        Button entry = (Button) findViewById(R.id.courses_entry_b);
+//        if (today.equals(lastEntryDate))
+//            entry.setEnabled(false);
+//        else
+//            entry.setEnabled(true);
 
         ///list.invalidateViews();
 
 //        }
+    }
+
+    public void nonBackwardCompatibleUpdates(){
+
+        //ALTER course table to create a column for slot_char
+        CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(MainActivity.this);
+        courseDatabaseHandler.createTxtColumnEcg(CourseDatabaseHandler.KEY_SLOT_CHAR, "");
+
+
+
     }
 
 

@@ -210,19 +210,30 @@ public class Utilities {
                 AlarmManager.INTERVAL_HOUR, recurringDownload);  //Need to use INTERVAL_DAY instead of 10000
     }
 
-    public static String[] getSlotsPerDay(Context context) {
+    public static String[] getSlotsPerDay() {
 
-        String[] days = new String[6];
+        String[] days = new String[7];
 
-        SharedPreferences mPrefs = context.getSharedPreferences(
-                "bunkmonitor.SHARED_PREF", 0);
+        //IIT slot system
+        days[0] = "";   //Sun
+        days[1] = "ABCDGP";
+        days[2] = "BCDEAQ";
+        days[3] = "CDEFBR";
+        days[4] = "EFGADS";
+        days[5] = "FGABCET";
+        days[6] = "";   //sat
 
-        days[0] = mPrefs.getString("MONDAY", "");
-        days[1] = mPrefs.getString("TUESDAY", "");
-        days[2] = mPrefs.getString("WEDNESDAY", "");
-        days[3] = mPrefs.getString("THURSDAY", "");
-        days[4] = mPrefs.getString("FRIDAY", "");
-        days[5] = mPrefs.getString("SATURDAY", "");
+
+
+//        days[0] = mPrefs.getString("MONDAY" "ABCDGP");
+//        days[1] = mPrefs.getString("TUESDAY", "BCDEAQ");
+//        days[2] = mPrefs.getString("WEDNESDAY", "CDEFBR");
+//        days[3] = mPrefs.getString("THURSDAY", "EFGADS");
+//        days[4] = mPrefs.getString("FRIDAY", "FGABCET");
+//        days[5] = mPrefs.getString("SATURDAY", "");
+//        days[6] = mPrefs.getString("SUNDAY", "");
+
+
 
         return days;
 
