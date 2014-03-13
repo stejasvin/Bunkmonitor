@@ -19,7 +19,7 @@ import android.widget.Toast;
 //Intent params - IS_EDIT,COURSE_ID
 public class AddNewCourse extends Activity {
 
-    String[] slotsDays;
+    //String[] slotsDays;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,7 @@ public class AddNewCourse extends Activity {
                 "bunkmonitor.SHARED_PREF", 0);
         final SharedPreferences.Editor mEditor = mPrefs.edit();
 
-        slotsDays = Utilities.getSlotsPerDay(this);
+        //slotsDays = Utilities.getSlotsPerDay(this);
 
         Intent iThis = getIntent();
         final boolean isEdit = iThis.getBooleanExtra("IS_EDIT", false);
@@ -46,13 +46,15 @@ public class AddNewCourse extends Activity {
         final CheckBox cbMaxBunks = (CheckBox) findViewById(R.id.add_maxbunks);
         final LinearLayout llMaxBunks = (LinearLayout) findViewById(R.id.add_llmaxbunks);
 
-        final CheckBox[] cbArray = new CheckBox[6];
-        cbArray[0] = (CheckBox) findViewById(R.id.add_mon);
-        cbArray[1] = (CheckBox) findViewById(R.id.add_tue);
-        cbArray[2] = (CheckBox) findViewById(R.id.add_wed);
-        cbArray[3] = (CheckBox) findViewById(R.id.add_thu);
-        cbArray[4] = (CheckBox) findViewById(R.id.add_fri);
-        cbArray[5] = (CheckBox) findViewById(R.id.add_sat);
+        final CheckBox[] cbArray = new CheckBox[7];
+
+        cbArray[1] = (CheckBox) findViewById(R.id.add_mon);
+        cbArray[2] = (CheckBox) findViewById(R.id.add_tue);
+        cbArray[3] = (CheckBox) findViewById(R.id.add_wed);
+        cbArray[4] = (CheckBox) findViewById(R.id.add_thu);
+        cbArray[5] = (CheckBox) findViewById(R.id.add_fri);
+        cbArray[6] = (CheckBox) findViewById(R.id.add_sat);
+        cbArray[0] = (CheckBox) findViewById(R.id.add_sun);
 
         cbMaxBunks.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -88,9 +90,9 @@ public class AddNewCourse extends Activity {
                 cbLab.setChecked(false);
 
 
-            for (int i = 0; i < 6; i++)
-                if (slotsDays[i].contains(c.getSlot()))
-                    cbArray[i].setChecked(true);
+//            for (int i = 0; i < 6; i++)
+//                if (slotsDays[i].contains(c.getSlot()))
+//                    cbArray[i].setChecked(true);
 
         }
 
@@ -157,23 +159,25 @@ public class AddNewCourse extends Activity {
                     cnew.setMaxBunks(Integer.decode(etMaxBunks.getText().toString()));
                 }
 
-                String lastSlot = mPrefs.getString("LAST_SLOT", "a");
-                int charValue = lastSlot.charAt(0);
-                String nextSlot = String.valueOf((char) (charValue + 1));
+//                String lastSlot = mPrefs.getString("LAST_SLOT", "a");
+//                int charValue = lastSlot.charAt(0);
+//                String nextSlot = String.valueOf((char) (charValue + 1));
+
+                String slots = "";
+                for(int i=0;i<cbArray.length;i++)
+                    if(cbArray[i].isChecked())
+                        //i+1 to use Calendar enumeration
+                        slots = slots.concat((i+1)+"#");
 
                 cnew.setActive(1);
                 if (isEdit) {
                     cnew.setLocalId(finalC.getLocalId());
                     if (cnew.getSlot() == null || cnew.getSlot().equals(""))
-                        cnew.setSlot(nextSlot);
-                    else {
-                        nextSlot = cnew.getSlot();
-                        mEditor.putString("LAST_SLOT", nextSlot).commit();
-                    }
+                        cnew.setSlot(slots);
 
                 } else {
-                    cnew.setSlot(nextSlot);
-                    mEditor.putString("LAST_SLOT", nextSlot).commit();
+                    cnew.setSlot(slots);
+
                 }
 
 //                if(!cnew.getSlot().equals("") && isEdit)
@@ -182,15 +186,15 @@ public class AddNewCourse extends Activity {
 //
 //                }
 
-                for (int i = 0; i < 6; i++) {
-                    slotsDays[i].replace(cnew.getSlot(), "");
-                }
-                for (int i = 0; i < 6; i++) {
-                    if (cbArray[i].isChecked())
-                        slotsDays[i] = slotsDays[i] + nextSlot;
-                }
+//                for (int i = 0; i < 6; i++) {
+//                    slotsDays[i].replace(cnew.getSlot(), "");
+//                }
+//                for (int i = 0; i < 6; i++) {
+//                    if (cbArray[i].isChecked())
+//                        slotsDays[i] = slotsDays[i] + nextSlot;
+//                }
 
-                Utilities.setSlotsPerDay(AddNewCourse.this, slotsDays);
+                //Utilities.setSlotsPerDay(AddNewCourse.this, slotsDays);
 
                 if (!isEdit)
                     courseDatabaseHandler.addCourse(cnew);

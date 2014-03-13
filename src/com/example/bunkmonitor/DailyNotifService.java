@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Tejas on 8/24/13.
@@ -34,8 +35,8 @@ public class DailyNotifService extends IntentService {
         int notifTime = mPrefs.getInt("NOTIF_TIME", 1700);
         String lastEntryDate = mPrefs.getString("bunkmonitor.LAST_ENTRY_DATE", "0");
         String today = Utilities.getDate(Utilities.getCurrentTime());
-        String sunSlots = mPrefs.getString("SUNDAY", "");
-        String satSlots = mPrefs.getString("SATURDAY", "");
+//        String sunSlots = mPrefs.getString("SUNDAY", "");
+//        String satSlots = mPrefs.getString("SATURDAY", "");
 
         //TODO Need to add checks for long gaps and unsyncs
 
@@ -52,10 +53,18 @@ public class DailyNotifService extends IntentService {
 
             CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
 
-            if (mPrefs.getBoolean("ENABLE_NOTIF", true) && courseDatabaseHandler.getAllActiveCourses().size()>0 ) {
+            List<Course> courseList = courseDatabaseHandler.getAllActiveCourses();
+            boolean sunSlot=false,satSlot=false;
+            for(Course c:courseList){
+                if(c.getSlot().contains(Calendar.SUNDAY+""))
+                    sunSlot = true;
+                if(c.getSlot().contains(Calendar.SATURDAY+""))
+                    satSlot = true;
+            }
+
+            if (mPrefs.getBoolean("ENABLE_NOTIF", true) && courseList.size()>0 ) {
                 if (cal.get(Calendar.HOUR_OF_DAY) >= notifTime / 100 && cal.get(Calendar.MINUTE) >= notifTime % 100
-                        && (sunSlots.equals("") && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
-                        && (satSlots.equals("") && cal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY)) {
+                        && !sunSlot && !satSlot) {
                     //sendBroadcast(new Intent(UpdatesListActivity.REFRESH_ACTION));
                     Utilities.toggleActiveCourses(this, Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
                     generateNotification(DailyNotifService.this, "Time to fill daily entry!");

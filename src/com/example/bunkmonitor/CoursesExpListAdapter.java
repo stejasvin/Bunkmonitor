@@ -154,25 +154,25 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
             int n = (int) (fraction * 6);
             switch (n) {
                 case 0:
-                    imgHm.setImageResource(R.drawable.hm_0);
+                    imgHm.setImageResource(R.drawable.hangman_1);
                     break;
                 case 1:
-                    imgHm.setImageResource(R.drawable.hm_1);
+                    imgHm.setImageResource(R.drawable.hangman_2);
                     break;
                 case 2:
-                    imgHm.setImageResource(R.drawable.hm_2);
+                    imgHm.setImageResource(R.drawable.hangman_3);
                     break;
                 case 3:
-                    imgHm.setImageResource(R.drawable.hm_3);
+                    imgHm.setImageResource(R.drawable.hangman_4);
                     break;
                 case 4:
-                    imgHm.setImageResource(R.drawable.hm_4);
+                    imgHm.setImageResource(R.drawable.hangman_5);
                     break;
                 case 5:
-                    imgHm.setImageResource(R.drawable.hm_5);
+                    imgHm.setImageResource(R.drawable.hangman_6);
                     break;
                 case 6:
-                    imgHm.setImageResource(R.drawable.hm_6);
+                    imgHm.setImageResource(R.drawable.hangman_7);
                     break;
 
             }

@@ -24,11 +24,10 @@
         </activity>
         <activity android:name=".AddNewCourse" ></activity>
         <activity android:name=".EntryActivity" ></activity>
-        <activity android:name=".Timetable" ></activity>
-        <activity android:name=".CheckEntryCal" ></activity>
         <activity android:name=".EditEntryActivity" ></activity>
         <activity android:name=".EditSlotsActivity" ></activity>
-        <activity android:name=".LockscreenActivity" ></activity>
+        <activity android:name=".LockscreenActivity"
+            android:configChanges="orientation"></activity>
         <activity android:name=".ActivityImport"
             android:theme="@android:style/Theme.Black"></activity>
         <activity android:name=".LoadCoursesActivity"

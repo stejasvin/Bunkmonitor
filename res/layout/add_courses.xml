@@ -125,15 +125,13 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            >
+            android:layout_weight="1">
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/et_lab"
-                android:layout_marginRight="10sp"
-                />
+                android:layout_marginRight="10sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -150,27 +148,25 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/add_maxbunks"
-                android:layout_marginRight="10sp"
-                android:checked="true"
-                />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/add_maxbunks"
+                    android:layout_marginRight="10sp"
+                    android:checked="true" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="85% attendance cutoff ?"
-                android:layout_weight="1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="85% attendance cutoff ?"
+                    android:layout_weight="1" />
 
             </LinearLayout>
 
@@ -197,8 +193,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/underline"
                     android:maxLength="15"
-                    android:inputType="number"
-                     />
+                    android:inputType="number" />
             </LinearLayout>
 
 
@@ -220,61 +215,74 @@
                 android:id="@+id/textView6"
                 android:layout_weight="1" />
 
-            <HorizontalScrollView
+            <LinearLayout
                 android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:layout_width="fill_parent"
+                <CheckBox
+                    android:id="@+id/add_mon"
+                    android:layout_width="0sp"
                     android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:text="Mon      " />
 
-                    <CheckBox
-                        android:id="@+id/add_mon"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="M      "
-                        />
+                <CheckBox
+                    android:id="@+id/add_tue"
+                    android:layout_width="0sp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Tue      " />
 
-                    <CheckBox
-                        android:id="@+id/add_tue"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="T      " />
+                <CheckBox
+                    android:id="@+id/add_wed"
+                    android:layout_width="0sp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Wed      " />
 
-                    <CheckBox
-                        android:id="@+id/add_wed"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="W      " />
 
-                    <CheckBox
-                        android:id="@+id/add_thu"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="Th      " />
+            </LinearLayout>
 
-                    <CheckBox
-                        android:id="@+id/add_fri"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="F      " />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
 
-                    <CheckBox
-                        android:id="@+id/add_sat"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="S " />
+                <CheckBox
+                    android:id="@+id/add_thu"
+                    android:layout_width="0sp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Thu     " />
 
-                </LinearLayout>
-            </HorizontalScrollView>
+                <CheckBox
+                    android:id="@+id/add_fri"
+                    android:layout_width="0sp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Fri      " />
+
+                <CheckBox
+                    android:id="@+id/add_sat"
+                    android:layout_width="0sp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Sat      " />
+
+
+
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/add_sun"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Sun      " />
+
         </LinearLayout>
 
         <Button
