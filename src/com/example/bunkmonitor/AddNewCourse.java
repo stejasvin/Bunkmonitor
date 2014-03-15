@@ -23,6 +23,7 @@ import android.widget.Toast;
 public class AddNewCourse extends Activity {
 
     String[] slotsDays;
+    boolean flagDaysSetEdit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +54,21 @@ public class AddNewCourse extends Activity {
 
         final CheckBox[] cbArray = new CheckBox[7];
 
+        cbArray[0] = (CheckBox) findViewById(R.id.add_sun);
         cbArray[1] = (CheckBox) findViewById(R.id.add_mon);
         cbArray[2] = (CheckBox) findViewById(R.id.add_tue);
         cbArray[3] = (CheckBox) findViewById(R.id.add_wed);
         cbArray[4] = (CheckBox) findViewById(R.id.add_thu);
         cbArray[5] = (CheckBox) findViewById(R.id.add_fri);
         cbArray[6] = (CheckBox) findViewById(R.id.add_sat);
-        cbArray[0] = (CheckBox) findViewById(R.id.add_sun);
+
+
 
         spSlotChar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+                if(!isEdit || flagDaysSetEdit){
                 String[] slotsArray = AddNewCourse.this.getResources().getStringArray(R.array.slots);
                 tvSlotChar.setText(slotsArray[position]);
                 for(int i=0;i<7;i++){
@@ -72,6 +76,9 @@ public class AddNewCourse extends Activity {
                         cbArray[i].setChecked(true);
                     else
                         cbArray[i].setChecked(false);
+                }
+                }else{
+                    flagDaysSetEdit=true;
                 }
 
             }
@@ -158,10 +165,23 @@ public class AddNewCourse extends Activity {
             else
                 cbLab.setChecked(false);
 
+            if(c.getSlot()!=null){
 
-//            for (int i = 0; i < 6; i++)
-//                if (slotsDays[i].contains(c.getSlot()))
-//                    cbArray[i].setChecked(true);
+                for (int i = 0; i < 7; i++){
+                    if(c.getSlot().contains(i+1+""))
+                        cbArray[i].setChecked(true);
+                    else
+                        cbArray[i].setChecked(false);
+                }
+
+                //String[] slotsArray = c.getSlot().split("#");
+//                int iDay;
+//                for(int i=0;i<slotsArray.length;i++){
+//                    iDay = Integer.decode(slotsArray[i]);
+//                    cbArray[iDay-1].setChecked(true);
+//
+//                }
+            }
 
         }
 

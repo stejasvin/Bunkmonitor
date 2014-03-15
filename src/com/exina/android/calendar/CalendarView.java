@@ -97,7 +97,7 @@ public class CalendarView extends ImageView {
         WEEK_TOP_MARGIN  = 0;
         WEEK_LEFT_MARGIN = 0;
 
-        CELL_WIDTH = screenWidthInPix/7;
+        CELL_WIDTH = screenWidthInPix/10;
         CELL_HEIGH = CELL_WIDTH;
         CELL_MARGIN_TOP = 0;
         CELL_MARGIN_LEFT = 0;
@@ -105,11 +105,17 @@ public class CalendarView extends ImageView {
         CELL_TEXT_SIZE = res.getDimension(R.dimen.cell_text_size);
 
 		// set background
+
+
         ImageView im = new ImageView(context);
         im.setImageResource(R.drawable.background_white);
+//        im.setScaleType();
         Drawable d = im.getDrawable();
-        d.setBounds(0,0,screenWidthInPix,screenheightInPix);
+        //(0,0,CELL_WIDTH*7,CELL_HEIGH*8);
+//        int i = getResources().getColor(R.color.mybackcolor);
+
 		//setImageResource(R.drawable.background1);
+        //setImageDrawable(d);
         setImageDrawable(d);
 
         mWeekTitle = res.getDrawable(R.drawable.calendar_week);
@@ -180,10 +186,11 @@ public class CalendarView extends ImageView {
 	
 	@Override
 	public void onLayout(boolean changed, int left, int top, int right, int bottom) {
-		Rect re = getDrawable().getBounds();
+//		Rect re = getDrawable().getBounds();
 		//WEEK_LEFT_MARGIN = CELL_MARGIN_LEFT = (right-left - re.width()) / 2;
 
-        mWeekTitle.setBounds(0,WEEK_TOP_MARGIN,screenWidthInPix,WEEK_TOP_MARGIN+mWeekTitle.getMinimumHeight());
+//        mWeekTitle.setBounds(0,WEEK_TOP_MARGIN,screenWidthInPix,WEEK_TOP_MARGIN+mWeekTitle.getMinimumHeight());
+        mWeekTitle.setBounds(0,WEEK_TOP_MARGIN,CELL_WIDTH*7,WEEK_TOP_MARGIN+mWeekTitle.getMinimumHeight());
 
 		//mWeekTitle.setBounds(WEEK_LEFT_MARGIN, WEEK_TOP_MARGIN, WEEK_LEFT_MARGIN+mWeekTitle.getMinimumWidth(), WEEK_TOP_MARGIN+mWeekTitle.getMinimumHeight());
 		initCells();
@@ -255,6 +262,7 @@ public class CalendarView extends ImageView {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
+
 		// draw background
 		super.onDraw(canvas);
 		mWeekTitle.draw(canvas);
@@ -269,7 +277,6 @@ public class CalendarView extends ImageView {
         drawGridLines(canvas);
 
         //drawNameOfMonthYear(canvas);
-
 		// draw today
 		if(mDecoration!=null && mToday!=null) {
 			mDecoration.draw(canvas);
@@ -292,9 +299,9 @@ public class CalendarView extends ImageView {
 
         for(int i=0;i<=6;i++){
             if(i==0)
-                canvas.drawLine(0,mWeekTitle.getMinimumHeight(),canvas.getWidth(),mWeekTitle.getMinimumHeight(),p);
+                canvas.drawLine(0,mWeekTitle.getMinimumHeight(),CELL_WIDTH*7,mWeekTitle.getMinimumHeight(),p);
             else
-                canvas.drawLine(0,mWeekTitle.getMinimumHeight()+i*CELL_WIDTH,canvas.getWidth(),mWeekTitle.getMinimumHeight()+i*CELL_WIDTH,p);
+                canvas.drawLine(0,mWeekTitle.getMinimumHeight()+i*CELL_WIDTH,CELL_WIDTH*7,mWeekTitle.getMinimumHeight()+i*CELL_WIDTH,p);
         }
     }
 	
@@ -312,5 +319,7 @@ public class CalendarView extends ImageView {
 		}			
 		
 	}
+
+
 
 }

@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import java.util.Calendar;
 
@@ -22,7 +22,8 @@ public class EditEntryActivity extends Activity {
     public static final int REQUEST_BATCH_TO = 30;
 
     int MODE = Utilities.SINGLE; // or Utilitiles.BATCH
-    DatePicker dp1,dp2,dp3;
+    TextView tv1,tv2,tv3;
+    Calendar cal1,cal2,cal3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +39,18 @@ public class EditEntryActivity extends Activity {
         final RadioButton rbBunked = (RadioButton)findViewById(R.id.edit_rb3);
         final RadioButton rbAttended = (RadioButton)findViewById(R.id.edit_rb4);
 
-        dp1 = (DatePicker)findViewById(R.id.edit_date1);
-        dp2 = (DatePicker)findViewById(R.id.edit_date2);
-        dp3 = (DatePicker)findViewById(R.id.edit_date3);
+        tv1 = (TextView)findViewById(R.id.edit_date1_tv);
+        tv2 = (TextView)findViewById(R.id.edit_date2_tv);
+        tv3 = (TextView)findViewById(R.id.edit_date3_tv);
+
+        cal1 = Calendar.getInstance();
+        cal2 = Calendar.getInstance();
+        cal3 = Calendar.getInstance();
+
+        tv1.setText(Utilities.getDate(Utilities.getCurrentTime()));
+        tv2.setText(Utilities.getDate(Utilities.getCurrentTime()));
+        tv3.setText(Utilities.getDate(Utilities.getCurrentTime()));
+
 
         final LinearLayout llSingle = (LinearLayout)findViewById(R.id.edit_ll_single);
         final LinearLayout llBatch = (LinearLayout)findViewById(R.id.edit_ll_batch);
@@ -62,42 +72,44 @@ public class EditEntryActivity extends Activity {
             }
         });
 
-//        Button bCal1 = (Button)findViewById(R.id.edit_b1);
-//        Button bCal2 = (Button)findViewById(R.id.edit_b2);
-//        Button bCal3 = (Button)findViewById(R.id.edit_b3);
+        Button bCal1 = (Button)findViewById(R.id.edit_cal1);
+        Button bCal2 = (Button)findViewById(R.id.edit_cal2);
+        Button bCal3 = (Button)findViewById(R.id.edit_cal3);
         final Button bDone = (Button)findViewById(R.id.edit_done);
 
-//        bCal1.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(EditEntryActivity.this,CheckEntryCal.class);
-//                startActivityForResult(intent,REQUEST_SINGLE);
-//            }
-//        });
-//
-//        bCal2.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(EditEntryActivity.this,CheckEntryCal.class);
-//                startActivityForResult(intent,REQUEST_BATCH_FROM);
-//            }
-//        });
-//
-//        bCal3.setOnClickListener(new View.OnClickListener() {
-//
-//
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(EditEntryActivity.this,CheckEntryCal.class);
-//                startActivityForResult(intent,REQUEST_BATCH_TO);
-//            }
-//        });
+        bCal1.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EditEntryActivity.this,CheckEntryCal.class);
+                startActivityForResult(intent,REQUEST_SINGLE);
+            }
+        });
+
+        bCal2.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EditEntryActivity.this,CheckEntryCal.class);
+                startActivityForResult(intent,REQUEST_BATCH_FROM);
+            }
+        });
+
+        bCal3.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EditEntryActivity.this,CheckEntryCal.class);
+                startActivityForResult(intent,REQUEST_BATCH_TO);
+            }
+        });
 
         bDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 bDone.setEnabled(false);
                 if(MODE == Utilities.SINGLE){
 
@@ -106,29 +118,29 @@ public class EditEntryActivity extends Activity {
 
                     intent.putExtra("COURSE_LOCAL_ID",getIntent().getStringExtra("COURSE_LOCAL_ID"));
 
-                    Calendar cal = Calendar.getInstance();
-                    cal.set(dp1.getYear(),dp1.getMonth(),dp1.getDayOfMonth());
-                    intent.putExtra("date",Utilities.getDate(cal.getTime().toString()));
+//                    Calendar cal = Calendar.getInstance();
+//                    cal.set(dp1.getYear(),dp1.getMonth(),dp1.getDayOfMonth());
+                    intent.putExtra("date",Utilities.getDate(cal1.getTime().toString()));
                     startActivity(intent);
                     setResult(RESULT_OK);
                     finish();
 
                 }else if(MODE == Utilities.BATCH){
 
-                    Calendar cal1=Calendar.getInstance(),cal2=Calendar.getInstance();
-                    cal1.set(Calendar.DAY_OF_MONTH,dp2.getDayOfMonth());
-                    cal1.set(Calendar.MONTH,dp2.getMonth());
-                    cal1.set(Calendar.YEAR,dp2.getYear());
-                    cal2.set(Calendar.DAY_OF_MONTH,dp3.getDayOfMonth());
-                    cal2.set(Calendar.MONTH,dp3.getMonth());
-                    cal2.set(Calendar.YEAR,dp3.getYear());
+//                    Calendar cal1=Calendar.getInstance(),cal2=Calendar.getInstance();
+//                    cal1.set(Calendar.DAY_OF_MONTH,dp2.getDayOfMonth());
+//                    cal1.set(Calendar.MONTH,dp2.getMonth());
+//                    cal1.set(Calendar.YEAR,dp2.getYear());
+//                    cal2.set(Calendar.DAY_OF_MONTH,dp3.getDayOfMonth());
+//                    cal2.set(Calendar.MONTH,dp3.getMonth());
+//                    cal2.set(Calendar.YEAR,dp3.getYear());
                     EntryDetailsDatabaseHandler entryDetailsDatabaseHandler = new EntryDetailsDatabaseHandler(EditEntryActivity.this);
                     if(rbBunked.isChecked())
-                        entryDetailsDatabaseHandler.batchEdit(EditEntryActivity.this,Utilities.getDate(cal1.getTime().toString())
-                                    ,Utilities.getDate(cal2.getTime().toString()),Utilities.BUNKED);
+                        entryDetailsDatabaseHandler.batchEdit(EditEntryActivity.this,Utilities.getDate(cal2.getTime().toString())
+                                    ,Utilities.getDate(cal3.getTime().toString()),Utilities.BUNKED);
                     if(rbAttended.isChecked())
-                        entryDetailsDatabaseHandler.batchEdit(EditEntryActivity.this,Utilities.getDate(cal1.getTime().toString())
-                                ,Utilities.getDate(cal2.getTime().toString()),Utilities.ATTENDED);
+                        entryDetailsDatabaseHandler.batchEdit(EditEntryActivity.this,Utilities.getDate(cal2.getTime().toString())
+                                ,Utilities.getDate(cal3.getTime().toString()),Utilities.ATTENDED);
                     setResult(RESULT_OK);
                     finish();
 
@@ -136,6 +148,7 @@ public class EditEntryActivity extends Activity {
                 bDone.setEnabled(true);
             }
         });
+
 
     }
 
@@ -148,16 +161,20 @@ public class EditEntryActivity extends Activity {
 
                 String[] s = date.split("/");
                 Utilities.processDateArray(s);
-                if(s!=null)
-                    dp1.updateDate(Integer.decode(s[2]),Integer.decode(s[1])-1,Integer.decode(s[0]));
+                if(s!=null){
+                    cal1.set(Integer.decode(s[2]),Integer.decode(s[1])-1,Integer.decode(s[0]));
+                    tv1.setText(date);
+                }
 
             }else if(requestCode == REQUEST_BATCH_FROM){
                 String date = data.getStringExtra("date");
                 //DatePicker dp = (DatePicker)findViewById(R.id.edit_date2);
                 String[] s = date.split("/");
                 Utilities.processDateArray(s);
-                if(s!=null)
-                    dp2.updateDate(Integer.decode(s[2]),Integer.decode(s[1])-1,Integer.decode(s[0]));
+                if(s!=null){
+                    cal2.set(Integer.decode(s[2]),Integer.decode(s[1])-1,Integer.decode(s[0]));
+                    tv2.setText(date);
+                }
 
             }else if(requestCode == REQUEST_BATCH_TO){
                 String date = data.getStringExtra("date");
@@ -171,8 +188,10 @@ public class EditEntryActivity extends Activity {
 //                if(s[2].charAt(0)=='0')
 //                    s[2]=s[2].substring(1);
 
-                if(s!=null)
-                    dp3.updateDate(Integer.decode(s[2]),Integer.decode(s[1])-1,Integer.decode(s[0]));
+                if(s!=null){
+                    cal3.set(Integer.decode(s[2]),Integer.decode(s[1])-1,Integer.decode(s[0]));
+                    tv3.setText(date);
+                }
 
             }
         }

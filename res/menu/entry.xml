@@ -5,7 +5,7 @@
     <item
         android:id="@+id/extras"
         android:orderInCategory="100"
-        android:showAsAction="never"
+
         android:title="Show all courses (in case of extra class)"/>
 
 </menu>

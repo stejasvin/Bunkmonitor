@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="9"
+        android:minSdkVersion="8"
         android:targetSdkVersion="19" />
 
     <application
@@ -22,7 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddNewCourse" ></activity>
+        <activity android:name=".AddNewCourse"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity android:name=".EntryActivity" ></activity>
         <activity android:name=".EditEntryActivity" ></activity>
         <activity android:name=".EditSlotsActivity" ></activity>
@@ -40,7 +41,8 @@
         <activity android:name=".optionsLongPress"
             android:theme="@android:style/Theme.Dialog"></activity>
 
-
+        <activity android:name=".CheckEntryCal"
+            android:theme="@android:style/Theme.Dialog"></activity>
 
         <activity android:name="com.exina.android.calendar.CalendarActivity" ></activity>
 

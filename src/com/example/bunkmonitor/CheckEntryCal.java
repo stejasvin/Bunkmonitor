@@ -21,8 +21,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.DateUtils;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.exina.android.calendar.CalendarView;
@@ -44,7 +47,16 @@ public class CheckEntryCal extends Activity implements CalendarView.OnCellTouchL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.check_entry_cal);
+
+        DisplayMetrics displayMetrics = this.getResources()
+                .getDisplayMetrics();
+        int screenWidthInPix = displayMetrics.widthPixels;
+        int screenheightInPix = displayMetrics.heightPixels;
+
         mView = (CalendarView) findViewById(R.id.calendar);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int)(screenWidthInPix*0.7),(int)(screenheightInPix*0.8));
+        lp.gravity = Gravity.CENTER;
+        mView.setLayoutParams(lp);
         mView.setOnCellTouchListener(this);
 
         final TextView month = (TextView)findViewById(R.id.cal_text);
@@ -74,6 +86,7 @@ public class CheckEntryCal extends Activity implements CalendarView.OnCellTouchL
 
 
     public void onTouch(final Cell cell) {
+
         int year = mView.getYear();
         int month = mView.getMonth();
         int day = cell.getDayOfMonth();
