@@ -63,8 +63,16 @@ public class DailyNotifService extends IntentService {
             }
 
             if (mPrefs.getBoolean("ENABLE_NOTIF", true) && courseList.size()>0 ) {
-                if (cal.get(Calendar.HOUR_OF_DAY) >= notifTime / 100 && cal.get(Calendar.MINUTE) >= notifTime % 100
-                        && !sunSlot && !satSlot) {
+
+                int iToday = cal.get(Calendar.DAY_OF_WEEK);
+                boolean flag = false;
+                for(Course c:courseList){
+                    if(c.getSlot().contains(iToday+""))
+                        flag = true;
+                }
+
+                if(flag && cal.get(Calendar.HOUR_OF_DAY) >= notifTime / 100 && cal.get(Calendar.MINUTE) >= notifTime % 100){
+
                     //sendBroadcast(new Intent(UpdatesListActivity.REFRESH_ACTION));
                     Utilities.toggleActiveCourses(this, Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
                     generateNotification(DailyNotifService.this, "Time to fill daily entry!");
@@ -74,7 +82,6 @@ public class DailyNotifService extends IntentService {
                         intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent1);
                     }
-
 
                 }
             }else{

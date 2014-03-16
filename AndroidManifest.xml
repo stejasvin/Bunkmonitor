@@ -27,6 +27,9 @@
         <activity android:name=".EntryActivity" ></activity>
         <activity android:name=".EditEntryActivity" ></activity>
         <activity android:name=".EditSlotsActivity" ></activity>
+        <activity android:name=".tutorialActivity"
+            android:configChanges="orientation"
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".LockscreenActivity"
             android:configChanges="orientation"></activity>
         <activity android:name=".ActivityImport"

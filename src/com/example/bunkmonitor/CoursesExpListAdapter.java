@@ -109,10 +109,29 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
             row = inflater.inflate(textViewResourceId, parent, false); // inflate view from xml file
         }
 
-        if (isExpanded)
-            row.setBackgroundResource(R.drawable.unfolded_up1);
-        else
-            row.setBackgroundResource(R.drawable.note1);
+        if (isExpanded){
+            switch (groupPosition%4){
+
+                case 0: row.setBackgroundResource(R.drawable.unfolded_up_col_b);break;
+                case 1: row.setBackgroundResource(R.drawable.unfolded_up_col_g);break;
+                case 2: row.setBackgroundResource(R.drawable.unfolded_up_col_y);break;
+                case 3: row.setBackgroundResource(R.drawable.unfolded_up_col_r);break;
+            }
+            //row.setBackgroundResource(R.drawable.unfolded_up1);
+        }
+        else{
+            switch (groupPosition%4){
+
+                case 0: row.setBackgroundResource(R.drawable.note_col_b);break;
+                case 1: row.setBackgroundResource(R.drawable.note_col_g);break;
+                case 2: row.setBackgroundResource(R.drawable.note_col_y);break;
+                case 3: row.setBackgroundResource(R.drawable.note_col_r);break;
+            }
+
+            //row.setBackgroundResource(R.drawable.note1);
+        }
+
+
 
         TextView tvName = (TextView) row.findViewById(R.id.clist_name);
         //TextView tvId = (TextView) row.findViewById(R.id.clist_id);
@@ -219,6 +238,15 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
         final Button bUdInc = (Button)childRow.findViewById(R.id.clist1_udbunk_inc);
         final ArrayList<String> dateList = hashMap.get(cList.get(groupPosition).getLocalId());
 
+        switch (groupPosition%4){
+
+            case 0: childRow.setBackgroundResource(R.drawable.unfolded_down_col_b);break;
+            case 1: childRow.setBackgroundResource(R.drawable.unfolded_down_col_g);break;
+            case 2: childRow.setBackgroundResource(R.drawable.unfolded_down_col_y);break;
+            case 3: childRow.setBackgroundResource(R.drawable.unfolded_down_col_r);break;
+        }
+
+
         if(course.getUdBunks()==0)
             tvNob.setVisibility(View.VISIBLE);
         else
@@ -285,6 +313,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
                 //CheckBox checkBox = new CheckBox(context);
                 checkBoxes[i] = new CheckBox(context);
                 checkBoxes[i].setText(s);
+                checkBoxes[i].setTextSize(15);
                 checkBoxes[i].setId(i);
                 linearLayout.addView(checkBoxes[i]);
             }
@@ -320,12 +349,11 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
                                         if (checkBoxes[i].isChecked()) {
                                             entryDetailsDatabaseHandler.changeBunkToAttEntry(context, cList.get(groupPosition), dateList.get(i));
                                             linearLayout.removeView(checkBoxes[i]);
-                                            hashMap.get(cList.get(groupPosition).getLocalId());
+                                            hashMap.get(cList.get(groupPosition).getLocalId()).remove(i);
                                             //dateList.remove(i);
 
                                         }
                                     }
-
 
                                     if (hashMap.get(cList.get(groupPosition).getLocalId()).isEmpty()) {
 

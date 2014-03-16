@@ -227,7 +227,7 @@ public class MainActivity extends Activity {
                 if (shareFile == null || !shareFile.exists()) {
                     Toast.makeText(this, "E04: Error in transfer", Toast.LENGTH_SHORT).show();
                     finish();
-                    break;
+                    return true;
                 }
 
                 Intent iBlue = new Intent();
@@ -235,12 +235,19 @@ public class MainActivity extends Activity {
                 iBlue.setType("image/jpg");
                 iBlue.putExtra(iBlue.EXTRA_STREAM, Uri.fromFile(shareFile));
                 startActivity(iBlue);
+                return true;
+
+            case R.id.settings_help:
+
+                intent = new Intent(MainActivity.this, tutorialActivity.class);
+                startActivity(intent);
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
 
-        return true;
+
     }
 
     private File generateShareFile() {

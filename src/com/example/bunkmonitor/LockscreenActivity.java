@@ -206,6 +206,7 @@ public class LockscreenActivity extends Activity {
             Log.i(TAG, "Date: " + Utilities.getDate(Utilities.getCurrentTime()));
 
             //recalculating all bunks and attendance in case of conflict on replace
+            entryDetailsDatabaseHandler.addEntry(entryDetails);
             Entry entry = entryDetailsDatabaseHandler.getAllAttTotal(c.getLocalId());
             c.setAttended(entry.getAttended());
             c.setBunked(entry.getBunked());
