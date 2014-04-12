@@ -174,7 +174,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
 
         float fraction = (float) ( (totalBunks) * 1.0 / (maxBunks));
         if (fraction >= 1)
-            imgHm.setImageResource(R.drawable.hm_6);
+            imgHm.setImageResource(R.drawable.hangman_7);
         else {
             int n = (int) (fraction * 6);
             switch (n) {
