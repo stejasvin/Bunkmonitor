@@ -68,7 +68,7 @@ public class GalleryImageAdapter extends BaseAdapter
         ImageView i = new ImageView(mContext);
 
         i.setImageResource(mImageIds[index]);
-        i.setLayoutParams(new Gallery.LayoutParams((int) (screenWidthInPix * 0.9), ViewGroup.LayoutParams.WRAP_CONTENT));
+        i.setLayoutParams(new Gallery.LayoutParams((int) (screenWidthInPix * 0.8), ViewGroup.LayoutParams.WRAP_CONTENT));
         i.setAdjustViewBounds(true);
         i.setPadding(2,2,2,2);
         i.setScaleType(ImageView.ScaleType.FIT_CENTER);

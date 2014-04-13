@@ -142,16 +142,16 @@ public class ActivityImport extends Activity
                     }
                 });
 
-        Button selectFolderButton = (Button)this.findViewById(R.id.selectCurrentDirectoryButton);
-        if(currentAction == ActivityImport.SELECT_DIRECTORY) {
-            selectFolderButton.setOnClickListener(
-                    new OnClickListener() {
-                        public void onClick(View v) {
-                            returnDirectoryFinishActivity();
-                        }
-                    });
-        } else
-            selectFolderButton.setVisibility(View.GONE);
+//        Button selectFolderButton = (Button)this.findViewById(R.id.selectCurrentDirectoryButton);
+//        if(currentAction == ActivityImport.SELECT_DIRECTORY) {
+//            selectFolderButton.setOnClickListener(
+//                    new OnClickListener() {
+//                        public void onClick(View v) {
+//                            returnDirectoryFinishActivity();
+//                        }
+//                    });
+//        } else
+//            selectFolderButton.setVisibility(View.GONE);
     }
 
     private void loadDirectoryUp() {

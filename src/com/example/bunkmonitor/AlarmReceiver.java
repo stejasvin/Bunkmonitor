@@ -14,7 +14,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(DEBUG_TAG, "Recurring alarm; requesting download service.");
+        Log.d(DEBUG_TAG, "Recurring alarm;");
 
         if(!intent.getBooleanExtra("ALARM",false))
             return;

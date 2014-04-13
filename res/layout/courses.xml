@@ -25,9 +25,9 @@
                 style="?android:attr/buttonStyleSmall"
                 android:layout_height="50sp"
                 android:layout_width="50sp"
-                android:id="@+id/b_courses"
+                android:id="@+id/b_settings"
                 android:layout_gravity="center"
-                android:background="@drawable/plus_selector"
+                android:background="@drawable/settings_selector"
                 android:layout_margin="10sp" />
 
             <Button

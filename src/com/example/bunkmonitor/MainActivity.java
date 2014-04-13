@@ -104,12 +104,15 @@ public class MainActivity extends Activity {
             EntryDetailsDatabaseHandler entryDetailsDatabaseHandler = new EntryDetailsDatabaseHandler(this);
             HashMap<String, ArrayList<String>> hashMap = entryDetailsDatabaseHandler.getBunksDates();
 
+            String semStartDate = mPrefs.getString("SEM_START_DATE",Utilities.getDate(Utilities.getCurrentTime()));
+            List<Course> totalClasses = entryDetailsDatabaseHandler.TotalClasses(this,semStartDate,Utilities.getDate(Utilities.getCurrentTime()));
+
             //initiate boolean list
 
             expList = new ExpandableListView(this);
             expList.setGroupIndicator(null);
             expList.setDivider(null);
-            adapter = new CoursesExpListAdapter(this, R.layout.single_list_item_courses, R.layout.single_list_item_courses_child, cList, hashMap);
+            adapter = new CoursesExpListAdapter(this, R.layout.single_list_item_courses, R.layout.single_list_item_courses_child, cList,totalClasses, hashMap);
             expList.setAdapter(adapter);
             expList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
@@ -138,12 +141,12 @@ public class MainActivity extends Activity {
             ll.addView(expList);
         }
 
-        Button bAddCourses = (Button) findViewById(R.id.b_courses);
+        Button bAddCourses = (Button) findViewById(R.id.b_settings);
         bAddCourses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AddNewCourse.class);
-                startActivityForResult(intent, ADDNEWCOURSE);
+                Intent intent = new Intent(MainActivity.this, Settings.class);
+                startActivity(intent);
 
             }
         });
@@ -202,6 +205,13 @@ public class MainActivity extends Activity {
 
         Intent intent;
         switch (item.getItemId()) {
+            case R.id.settings_add_new_course:
+
+                intent = new Intent(MainActivity.this, AddNewCourse.class);
+                startActivityForResult(intent, ADDNEWCOURSE);
+
+                return true;
+
             case R.id.settings_load:
 
                 intent = new Intent(MainActivity.this, ActivityImport.class);

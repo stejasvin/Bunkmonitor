@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.ExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,10 +27,11 @@ import java.util.List;
  */
 public class CoursesExpListAdapter implements ExpandableListAdapter {
 
-    List<Course> cList;
+    List<Course> cList,totalClasses;
     boolean[] isExpanded;
     HashMap<String, ArrayList<String>> hashMap;
     int textViewResourceId, textViewResourceId2;
+
     /**
      * Context
      */
@@ -38,7 +40,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
     View row;
 
     public CoursesExpListAdapter(Activity activity, int textViewResourceId, int textViewResourceId2,
-                                 List<Course> cList, HashMap<String, ArrayList<String>> hashMap) {
+                                 List<Course> cList, List<Course> totalClasses, HashMap<String, ArrayList<String>> hashMap) {
         //super(context, textViewResourceId, cList);
         this.textViewResourceId = textViewResourceId;
         this.textViewResourceId2 = textViewResourceId2;
@@ -46,6 +48,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
         this.activity = activity;
         this.cList = cList;
         this.hashMap = hashMap;
+        this.totalClasses = totalClasses;
         isExpanded = new boolean[cList.size()];
         for (int i = 0; i < cList.size(); i++) {
             isExpanded[i] = false;
@@ -140,9 +143,23 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
         imgHm.setVisibility(View.VISIBLE);
         TextView tvSlot = (TextView) row.findViewById(R.id.clist_slot);
         TextView tvB = (TextView) row.findViewById(R.id.clist_bunked);
+        TextView tvProgress = (TextView) row.findViewById(R.id.clist_tv_progress);
+        ProgressBar pbProgress = (ProgressBar) row.findViewById(R.id.clist_pb);
 
         Course c = cList.get(groupPosition);
         int totalBunks = c.getBunked()+c.getUdBunks();
+
+        if(c.getIs85()==1) {
+            double cprog = totalClasses.get(groupPosition).getAttended() / (c.getMaxBunks() / 0.15) * 100;
+            tvProgress.setText("Course Progress: " + cprog + "%");
+            pbProgress.setProgress((int)cprog);
+            pbProgress.setMax(100);
+            tvProgress.setVisibility(View.VISIBLE);
+            pbProgress.setVisibility(View.VISIBLE);
+        }else{
+            tvProgress.setVisibility(View.GONE);
+            pbProgress.setVisibility(View.GONE);
+        }
 
         tvName.setText(c.getName());
 

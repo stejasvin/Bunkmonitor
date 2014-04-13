@@ -52,7 +52,9 @@ public class BunkListAdapter extends ArrayAdapter {
         row.setEnabled(false);
 
         TextView tvCourse = (TextView) row.findViewById(R.id.bunk_course);
+        tvCourse.setTextColor(context.getResources().getColor(android.R.color.black));
         TextView tvbunks = (TextView) row.findViewById(R.id.bunk_bunks_left);
+        tvbunks.setTextColor(context.getResources().getColor(android.R.color.black));
 
         if (position == 0) {
 

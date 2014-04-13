@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 /**
  * Created by stejasvin on 3/16/14.
@@ -35,6 +36,8 @@ public class tutorialActivity extends Activity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tutorial);
+
+        Toast.makeText(this,"Swipe to go to next page",Toast.LENGTH_SHORT).show();
 
         Gallery gallery = (Gallery) findViewById(R.id.tut_gallery);
 //        selectedImage=(ImageView)findViewById(R.id.tut_image);

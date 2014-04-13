@@ -79,6 +79,7 @@ public class DailyNotifService extends IntentService {
 
                     if (mPrefs.getBoolean("LOCKSCREEN_ENABLE", true)) {
                         Intent intent1 = new Intent(DailyNotifService.this, LockscreenActivity.class);
+                        intent1.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent1);
                     }

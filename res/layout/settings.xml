@@ -51,6 +51,43 @@
             android:textSize="15sp"
             android:enabled="true" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sem Start Date"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            android:layout_gravity="center" />
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="5sp">
+
+
+            <TextView
+                android:id="@+id/settings_sem_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="21st march 2014"
+                android:textSize="20sp"
+                android:layout_weight="1"
+                android:layout_gravity="center" />
+
+            <Button
+                android:id="@+id/settings_cal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="Change"
+                android:textSize="15sp"
+                android:layout_weight="0.5" />
+
+        </LinearLayout>
+
+
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

@@ -25,6 +25,7 @@
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Add course"
+                android:textStyle="bold"
                 android:id="@+id/textView2" />
 
 

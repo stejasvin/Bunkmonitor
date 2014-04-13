@@ -17,8 +17,10 @@ public class BunkList extends ListActivity {
 
         CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(this);
         List<Course> courseList = courseDatabaseHandler.getAllCourses();
-        if(courseList.size()>0)
+        if(courseList.size()>0){
             setListAdapter(new BunkListAdapter(BunkList.this,courseList));
+            getListView().setBackgroundColor(getResources().getColor(R.color.sticky_yellow));
+        }
         else{
             finish();
             Toast.makeText(this,"No courses added",Toast.LENGTH_SHORT).show();

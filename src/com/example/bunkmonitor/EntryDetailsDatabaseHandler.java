@@ -342,6 +342,54 @@ public class EntryDetailsDatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+
+    public List<Course> TotalClasses(Context context, String fromDate, String toDate){
+        String[] sf = fromDate.split("/");
+        Utilities.processDateArray(sf);
+        int fDay = Integer.decode(sf[0]),fMonth = Integer.decode(sf[1])-1,fYear = Integer.decode(sf[2]);
+
+        String[] st = toDate.split("/");
+        Utilities.processDateArray(st);
+        int tDay = Integer.decode(st[0]),tMonth = Integer.decode(st[1]),tYear = Integer.decode(st[2]);
+//        int day=fDay,month=fMonth,year=fYear;
+
+
+        CourseDatabaseHandler courseDatabaseHandler = new CourseDatabaseHandler(context);
+        List<Course> cList = cList = courseDatabaseHandler.getAllCourses();
+
+        boolean flag = true;
+        Calendar cal = Calendar.getInstance();
+        cal.set(fYear,fMonth, fDay);
+
+//        CalendarView calView = new CalendarView(context);
+
+        //output
+
+        EntryDetails entryDetails = new EntryDetails();
+
+        //initializing
+        for(Course c:cList) {
+           c.setAttended(0);
+        }
+
+        if(Utilities.getDate(cal.getTime().toString()).equals(toDate))
+            flag = false;
+
+        while(flag){
+            for(Course c:cList) {
+                if(c.getSlot().contains(cal.get(Calendar.DAY_OF_WEEK) + ""))
+                    c.incAttended();
+            }
+            cal.add(Calendar.DAY_OF_MONTH,1);
+            //termination condition
+            if(Utilities.getDate(cal.getTime().toString()).equals(toDate))
+                flag = false;
+        }
+        return cList;
+    }
+
+
+
     public HashMap<String,ArrayList<String>> getBunksDates(){
 
         HashMap<String,ArrayList<String>> hashMap = new HashMap<String, ArrayList<String>>();

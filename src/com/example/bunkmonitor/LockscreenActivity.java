@@ -81,7 +81,9 @@ public class LockscreenActivity extends Activity {
         mPrefs = getSharedPreferences(
                 "bunkmonitor.SHARED_PREF", 0);
 
-        if (mPrefs.getBoolean("SNOOZE", false)) {
+        String lastEntryDate = mPrefs.getString("bunkmonitor.LAST_ENTRY_DATE", "0");
+        String today = Utilities.getDate(Utilities.getCurrentTime());
+        if (mPrefs.getBoolean("SNOOZE", false) || today.equals(lastEntryDate)) {
             finish();
             return;
         }
@@ -240,7 +242,13 @@ public class LockscreenActivity extends Activity {
         Toast.makeText(getApplicationContext(),"Snoozed for an hour",Toast.LENGTH_LONG).show();
     }
 
-//    protected void onResume() {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Utilities.clearNotifications(LockscreenActivity.this);
+    }
+
+    //    protected void onResume() {
 //
 //        super.onResume();
 //        SharedPreferences mPrefs = getSharedPreferences(

@@ -7,6 +7,7 @@
         <color name="green">#c0f2bc</color>
         <color name="purple">#f0c1f0</color>
         <color name="yellow">#fcfbb5</color>
+    <color name="sticky_yellow">#f8dd50</color>
 
 
 </resources>

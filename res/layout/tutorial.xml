@@ -8,6 +8,8 @@
     android:id="@+id/tut_gallery"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:scrollbarAlwaysDrawHorizontalTrack="true"
+    android:isScrollContainer="false"
     >
 
 </Gallery>
