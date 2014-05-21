@@ -39,6 +39,9 @@
         <activity android:name=".BunkList"
             android:theme="@android:style/Theme.Dialog"
             android:label="Quick View"></activity>
+        <activity android:name=".ExtraCourseList"
+            android:theme="@android:style/Theme.Dialog"
+            android:label="Extra Courses"></activity>
         <activity android:name=".Settings"
             android:theme="@android:style/Theme.Dialog"></activity>
         <activity android:name=".optionsLongPress"

@@ -14,7 +14,6 @@ import android.widget.CheckBox;
 import android.widget.ExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -143,23 +142,23 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
         imgHm.setVisibility(View.VISIBLE);
         TextView tvSlot = (TextView) row.findViewById(R.id.clist_slot);
         TextView tvB = (TextView) row.findViewById(R.id.clist_bunked);
-        TextView tvProgress = (TextView) row.findViewById(R.id.clist_tv_progress);
-        ProgressBar pbProgress = (ProgressBar) row.findViewById(R.id.clist_pb);
+//        TextView tvProgress = (TextView) row.findViewById(R.id.clist_tv_progress);
+//        ProgressBar pbProgress = (ProgressBar) row.findViewById(R.id.clist_pb);
 
         Course c = cList.get(groupPosition);
         int totalBunks = c.getBunked()+c.getUdBunks();
 
-        if(c.getIs85()==1) {
-            double cprog = totalClasses.get(groupPosition).getAttended() / (c.getMaxBunks() / 0.15) * 100;
-            tvProgress.setText("Course Progress: " + cprog + "%");
-            pbProgress.setProgress((int)cprog);
-            pbProgress.setMax(100);
-            tvProgress.setVisibility(View.VISIBLE);
-            pbProgress.setVisibility(View.VISIBLE);
-        }else{
-            tvProgress.setVisibility(View.GONE);
-            pbProgress.setVisibility(View.GONE);
-        }
+//        if(c.getIs85()==1) {
+//            double cprog = totalClasses.get(groupPosition).getAttended() / (c.getMaxBunks() / 0.15) * 100;
+//            tvProgress.setText("Course Progress: " + cprog + "%");
+//            pbProgress.setProgress((int)cprog);
+//            pbProgress.setMax(100);
+//            tvProgress.setVisibility(View.VISIBLE);
+//            pbProgress.setVisibility(View.VISIBLE);
+//        }else{
+//            tvProgress.setVisibility(View.GONE);
+//            pbProgress.setVisibility(View.GONE);
+//        }
 
         tvName.setText(c.getName());
 
@@ -191,7 +190,7 @@ public class CoursesExpListAdapter implements ExpandableListAdapter {
 
         float fraction = (float) ( (totalBunks) * 1.0 / (maxBunks));
         if (fraction >= 1)
-            imgHm.setImageResource(R.drawable.hangman_7);
+            imgHm.setImageResource(R.drawable.hangman_1);
         else {
             int n = (int) (fraction * 6);
             switch (n) {

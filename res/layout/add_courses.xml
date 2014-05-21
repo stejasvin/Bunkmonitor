@@ -215,7 +215,6 @@ s
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Max. Bunks"
-                    android:id="@+id/textView5"
                     android:layout_weight="1" />
 
                 <EditText

@@ -206,10 +206,15 @@ public class AddNewCourse extends Activity {
                     Toast.makeText(AddNewCourse.this, "Enter valid name", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if(!cbMaxBunks.isChecked() && (etMaxBunks.getText().equals(""))){
+                if(!cbMaxBunks.isChecked()){
+                    try {
+                        int temp = Integer.decode(etMaxBunks.getText().toString());
+                    }catch (NumberFormatException e){
+                        e.printStackTrace();
+                        Toast.makeText(AddNewCourse.this, "Check max. bunks", Toast.LENGTH_LONG).show();
+                        return;
+                    }
 
-                    Toast.makeText(AddNewCourse.this, "Enter max. bunks", Toast.LENGTH_LONG).show();
-                    return;
                 }
 
                 boolean flag = false;
@@ -246,7 +251,13 @@ public class AddNewCourse extends Activity {
                     cnew.setMaxBunks(maxBunks);
                 } else {
                     cnew.setIs85(0);
-                    cnew.setMaxBunks(Integer.decode(etMaxBunks.getText().toString()));
+                    try {
+                        cnew.setMaxBunks(Integer.decode(etMaxBunks.getText().toString()));
+                    }catch (NumberFormatException e){
+                        Toast.makeText(AddNewCourse.this,"Check details again",Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                        return;
+                    }
                 }
 
 //                String lastSlot = mPrefs.getString("LAST_SLOT", "a");

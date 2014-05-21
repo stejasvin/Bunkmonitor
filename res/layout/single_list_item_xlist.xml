@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="horizontal" android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:paddingTop="5sp"
+android:paddingBottom="5sp"
+android:paddingLeft="20sp"
+android:paddingRight="20sp">
+
+<CheckBox
+    android:id="@+id/xlist_cb"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+
+<TextView
+    android:id="@+id/xlist_course"
+    android:layout_width="0sp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:textSize="15sp"
+    android:singleLine="true"
+    android:ellipsize="end"
+    android:layout_marginLeft="10sp"
+    android:text="COURSE NAME"/>
+
+
+</LinearLayout>

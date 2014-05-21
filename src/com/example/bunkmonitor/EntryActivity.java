@@ -28,6 +28,7 @@ import java.util.List;
 public class EntryActivity extends Activity {
 
     private static final String TAG = "EntryActivity";
+    public static final int EXTRA_LIST = 0;
     int MODE = Utilities.WRITE;
 
     ListView listView;
@@ -49,7 +50,7 @@ public class EntryActivity extends Activity {
         Intent iThis = getIntent();
 
         MODE = iThis.getIntExtra("bunkmonitor.MODE", Utilities.WRITE);
-        boolean extraMode = iThis.getBooleanExtra("EXTRAS", false);
+        //boolean extraMode = iThis.getBooleanExtra("EXTRAS", false);
         final boolean todayEntry = iThis.getBooleanExtra("TODAY_ENTRY", false);
 
         //To make sure the correct courses are displayed
@@ -97,16 +98,24 @@ public class EntryActivity extends Activity {
             if (clid != null) {
                 cList = new ArrayList<Course>();
                 cList.add(courseDatabaseHandler.getCourse(clid));
+                eList = Entry.getEntryList(cList);
             } else {
                 Utilities.toggleActiveCourses(this, cal.get(Calendar.DAY_OF_WEEK));
-                if (!extraMode)
-                    cList = courseDatabaseHandler.getAllActiveCourses();
-                else
-                    cList = courseDatabaseHandler.getAllCourses();
+                cList = courseDatabaseHandler.getAllActiveCourses();
+                eList = Entry.getEntryList(cList);
+
+                //Adding Booked Extras
+                HashMap<String,Entry> extraList = entryDetailsDatabaseHandler.getEntryListByDate(date);
+
+                //Same courses can also be added more than once.
+                for(Course c:cList)
+                    if(extraList.containsKey(c.getLocalId()))
+                        eList.add(extraList.get(c.getLocalId()));
+
             }
 
             //gets an empty list
-            eList = Entry.getEntryList(cList);
+
 
             //Getting a hashmap of entries on that date and adding to list of courses.
             //The map might not contain all courses available on that date as only
@@ -306,23 +315,37 @@ public class EntryActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.extras:
 
-                Intent intent1 = getIntent();
-                intent1.putExtra("EXTRAS", true);
-                finish();
-                startActivity(intent1);
+                Intent intent1 = new Intent(EntryActivity.this,ExtraCourseList.class);
+                startActivityForResult(intent1,EXTRA_LIST);
+//                intent1.putExtra("EXTRAS", true);
+//                finish();
+//                startActivity(intent1);
 
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == EXTRA_LIST){
+            String[] xc = data.getStringArrayExtra("EXTRA_LIST");
+            if(xc!=null && xc.length>0){
+                EntryDetailsDatabaseHandler entryDetailsDatabaseHandler = new EntryDetailsDatabaseHandler(EntryActivity.this);
+                EntryDetails entryDetails = new EntryDetails();
+                for(String s:xc){
+                    entryDetails.setCourse_lid(s);
+                    entryDetails.setStatus(Utilities.EXTRA);
+                    entryDetails.setTime(date);
+                    entryDetailsDatabaseHandler.addEntry(entryDetails);
+                }
+            }
+            finish();
+            startActivity(getIntent());
 
+        }
+    }
 }
 
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                //gen
-//                int a=1;
-//            }
-//        });
+

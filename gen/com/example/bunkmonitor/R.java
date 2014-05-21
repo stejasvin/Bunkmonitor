@@ -27,7 +27,7 @@ public final class R {
     }
     public static final class id {
         public static final int action_settings=0x7f08002b;
-        public static final int b_courses=0x7f080014;
+        public static final int b_settings =0x7f080014;
         public static final int b_create=0x7f080012;
         public static final int b_entry=0x7f080013;
         public static final int c_list_layout=0x7f080016;

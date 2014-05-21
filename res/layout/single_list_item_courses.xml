@@ -57,6 +57,7 @@
             android:textSize="15sp"
             android:paddingTop="5sp"
             android:text="Course Progress - 65%"
+            android:visibility="gone"
             />
 
 
@@ -71,7 +72,8 @@
             android:layout_marginRight="10sp"
             android:progress="90"
             android:progressDrawable="@drawable/greenprogress"
-            android:paddingBottom="10sp"/>
+            android:paddingBottom="10sp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
